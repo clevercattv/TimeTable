@@ -1,5 +1,6 @@
-package com.clevercattv.table;
+package com.clevercattv.table.services;
 
+import com.clevercattv.table.MainTest;
 import com.clevercattv.table.exceptions.BusyException;
 import com.clevercattv.table.models.Group;
 import com.clevercattv.table.models.Lesson;
@@ -71,13 +72,18 @@ public class TimeTableServiceTest extends MainTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void testGetDaysByArgumentEmpty() {
+    public void testGetDaysWithArgumentEmpty() {
         TIME_TABLE_SERVICE.getDays();
     }
 
     @Test
+    public void testGetDaysByGroup() {
+        assertTrue(TIME_TABLE_SERVICE.getDaysByGroup(FIRST_LESSON.getGroup(),DayOfWeek.MONDAY).size() == 1);
+    }
+
+    @Test
     public void testGetLessonsByDayAndGroup() {
-        
+
     }
 
 }

@@ -22,6 +22,12 @@ public class TimeTable {
         this.lastSemesterDay = firstSemesterDay.plusDays(firstSemesterDay.getDayOfYear() + (COUNT_OF_WEEKS * 7));
     }
 
+    public TimeTable(LocalDate firstSemesterDay, Map<DayOfWeek, List<Lesson>> dayOfWeek) {
+        this.firstSemesterDay = firstSemesterDay;
+        this.lastSemesterDay = firstSemesterDay.plusDays(firstSemesterDay.getDayOfYear() + (COUNT_OF_WEEKS * 7));
+        this.dayOfWeek = dayOfWeek;
+    }
+
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();

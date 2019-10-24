@@ -91,13 +91,6 @@ public class TimeTableService {
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 
-    public List<Lesson> getLessonsByDayAndGroup(DayOfWeek day, Group group) {
-        return filter
-                .startFilterByDay(day)
-                .filterByGroup(group)
-                .getResult();
-    }
-
     public Map<DayOfWeek, List<Lesson>> getDaysByGroup(Group group, DayOfWeek... days) {
         Map<DayOfWeek, List<Lesson>> groupWeekLessons = timeTable.getDayOfWeek().entrySet().stream()
                 .filter(e -> Arrays.asList(days).contains(e.getKey()))
@@ -127,6 +120,13 @@ public class TimeTableService {
             if (!lessons.isEmpty()) groupWeekLessons.put(item.getKey(),lessons);
         }
         return groupWeekLessons;
+    }
+
+    public List<Lesson> getLessonsByDayAndGroup(DayOfWeek day, Group group) {
+        return filter
+                .startFilterByDay(day)
+                .filterByGroup(group)
+                .getResult();
     }
 
     public List<Lesson> getLessonsByDay(DayOfWeek day) {

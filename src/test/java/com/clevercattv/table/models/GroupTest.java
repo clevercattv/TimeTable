@@ -1,5 +1,6 @@
-package com.clevercattv.table;
+package com.clevercattv.table.models;
 
+import com.clevercattv.table.MainTest;
 import com.clevercattv.table.exceptions.BusyException;
 import com.clevercattv.table.exceptions.GroupBusyException;
 import com.clevercattv.table.exceptions.NamingException;
@@ -16,7 +17,7 @@ import org.junit.runner.RunWith;
 import java.time.DayOfWeek;
 
 @RunWith(DataProviderRunner.class)
-public class GroupTest extends MainTest{
+public class GroupTest extends MainTest {
 
     @Test(expected = NamingException.class)
     @DataProvider({

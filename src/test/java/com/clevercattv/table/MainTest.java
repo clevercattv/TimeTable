@@ -18,9 +18,9 @@ import static org.junit.Assert.assertTrue;
 
 public class MainTest {
 
-    static final TimeTableService TIME_TABLE_SERVICE = new TimeTableService(new TimeTable(LocalDate.now()));
+    public static final TimeTableService TIME_TABLE_SERVICE = new TimeTableService(new TimeTable(LocalDate.now()));
 
-    static final Lesson FIRST_LESSON = Lesson.build(
+    public static final Lesson FIRST_LESSON = Lesson.build(
             Teacher.build("Docent name",Teacher.Type.DOCENT),
             Lesson.Number.FIRST,
             Group.build("509"),
@@ -28,7 +28,7 @@ public class MainTest {
             Room.build("10", Room.Type.AUDITORY)
     );
 
-    static final Lesson SECOND_LESSON = Lesson.build(
+    public static final Lesson SECOND_LESSON = Lesson.build(
             Teacher.build("Professor name",Teacher.Type.PROFESSOR),
             Lesson.Number.FIRST,
             Group.build("508"),

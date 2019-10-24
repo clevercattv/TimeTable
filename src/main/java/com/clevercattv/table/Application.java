@@ -34,7 +34,7 @@ public class Application {
                 )
         );
         new JacksonService().saveTimeTable(service.getTimeTable(),"Data.json");
-        new JacksonService().readObject("Data.json");
+        new JacksonService().readTimeTable("Data.json");
         //skype Любов Мунтян  -- english
 
     }

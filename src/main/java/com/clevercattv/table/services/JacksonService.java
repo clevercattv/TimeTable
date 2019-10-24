@@ -23,15 +23,15 @@ public class JacksonService {
         }
     }
 
-    public void readObject(String path) {
+    public TimeTable readTimeTable(String path) {
         ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new JavaTimeModule());
         try {
-            TimeTable timeTable = mapper.readValue(new FileInputStream(path), TimeTable.class);
-            System.out.println(timeTable);
+            return mapper.readValue(new FileInputStream(path), TimeTable.class);
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return null;
     }
 
 }
