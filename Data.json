@@ -1,0 +1,37 @@
+{
+  "firstSemesterDay" : [ 2019, 10, 24 ],
+  "lastSemesterDay" : [ 2020, 11, 29 ],
+  "dayOfWeek" : {
+    "MONDAY" : [ {
+      "name" : "Math",
+      "teacher" : {
+        "fullName" : "Teacher First",
+        "type" : "DOCENT"
+      },
+      "number" : "FIRST",
+      "group" : {
+        "name" : "521",
+        "combined" : false
+      },
+      "room" : {
+        "name" : "2",
+        "type" : "AUDITORY"
+      }
+    }, {
+      "name" : "Math",
+      "teacher" : {
+        "fullName" : "Teacher Second",
+        "type" : "DOCENT"
+      },
+      "number" : "FIRST",
+      "group" : {
+        "name" : "522-523",
+        "combined" : true
+      },
+      "room" : {
+        "name" : "3",
+        "type" : "AUDITORY"
+      }
+    } ]
+  }
+}

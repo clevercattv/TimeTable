@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: com.tngtech.java:junit-dataprovider:1.10.0">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.tngtech.java/junit-dataprovider/1.10.0/d6f651be89f811f58a98d5561f78bbdc4d223988/junit-dataprovider-1.10.0.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.tngtech.java/junit-dataprovider/1.10.0/e73e86c873c0fbd44accdefe5c87da1f09410ea2/junit-dataprovider-1.10.0-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
