@@ -1,24 +1,32 @@
 package com.clevercattv.table.models;
 
 import com.clevercattv.table.MainTest;
+import com.clevercattv.table.exceptions.BusyException;
 import com.clevercattv.table.exceptions.NamingException;
-import com.clevercattv.table.exceptions.TeacherBusyException;
-import com.clevercattv.table.models.Group;
-import com.clevercattv.table.models.Room;
-import com.clevercattv.table.models.Teacher;
 import com.clevercattv.table.services.TimeTableService;
-import com.clevercattv.table.models.Lesson;
 import com.tngtech.java.junit.dataprovider.DataProvider;
 import com.tngtech.java.junit.dataprovider.DataProviderRunner;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import javax.validation.Validation;
+import javax.validation.Validator;
 import java.time.DayOfWeek;
-
-import static org.junit.Assert.assertTrue;
+import java.time.LocalDate;
 
 @RunWith(DataProviderRunner.class)
 public class TeacherTest extends MainTest {
+
+    private static final TimeTableService TIME_TABLE_SERVICE = new TimeTableService(new TimeTable(LocalDate.now()));
+    private static Validator validator;
+
+    @BeforeClass
+    public static void beforeClass() {
+        TIME_TABLE_SERVICE.addLesson(DayOfWeek.MONDAY, FIRST_LESSON);
+        TIME_TABLE_SERVICE.addLesson(DayOfWeek.MONDAY, SECOND_LESSON);
+        validator = Validation.buildDefaultValidatorFactory().getValidator();
+    }
 
     @Test(expected = NamingException.class)
     @DataProvider({
@@ -30,7 +38,11 @@ public class TeacherTest extends MainTest {
         Teacher.build(str,Teacher.Type.DOCENT);
     }
 
-    @Test(expected = TeacherBusyException.class)
+//    public void testJavaxValidation() {
+//        validator.validate(Teacher.build("Docsss norm",Teacher.Type.DOCENT),Teacher.class);
+//    }
+
+    @Test(expected = BusyException.class)
     public void testTeacherBusyException() {
         TIME_TABLE_SERVICE.addLesson(DayOfWeek.MONDAY,
                 Lesson.build(

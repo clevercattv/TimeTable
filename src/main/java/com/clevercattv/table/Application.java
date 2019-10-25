@@ -3,7 +3,7 @@ package com.clevercattv.table;
 import com.clevercattv.table.models.Room;
 import com.clevercattv.table.models.Group;
 import com.clevercattv.table.models.Teacher;
-import com.clevercattv.table.services.JacksonService;
+import com.clevercattv.table.serialize.TimeTableJsonSerializer;
 import com.clevercattv.table.services.TimeTableService;
 import com.clevercattv.table.models.Lesson;
 import com.clevercattv.table.models.TimeTable;
@@ -33,8 +33,8 @@ public class Application {
                         Room.build("3", Room.Type.AUDITORY)
                 )
         );
-        new JacksonService().saveTimeTable(service.getTimeTable(),"Data.json");
-        new JacksonService().readTimeTable("Data.json");
+        TimeTableJsonSerializer.serialize(service.getTimeTable(),"Data.json");
+        TimeTableJsonSerializer.deserialize("Data.json");
         //skype Любов Мунтян  -- english
 
     }

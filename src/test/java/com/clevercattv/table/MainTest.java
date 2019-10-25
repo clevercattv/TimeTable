@@ -1,26 +1,13 @@
 package com.clevercattv.table;
 
-import com.clevercattv.table.exceptions.*;
 import com.clevercattv.table.models.Group;
+import com.clevercattv.table.models.Lesson;
 import com.clevercattv.table.models.Room;
 import com.clevercattv.table.models.Teacher;
-import com.clevercattv.table.services.TimeTableService;
-import com.clevercattv.table.models.Lesson;
-import com.clevercattv.table.models.TimeTable;
-import org.junit.BeforeClass;
-import org.junit.Test;
-
-import java.time.DayOfWeek;
-import java.time.LocalDate;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 public class MainTest {
 
-    public static final TimeTableService TIME_TABLE_SERVICE = new TimeTableService(new TimeTable(LocalDate.now()));
-
-    public static final Lesson FIRST_LESSON = Lesson.build(
+    protected static final Lesson FIRST_LESSON = Lesson.build(
             Teacher.build("Docent name",Teacher.Type.DOCENT),
             Lesson.Number.FIRST,
             Group.build("509"),
@@ -28,21 +15,23 @@ public class MainTest {
             Room.build("10", Room.Type.AUDITORY)
     );
 
-    public static final Lesson SECOND_LESSON = Lesson.build(
+    protected static final Lesson SECOND_LESSON = Lesson.build(
             Teacher.build("Professor name",Teacher.Type.PROFESSOR),
             Lesson.Number.FIRST,
             Group.build("508"),
-            "Math",
+            "Physic",
             Room.build("11", Room.Type.LABORATORY)
     );
 
-    @BeforeClass
-    public static void beforeClass() {
-        TIME_TABLE_SERVICE.addLesson(DayOfWeek.MONDAY, FIRST_LESSON);
-        TIME_TABLE_SERVICE.addLesson(DayOfWeek.MONDAY, SECOND_LESSON);
-    }
+    protected static final Lesson THIRD_LESSON = Lesson.build(
+            Teacher.build("Post Graduate Name",Teacher.Type.POST_GRADUATE),
+            Lesson.Number.THIRD,
+            Group.build("508"),
+            "Physic",
+            Room.build("11", Room.Type.LABORATORY)
+    );
 
-    // Complex exception
+/*    // Complex exception
     @Test(expected = BusyException.class)
     public void testBusyException() {
         TIME_TABLE_SERVICE.addLesson(DayOfWeek.MONDAY,
@@ -54,6 +43,6 @@ public class MainTest {
                         Room.build("10", Room.Type.AUDITORY)
                 )
         );
-    }
+    }*/
 
 }

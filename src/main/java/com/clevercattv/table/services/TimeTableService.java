@@ -136,6 +136,9 @@ public class TimeTableService {
     public TimeTable getTimeTable() {
         return timeTable;
     }
+    public FilterBuilder getFilterBuilder() {
+        return filter;
+    }
 
     public class FilterBuilder {
 

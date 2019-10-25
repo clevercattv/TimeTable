@@ -1,10 +1,12 @@
-package com.clevercattv.table.services;
+package com.clevercattv.table.serialize;
 
 import com.clevercattv.table.MainTest;
 import com.clevercattv.table.models.*;
+import com.clevercattv.table.services.TimeTableService;
 import com.tngtech.java.junit.dataprovider.DataProvider;
 import com.tngtech.java.junit.dataprovider.DataProviderRunner;
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -16,9 +18,15 @@ import java.util.Map;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(DataProviderRunner.class)
-public class JacksonServiceTest extends MainTest {
+public class TimeTableJsonSerializerTest extends MainTest {
 
-    private JacksonService service = new JacksonService();
+    private static final TimeTableService TIME_TABLE_SERVICE = new TimeTableService(new TimeTable(LocalDate.now()));
+
+    @BeforeClass
+    public static void beforeClass() {
+        TIME_TABLE_SERVICE.addLesson(DayOfWeek.MONDAY, FIRST_LESSON);
+        TIME_TABLE_SERVICE.addLesson(DayOfWeek.MONDAY, SECOND_LESSON);
+    }
 
     @DataProvider
     public static Object[][] dayOfWeekDataProvider() {
@@ -35,13 +43,13 @@ public class JacksonServiceTest extends MainTest {
     public void saveTimeTable(Map<DayOfWeek, List<Lesson>> days, String path) {
         TimeTable timeTable = new TimeTable(LocalDate.now());
         timeTable.setDayOfWeek(days);
-        service.saveTimeTable(timeTable,path);
+        TimeTableJsonSerializer.serialize(timeTable,path);
     }
 
     @Test
     @UseDataProvider("dayOfWeekDataProvider")
     public void readTimeTable(Map<DayOfWeek, List<Lesson>> days, String path) {
-        assertEquals(service.readTimeTable(path).getDayOfWeek(),days);
+        assertEquals(TimeTableJsonSerializer.deserialize(path).getDayOfWeek(),days);
     }
 
 }

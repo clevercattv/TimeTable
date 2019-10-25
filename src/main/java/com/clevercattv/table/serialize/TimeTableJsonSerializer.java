@@ -1,4 +1,4 @@
-package com.clevercattv.table.services;
+package com.clevercattv.table.serialize;
 
 import com.clevercattv.table.models.TimeTable;
 import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
@@ -10,9 +10,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 
-public class JacksonService {
+public class TimeTableJsonSerializer {
 
-    public void saveTimeTable(TimeTable timeTable, String path) {
+    public static void serialize(TimeTable timeTable, String path) {
         ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new JavaTimeModule());
         ObjectWriter writer = mapper.writer(new DefaultPrettyPrinter());
@@ -23,7 +23,7 @@ public class JacksonService {
         }
     }
 
-    public TimeTable readTimeTable(String path) {
+    public static TimeTable deserialize(String path) {
         ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new JavaTimeModule());
         try {
@@ -33,5 +33,6 @@ public class JacksonService {
         }
         return null;
     }
+
 
 }

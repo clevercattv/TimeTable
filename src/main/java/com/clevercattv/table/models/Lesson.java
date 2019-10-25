@@ -17,14 +17,14 @@ public class Lesson {
     private Lesson(){ }
 
     public static Lesson build(Teacher teacher, Number number,
-                               Group group, String lesson, Room room) {
-        Lesson schedule = new Lesson();
-        schedule.setTeacher(teacher);
-        schedule.setNumber(number);
-        schedule.setGroup(group);
-        schedule.setName(lesson);
-        schedule.setRoom(room);
-        return schedule;
+                               Group group, String lessonName, Room room) {
+        Lesson lesson = new Lesson();
+        lesson.setTeacher(teacher);
+        lesson.setNumber(number);
+        lesson.setGroup(group);
+        lesson.setName(lessonName);
+        lesson.setRoom(room);
+        return lesson;
     }
 
     @Override

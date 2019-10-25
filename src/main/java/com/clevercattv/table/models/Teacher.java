@@ -3,12 +3,14 @@ package com.clevercattv.table.models;
 import com.clevercattv.table.exceptions.NamingException;
 import com.clevercattv.table.services.TimeTableService;
 
+import javax.validation.constraints.Pattern;
 import java.util.Objects;
 
 
 public class Teacher {
 
     /** Teacher 'First name Last name Middle name' */
+    @Pattern(regexp = "^[a-z]+$")
     private String fullName;
     private Type type;
     private final static int MIN_NAME_LENGTH = 10;
