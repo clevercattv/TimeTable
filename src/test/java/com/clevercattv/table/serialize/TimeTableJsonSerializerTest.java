@@ -59,6 +59,7 @@ public class TimeTableJsonSerializerTest extends MainTest {
 
     @Test
     public void readTimeTableError() {
+
         assertNull(TimeTableJsonSerializer.deserialize("Test5.json"));
     }
 
