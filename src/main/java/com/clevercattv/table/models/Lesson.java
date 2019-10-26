@@ -1,17 +1,38 @@
 package com.clevercattv.table.models;
 
-import com.clevercattv.table.exceptions.NamingException;
 import com.clevercattv.table.services.TimeTableService;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.time.LocalTime;
 import java.util.Objects;
 
 public class Lesson {
 
+    public final static int MIN_NAME_LENGTH = 10;
+    public final static int MAX_NAME_LENGTH = 48;
+
+    @NotEmpty
+    @Pattern(regexp = TimeTableService.VALIDATION)
+    @Size(min = MIN_NAME_LENGTH, max = MAX_NAME_LENGTH)
     private String name;
+
+    @Valid
+    @NotNull
     private Teacher teacher;
+
+    @NotNull
     private Number number;
+
+    @Valid
+    @NotNull
     private Group group;
+
+    @Valid
+    @NotNull
     private Room room;//
 
     private Lesson(){ }
@@ -60,7 +81,6 @@ public class Lesson {
     }
 
     public void setTeacher(Teacher teacher) {
-        if (teacher == null) throw new NullPointerException("Lesson teacher can't be null!");
         this.teacher = teacher;
     }
 
@@ -69,7 +89,6 @@ public class Lesson {
     }
 
     public void setNumber(Number number) {
-        if (number == null) throw new NullPointerException("Lesson name number can't be null!");
         this.number = number;
     }
 
@@ -78,7 +97,6 @@ public class Lesson {
     }
 
     public void setGroup(Group group) {
-        if (group == null) throw new NullPointerException("Lesson group can't be null!");
         this.group = group;
     }
 
@@ -87,11 +105,6 @@ public class Lesson {
     }
 
     public void setName(String name) {
-        if (name.length() < 4) throw new NamingException("Lesson name length less than minimum.");
-        if (name.length() > 48) throw new NamingException("Lesson name length more than maximum.");
-        if (!TimeTableService.VALIDATION.matcher(name).matches()) {
-            throw new NamingException("Lesson name have forbidden symbols. Please use 'a-z A-Z' ");
-        }
         this.name = name;
     }
 
@@ -100,7 +113,6 @@ public class Lesson {
     }
 
     public void setRoom(Room room) {
-        if (room == null) throw new NullPointerException("Lesson auditory can't be null!");
         this.room = room;
     }
 

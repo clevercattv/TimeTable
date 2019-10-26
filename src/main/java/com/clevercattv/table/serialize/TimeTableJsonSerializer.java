@@ -1,6 +1,7 @@
 package com.clevercattv.table.serialize;
 
 import com.clevercattv.table.models.TimeTable;
+import com.clevercattv.table.validation.Validator;
 import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
@@ -27,7 +28,9 @@ public class TimeTableJsonSerializer {
         ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new JavaTimeModule());
         try {
-            return mapper.readValue(new FileInputStream(path), TimeTable.class);
+            TimeTable timeTable = mapper.readValue(new FileInputStream(path), TimeTable.class);
+            Validator.validate(timeTable);
+            return timeTable;
         } catch (IOException e) {
             e.printStackTrace();
         }

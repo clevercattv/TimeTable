@@ -20,7 +20,7 @@ public class Room {
         room.setType(type);
         return room;
     }
-
+    
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

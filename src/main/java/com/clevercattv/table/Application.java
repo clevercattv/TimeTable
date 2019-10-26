@@ -14,27 +14,28 @@ import java.time.LocalDate;
 public class Application {
 
     public static void main(String[] args) {
-        TimeTableService service = new TimeTableService(new TimeTable(LocalDate.now()));
-        service.addLesson(DayOfWeek.MONDAY,
-                Lesson.build(
-                        Teacher.build("Teacher First", Teacher.Type.DOCENT),
-                        Lesson.Number.FIRST,
-                        Group.build("521"),
-                        "Math",
-                        Room.build("2", Room.Type.AUDITORY)
-                )
-        );
-        service.addLesson(DayOfWeek.MONDAY,
-                Lesson.build(
-                        Teacher.build("Teacher Second", Teacher.Type.DOCENT),
-                        Lesson.Number.FIRST,
-                        Group.build(Group.build("522"),Group.build("523")),
-                        "Math",
-                        Room.build("3", Room.Type.AUDITORY)
-                )
-        );
-        TimeTableJsonSerializer.serialize(service.getTimeTable(),"Data.json");
-        TimeTableJsonSerializer.deserialize("Data.json");
+//        TimeTableService service = new TimeTableService(new TimeTable(LocalDate.now()));
+//        service.addLesson(DayOfWeek.MONDAY,
+//                Lesson.build(
+//                        Teacher.build("Teacher First", Teacher.Type.DOCENT),
+//                        Lesson.Number.FIRST,
+//                        Group.build("521"),
+//                        "Math",
+//                        Room.build("2", Room.Type.AUDITORY)
+//                )
+//        );
+//        service.addLesson(DayOfWeek.MONDAY,
+//                Lesson.build(
+//                        Teacher.build("Teacher Second", Teacher.Type.DOCENT),
+//                        Lesson.Number.FIRST,
+//                        Group.build(Group.build("522"),Group.build("523")),
+//                        "Math",
+//                        Room.build("3", Room.Type.AUDITORY)
+//                )
+//        );
+//        TimeTableJsonSerializer.serialize(service.getTimeTable(),"Data.json");
+        Teacher.build("sdfsdfsdf123123",Teacher.Type.POST_GRADUATE);
+//        TimeTableJsonSerializer.deserialize("Data.json");
         //skype Любов Мунтян  -- english
 
     }

@@ -17,7 +17,7 @@ import java.util.stream.Stream;
 
 public class TimeTableService {
 
-    public static final Pattern VALIDATION = Pattern.compile("^[a-z A-Z]+$");
+    public static final String VALIDATION = "^[a-z A-Z]+$";
 
     private TimeTable timeTable;
     private FilterBuilder filter = new FilterBuilder();

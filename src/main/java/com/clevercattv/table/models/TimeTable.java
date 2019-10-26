@@ -1,5 +1,6 @@
 package com.clevercattv.table.models;
 
+import javax.validation.Valid;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.*;
@@ -8,6 +9,7 @@ public class TimeTable {
 
     private final LocalDate firstSemesterDay;
     private final LocalDate lastSemesterDay;
+    @Valid
     private Map<DayOfWeek, List<Lesson>> dayOfWeek = new HashMap<>();
 
     private static int COUNT_OF_WEEKS = 15; // semester weeks
@@ -48,5 +50,7 @@ public class TimeTable {
     public LocalDate getLastSemesterDay() {
         return lastSemesterDay;
     }
+
+
 
 }
