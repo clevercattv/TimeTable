@@ -1,38 +1,24 @@
 package com.clevercattv.table.models;
 
+import com.clevercattv.table.exceptions.NamingException;
 import com.clevercattv.table.services.TimeTableService;
 
-import javax.validation.Valid;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
 import java.time.LocalTime;
 import java.util.Objects;
 
 public class Lesson {
 
-    public final static int MIN_NAME_LENGTH = 10;
-    public final static int MAX_NAME_LENGTH = 48;
+    public final static int MIN_NAME_LENGTH = 4;
+    public final static int MAX_NAME_LENGTH = 32;
 
-    @NotEmpty
-    @Pattern(regexp = TimeTableService.VALIDATION)
-    @Size(min = MIN_NAME_LENGTH, max = MAX_NAME_LENGTH)
     private String name;
 
-    @Valid
-    @NotNull
     private Teacher teacher;
 
-    @NotNull
     private Number number;
 
-    @Valid
-    @NotNull
     private Group group;
 
-    @Valid
-    @NotNull
     private Room room;//
 
     private Lesson(){ }
@@ -105,6 +91,9 @@ public class Lesson {
     }
 
     public void setName(String name) {
+        if (name.length() < MIN_NAME_LENGTH) throw new NamingException("Lesson name length less than minimum.");
+        if (name.length() > MAX_NAME_LENGTH) throw new NamingException("Lesson name length more than maximum.");
+        if (!name.matches(TimeTableService.VALIDATION)) throw new NamingException("Lesson name have have forbidden symbols.");
         this.name = name;
     }
 

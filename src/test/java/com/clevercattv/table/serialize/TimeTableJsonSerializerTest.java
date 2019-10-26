@@ -1,9 +1,11 @@
 package com.clevercattv.table.serialize;
 
 import com.clevercattv.table.MainTest;
-import com.clevercattv.table.models.*;
+import com.clevercattv.table.exceptions.NamingException;
+import com.clevercattv.table.models.Lesson;
+import com.clevercattv.table.models.TimeTable;
 import com.clevercattv.table.services.TimeTableService;
-import com.clevercattv.table.validation.Validator;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.tngtech.java.junit.dataprovider.DataProvider;
 import com.tngtech.java.junit.dataprovider.DataProviderRunner;
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
@@ -17,6 +19,8 @@ import java.util.List;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(DataProviderRunner.class)
 public class TimeTableJsonSerializerTest extends MainTest {
@@ -55,13 +59,7 @@ public class TimeTableJsonSerializerTest extends MainTest {
 
     @Test
     public void readTimeTableError() {
-        Map<DayOfWeek, List<Lesson>> week = TimeTableJsonSerializer.deserialize("Test5.json").getDayOfWeek();
-        Lesson lesson = week.get(DayOfWeek.MONDAY).get(1);
-        Validator.validate(lesson);
-//        Validator.validate(lesson.getTeacher());
-//        assertEquals(TimeTableJsonSerializer.deserialize("Test5.json").getDayOfWeek(),TIME_TABLE_SERVICE.getTimeTable());
+        assertNull(TimeTableJsonSerializer.deserialize("Test5.json"));
     }
-
-
 
 }

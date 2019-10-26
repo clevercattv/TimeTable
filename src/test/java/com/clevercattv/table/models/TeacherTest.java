@@ -10,8 +10,6 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import javax.validation.Validation;
-import javax.validation.Validator;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 
@@ -19,13 +17,11 @@ import java.time.LocalDate;
 public class TeacherTest extends MainTest {
 
     private static final TimeTableService TIME_TABLE_SERVICE = new TimeTableService(new TimeTable(LocalDate.now()));
-    private static Validator validator;
 
     @BeforeClass
     public static void beforeClass() {
         TIME_TABLE_SERVICE.addLesson(DayOfWeek.MONDAY, FIRST_LESSON);
         TIME_TABLE_SERVICE.addLesson(DayOfWeek.MONDAY, SECOND_LESSON);
-        validator = Validation.buildDefaultValidatorFactory().getValidator();
     }
 
     @Test(expected = NamingException.class)

@@ -1,14 +1,16 @@
 package com.clevercattv.table.serialize;
 
 import com.clevercattv.table.models.TimeTable;
-import com.clevercattv.table.validation.Validator;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 public class TimeTableJsonSerializer {
@@ -28,9 +30,13 @@ public class TimeTableJsonSerializer {
         ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new JavaTimeModule());
         try {
-            TimeTable timeTable = mapper.readValue(new FileInputStream(path), TimeTable.class);
-            Validator.validate(timeTable);
-            return timeTable;
+            return mapper.readValue(new FileInputStream(path), TimeTable.class);
+        }  catch (JsonParseException e) {
+            e.printStackTrace();
+        } catch (JsonMappingException e) {
+            e.printStackTrace();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
