@@ -17,6 +17,7 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.*;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
@@ -54,12 +55,24 @@ public class TimeTableJsonSerializerTest extends MainTest {
     @Test
     @UseDataProvider("dayOfWeekDataProvider")
     public void readTimeTable(Map<DayOfWeek, List<Lesson>> days, String path) {
-        assertEquals(TimeTableJsonSerializer.deserialize(path).getDayOfWeek(),days);
+        try {
+            assertEquals(TimeTableJsonSerializer.deserialize(path).get().getDayOfWeek(),days);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
     }
 
     @Test
     public void readTimeTableError() {
-        assertNull(TimeTableJsonSerializer.deserialize("Test5.json"));
+        try {
+            assertNull(TimeTableJsonSerializer.deserialize("Test5.json").get());
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
     }
 
 }

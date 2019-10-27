@@ -1,46 +1,39 @@
 package com.clevercattv.table.serialize;
 
 import com.clevercattv.table.models.TimeTable;
-import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.concurrent.*;
 
 public class TimeTableJsonSerializer {
 
-    public static void serialize(TimeTable timeTable, String path) {
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.registerModule(new JavaTimeModule());
-        ObjectWriter writer = mapper.writer(new DefaultPrettyPrinter());
-        try {
-            writer.writeValue(new File(path), timeTable);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    private static ExecutorService EXECUTOR = Executors.newSingleThreadExecutor();
+    private static ObjectMapper MAPPER = new ObjectMapper();
+    private static ObjectWriter WRITER;
+
+    static {
+        MAPPER.registerModule(new JavaTimeModule());
+        WRITER = MAPPER.writer(new DefaultPrettyPrinter());
     }
 
-    public static TimeTable deserialize(String path) {
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.registerModule(new JavaTimeModule());
-        try {
-            return mapper.readValue(new FileInputStream(path), TimeTable.class);
-        }  catch (JsonParseException e) {
-            e.printStackTrace();
-        } catch (JsonMappingException e) {
-            e.printStackTrace();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
+    public static void serialize(TimeTable timeTable, String path) {
+        EXECUTOR.submit(() -> {
+            try {
+                WRITER.writeValue(new File(path), timeTable);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+    public static Future<TimeTable> deserialize(String path) {
+        return EXECUTOR.submit(() -> MAPPER.readValue(new FileInputStream(path), TimeTable.class));
     }
 
 

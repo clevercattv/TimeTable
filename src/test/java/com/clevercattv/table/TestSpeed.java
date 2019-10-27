@@ -10,6 +10,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.ExecutionException;
 
 public class TestSpeed {
 
@@ -21,19 +22,19 @@ public class TestSpeed {
     @Test
     public void createRandom() {
         long startTime = System.currentTimeMillis();
-        for (int dayInt = 0; dayInt < 5; dayInt++) { // DayOfWeek.values().length - 2
-            for (int lessonNumberInt = 0; lessonNumberInt < Lesson.Number.values().length; lessonNumberInt++) {
-                for (int groupInt = 0; groupInt < 8; groupInt++) {
-                    TIME_TABLE_SERVICE.addLesson(DayOfWeek.values()[dayInt],
+        for (int day = 0; day < 5; day++) { // DayOfWeek.values().length - 2
+            for (int number = 0; number < Lesson.Number.values().length; number++) {
+                for (int group = 0; group < 8; group++) {
+                    TIME_TABLE_SERVICE.addLesson(DayOfWeek.values()[day],
                             Lesson.build(
                                     Teacher.build("test teacher name " +
-                                            CHAR_LIST[dayInt] +
-                                            CHAR_LIST[lessonNumberInt] +
-                                            CHAR_LIST[groupInt],Teacher.Type.DOCENT),
-                                    Lesson.Number.values()[lessonNumberInt],
-                                    Group.build("51" + groupInt),
+                                            CHAR_LIST[day] +
+                                            CHAR_LIST[number] +
+                                            CHAR_LIST[group],Teacher.Type.DOCENT),
+                                    Lesson.Number.values()[number],
+                                    Group.build("51" + group),
                                     "Math",
-                                    Room.build("24" + groupInt, Room.Type.AUDITORY)
+                                    Room.build("24" + group, Room.Type.AUDITORY)
                             )
                     );
                 }
@@ -44,7 +45,13 @@ public class TestSpeed {
         TimeTableJsonSerializer.serialize(TIME_TABLE_SERVICE.getTimeTable(),"randomTest.json");
         System.out.println("Writing json time : " + (System.currentTimeMillis() - startTime));
         startTime = System.currentTimeMillis();
-        TimeTableJsonSerializer.deserialize("randomTest.json");
+        try {
+            TimeTableJsonSerializer.deserialize("randomTest.json").get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
         System.out.println("Reading json time : " + (System.currentTimeMillis() - startTime));
     }
 
