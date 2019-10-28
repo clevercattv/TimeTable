@@ -12,13 +12,9 @@ public class Lesson {
     public final static int MAX_NAME_LENGTH = 32;
 
     private String name;
-
     private Teacher teacher;
-
     private Number number;
-
     private Group group;
-
     private Room room;//
 
     private Lesson(){ }

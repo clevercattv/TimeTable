@@ -45,13 +45,7 @@ public class TestSpeed {
         TimeTableJsonSerializer.serialize(TIME_TABLE_SERVICE.getTimeTable(),"randomTest.json");
         System.out.println("Writing json time : " + (System.currentTimeMillis() - startTime));
         startTime = System.currentTimeMillis();
-        try {
-            TimeTableJsonSerializer.deserialize("randomTest.json").get();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        }
+        TimeTableJsonSerializer.deserialize("randomTest.json");
         System.out.println("Reading json time : " + (System.currentTimeMillis() - startTime));
     }
 
