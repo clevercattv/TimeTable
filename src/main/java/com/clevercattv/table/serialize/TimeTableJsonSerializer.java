@@ -1,6 +1,6 @@
 package com.clevercattv.table.serialize;
 
-import com.clevercattv.table.models.TimeTable;
+import com.clevercattv.table.model.TimeTable;
 import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
@@ -9,7 +9,6 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.concurrent.*;
 
 public class TimeTableJsonSerializer {
 

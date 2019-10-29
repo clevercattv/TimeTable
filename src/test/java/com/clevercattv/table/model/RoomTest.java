@@ -1,14 +1,9 @@
-package com.clevercattv.table.models;
+package com.clevercattv.table.model;
 
 import com.clevercattv.table.MainTest;
-import com.clevercattv.table.exceptions.BusyException;
-import com.clevercattv.table.exceptions.NamingException;
-import com.clevercattv.table.exceptions.RoomBusyException;
-import com.clevercattv.table.models.Group;
-import com.clevercattv.table.models.Lesson;
-import com.clevercattv.table.models.Room;
-import com.clevercattv.table.models.Teacher;
-import com.clevercattv.table.services.TimeTableService;
+import com.clevercattv.table.exception.BusyException;
+import com.clevercattv.table.exception.NamingException;
+import com.clevercattv.table.service.TimeTableService;
 import com.tngtech.java.junit.dataprovider.DataProvider;
 import com.tngtech.java.junit.dataprovider.DataProviderRunner;
 import org.junit.BeforeClass;

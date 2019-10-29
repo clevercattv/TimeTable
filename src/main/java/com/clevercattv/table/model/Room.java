@@ -1,8 +1,7 @@
-package com.clevercattv.table.models;
+package com.clevercattv.table.model;
 
-import com.clevercattv.table.exceptions.NamingException;
+import com.clevercattv.table.exception.NamingException;
 
-import java.util.Arrays;
 import java.util.Objects;
 import java.util.regex.Pattern;
 

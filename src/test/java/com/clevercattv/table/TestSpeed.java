@@ -1,16 +1,12 @@
 package com.clevercattv.table;
 
-import com.clevercattv.table.models.*;
+import com.clevercattv.table.model.*;
 import com.clevercattv.table.serialize.TimeTableJsonSerializer;
-import com.clevercattv.table.services.TimeTableService;
+import com.clevercattv.table.service.TimeTableService;
 import org.junit.Test;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-import java.util.concurrent.ExecutionException;
 
 public class TestSpeed {
 

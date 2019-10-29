@@ -1,4 +1,4 @@
-package com.clevercattv.table.models;
+package com.clevercattv.table.model;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;

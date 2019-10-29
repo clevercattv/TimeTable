@@ -1,4 +1,4 @@
-package com.clevercattv.table.models;
+package com.clevercattv.table.model;
 
 public interface EntityId<T> {
 

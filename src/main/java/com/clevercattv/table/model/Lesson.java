@@ -1,7 +1,7 @@
-package com.clevercattv.table.models;
+package com.clevercattv.table.model;
 
-import com.clevercattv.table.exceptions.NamingException;
-import com.clevercattv.table.services.TimeTableService;
+import com.clevercattv.table.exception.NamingException;
+import com.clevercattv.table.service.TimeTableService;
 
 import java.time.LocalTime;
 import java.util.Objects;
@@ -89,7 +89,7 @@ public class Lesson {
     public void setName(String name) {
         if (name.length() < MIN_NAME_LENGTH) throw new NamingException("Lesson name length less than minimum.");
         if (name.length() > MAX_NAME_LENGTH) throw new NamingException("Lesson name length more than maximum.");
-        if (!name.matches(TimeTableService.VALIDATION)) throw new NamingException("Lesson name have have forbidden symbols.");
+        if (!name.matches("^[a-z A-Z]+$")) throw new NamingException("Lesson name have have forbidden symbols.");
         this.name = name;
     }
 

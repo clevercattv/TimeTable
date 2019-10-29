@@ -1,4 +1,4 @@
-package com.clevercattv.table.exceptions;
+package com.clevercattv.table.exception;
 
 public class BusyException extends RuntimeException {
 

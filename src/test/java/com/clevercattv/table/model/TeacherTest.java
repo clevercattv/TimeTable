@@ -1,17 +1,11 @@
-package com.clevercattv.table.models;
+package com.clevercattv.table.model;
 
 import com.clevercattv.table.MainTest;
-import com.clevercattv.table.exceptions.BusyException;
-import com.clevercattv.table.exceptions.GroupBusyException;
-import com.clevercattv.table.exceptions.NamingException;
-import com.clevercattv.table.models.Group;
-import com.clevercattv.table.models.Lesson;
-import com.clevercattv.table.models.Room;
-import com.clevercattv.table.models.Teacher;
-import com.clevercattv.table.services.TimeTableService;
+import com.clevercattv.table.exception.BusyException;
+import com.clevercattv.table.exception.NamingException;
+import com.clevercattv.table.service.TimeTableService;
 import com.tngtech.java.junit.dataprovider.DataProvider;
 import com.tngtech.java.junit.dataprovider.DataProviderRunner;
-import com.tngtech.java.junit.dataprovider.UseDataProvider;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,7 +14,7 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 
 @RunWith(DataProviderRunner.class)
-public class GroupTest extends MainTest {
+public class TeacherTest extends MainTest {
 
     private static final TimeTableService TIME_TABLE_SERVICE = new TimeTableService(new TimeTable(LocalDate.now()));
 
@@ -32,25 +26,30 @@ public class GroupTest extends MainTest {
 
     @Test(expected = NamingException.class)
     @DataProvider({
-            "525name%",
-            "52",
-            "525name looooooooo"
+            "Docent name1",
+            "Doc",
+            "Docent namesssssssssssssssssssssssssssssssssssssssssssssssssss"
     })
     public void testValidation(String str) {
-        Group.build(str);
+        Teacher.build(str,Teacher.Type.DOCENT);
     }
 
+//    public void testJavaxValidation() {
+//        validator.validate(Teacher.build("Docsss norm",Teacher.Type.DOCENT),Teacher.class);
+//    }
+
     @Test(expected = BusyException.class)
-    public void testGroupBusyException() {
+    public void testTeacherBusyException() {
         TIME_TABLE_SERVICE.addLesson(DayOfWeek.MONDAY,
                 Lesson.build(
-                        Teacher.build("Docent name second",Teacher.Type.DOCENT),
+                        Teacher.build("Docent name",Teacher.Type.DOCENT),
                         Lesson.Number.FIRST,
-                        FIRST_LESSON.getGroup(),
+                        Group.build("506"),
                         "Math",
-                        Room.build("103", Room.Type.AUDITORY)
+                        Room.build("11", Room.Type.AUDITORY)
                 )
         );
     }
+
 
 }

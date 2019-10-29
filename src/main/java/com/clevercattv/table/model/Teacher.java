@@ -1,7 +1,7 @@
-package com.clevercattv.table.models;
+package com.clevercattv.table.model;
 
-import com.clevercattv.table.exceptions.NamingException;
-import com.clevercattv.table.services.TimeTableService;
+import com.clevercattv.table.exception.NamingException;
+import com.clevercattv.table.service.TimeTableService;
 
 import java.util.Objects;
 
@@ -12,8 +12,8 @@ public class Teacher {
 //    @Pattern(regexp = TimeTableService.VALIDATION)
     private String fullName;
     private Type type;
-    private final static int MIN_NAME_LENGTH = 10;
-    private final static int MAX_NAME_LENGTH = 48;
+    public final static int MIN_NAME_LENGTH = 10;
+    public final static int MAX_NAME_LENGTH = 48;
 
     private Teacher() { }
 
@@ -44,7 +44,7 @@ public class Teacher {
     public void setFullName(String fullName) {
         if (fullName.length() < MIN_NAME_LENGTH) throw new NamingException("Teacher name length less than minimum.");
         if (fullName.length() > MAX_NAME_LENGTH) throw new NamingException("Teacher name length more than maximum.");
-        if (!fullName.matches(TimeTableService.VALIDATION)) throw new NamingException("Teacher name have have forbidden symbols.");
+        if (!fullName.matches("^[a-z A-Z]+$")) throw new NamingException("Teacher name have have forbidden symbols.");
         this.fullName = fullName;
     }
 

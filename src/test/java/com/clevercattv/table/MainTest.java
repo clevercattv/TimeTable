@@ -1,9 +1,9 @@
 package com.clevercattv.table;
 
-import com.clevercattv.table.models.Group;
-import com.clevercattv.table.models.Lesson;
-import com.clevercattv.table.models.Room;
-import com.clevercattv.table.models.Teacher;
+import com.clevercattv.table.model.Group;
+import com.clevercattv.table.model.Lesson;
+import com.clevercattv.table.model.Room;
+import com.clevercattv.table.model.Teacher;
 
 public class MainTest {
 

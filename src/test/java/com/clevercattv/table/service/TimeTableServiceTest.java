@@ -1,8 +1,8 @@
-package com.clevercattv.table.services;
+package com.clevercattv.table.service;
 
 import com.clevercattv.table.MainTest;
-import com.clevercattv.table.exceptions.BusyException;
-import com.clevercattv.table.models.*;
+import com.clevercattv.table.exception.BusyException;
+import com.clevercattv.table.model.*;
 import com.tngtech.java.junit.dataprovider.DataProvider;
 import com.tngtech.java.junit.dataprovider.DataProviderRunner;
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
@@ -15,8 +15,6 @@ import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;

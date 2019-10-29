@@ -1,6 +1,6 @@
-package com.clevercattv.table.services;
+package com.clevercattv.table.service;
 
-import com.clevercattv.table.models.TimeTable;
+import com.clevercattv.table.model.TimeTable;
 import com.clevercattv.table.serialize.TimeTableJsonSerializer;
 
 import java.util.concurrent.ExecutorService;

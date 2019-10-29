@@ -1,11 +1,10 @@
 package com.clevercattv.table.serialize;
 
 import com.clevercattv.table.MainTest;
-import com.clevercattv.table.exceptions.NamingException;
-import com.clevercattv.table.models.Lesson;
-import com.clevercattv.table.models.TimeTable;
-import com.clevercattv.table.services.TimeTableService;
-import com.fasterxml.jackson.databind.JsonMappingException;
+import com.clevercattv.table.model.Lesson;
+import com.clevercattv.table.model.TimeTable;
+import com.clevercattv.table.service.IOExecutor;
+import com.clevercattv.table.service.TimeTableService;
 import com.tngtech.java.junit.dataprovider.DataProvider;
 import com.tngtech.java.junit.dataprovider.DataProviderRunner;
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
@@ -56,7 +55,7 @@ public class TimeTableJsonSerializerTest extends MainTest {
     @UseDataProvider("dayOfWeekDataProvider")
     public void readTimeTable(Map<DayOfWeek, List<Lesson>> days, String path) {
         try {
-            assertEquals(TimeTableJsonSerializer.deserialize(path).get().getDayOfWeek(),days);
+            assertEquals(IOExecutor.load(path).get().getDayOfWeek(),days);
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
@@ -67,7 +66,7 @@ public class TimeTableJsonSerializerTest extends MainTest {
     @Test
     public void readTimeTableError() {
         try {
-            assertNull(TimeTableJsonSerializer.deserialize("Test5.json").get());
+            assertNull(IOExecutor.load("Test5.json").get());
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {

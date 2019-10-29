@@ -1,9 +1,9 @@
-package com.clevercattv.table.models;
+package com.clevercattv.table.model;
 
 import com.clevercattv.table.MainTest;
-import com.clevercattv.table.exceptions.BusyException;
-import com.clevercattv.table.exceptions.NamingException;
-import com.clevercattv.table.services.TimeTableService;
+import com.clevercattv.table.exception.BusyException;
+import com.clevercattv.table.exception.NamingException;
+import com.clevercattv.table.service.TimeTableService;
 import com.tngtech.java.junit.dataprovider.DataProvider;
 import com.tngtech.java.junit.dataprovider.DataProviderRunner;
 import org.junit.BeforeClass;
@@ -14,7 +14,7 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 
 @RunWith(DataProviderRunner.class)
-public class TeacherTest extends MainTest {
+public class GroupTest extends MainTest {
 
     private static final TimeTableService TIME_TABLE_SERVICE = new TimeTableService(new TimeTable(LocalDate.now()));
 
@@ -26,30 +26,25 @@ public class TeacherTest extends MainTest {
 
     @Test(expected = NamingException.class)
     @DataProvider({
-            "Docent name1",
-            "Doc",
-            "Docent namesssssssssssssssssssssssssssssssssssssssssssssssssss"
+            "525name%",
+            "52",
+            "525name looooooooo"
     })
     public void testValidation(String str) {
-        Teacher.build(str,Teacher.Type.DOCENT);
+        Group.build(str);
     }
 
-//    public void testJavaxValidation() {
-//        validator.validate(Teacher.build("Docsss norm",Teacher.Type.DOCENT),Teacher.class);
-//    }
-
     @Test(expected = BusyException.class)
-    public void testTeacherBusyException() {
+    public void testGroupBusyException() {
         TIME_TABLE_SERVICE.addLesson(DayOfWeek.MONDAY,
                 Lesson.build(
-                        Teacher.build("Docent name",Teacher.Type.DOCENT),
+                        Teacher.build("Docent name second",Teacher.Type.DOCENT),
                         Lesson.Number.FIRST,
-                        Group.build("506"),
+                        FIRST_LESSON.getGroup(),
                         "Math",
-                        Room.build("11", Room.Type.AUDITORY)
+                        Room.build("103", Room.Type.AUDITORY)
                 )
         );
     }
-
 
 }

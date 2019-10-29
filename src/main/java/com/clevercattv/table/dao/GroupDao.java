@@ -1,7 +1,7 @@
 package com.clevercattv.table.dao;
 
-import com.clevercattv.table.jdbc.DataBase;
-import com.clevercattv.table.models.Group;
+import com.clevercattv.table.db.ConnectionPool;
+import com.clevercattv.table.model.Group;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -16,7 +16,7 @@ public class GroupDao extends DaoImpl<Group> {
 
     @Override
     public Optional<Group> get(int id) {
-        try (Connection connection = DataBase.getConnection();
+        try (Connection connection = ConnectionPool.getConnection();
              PreparedStatement stmt = connection.prepareStatement(
                      "SELECT * FROM " + tableName + " WHERE id = ?")) {
             stmt.setLong(1, id);
@@ -36,7 +36,7 @@ public class GroupDao extends DaoImpl<Group> {
 
     @Override
     public List<Group> getAll() {
-        try (Connection connection = DataBase.getConnection();
+        try (Connection connection = ConnectionPool.getConnection();
              Statement stmt = connection.createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM " + tableName)) {
             List<Group> list = new ArrayList<>();
@@ -58,7 +58,7 @@ public class GroupDao extends DaoImpl<Group> {
 
     @Override
     public void save(Group group) {
-        try (Connection connection = DataBase.getConnection();
+        try (Connection connection = ConnectionPool.getConnection();
              PreparedStatement stmt = connection.prepareStatement(
                      "INSERT INTO " + tableName + "(name,combined) VALUES (?,?)")) {
             stmt.setString(1, group.getName());
@@ -71,7 +71,7 @@ public class GroupDao extends DaoImpl<Group> {
 
     @Override
     public void saveAll(Group... groups) {
-        try (Connection connection = DataBase.getConnection();
+        try (Connection connection = ConnectionPool.getConnection();
              PreparedStatement stmt = connection.prepareStatement(
                      "INSERT INTO " + tableName + "(name,combined) VALUES (?,?)")) {
             for (Group group : groups) {
@@ -87,7 +87,7 @@ public class GroupDao extends DaoImpl<Group> {
 
     @Override
     public void update(Group group) {
-        try (Connection connection = DataBase.getConnection();
+        try (Connection connection = ConnectionPool.getConnection();
              PreparedStatement stmt = connection.prepareStatement(
                      "UPDATE " + tableName + " SET name = ?, combined = ? WHERE id = ?");) {
             stmt.setString(1, group.getName());

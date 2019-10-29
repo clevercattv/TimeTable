@@ -1,14 +1,12 @@
 package com.clevercattv.table;
 
-import com.clevercattv.table.dao.GroupDao;
-import com.clevercattv.table.jdbc.DataBase;
-import com.clevercattv.table.models.Group;
+import com.clevercattv.table.db.ConnectionPool;
 
 public class Application {
 
     public static void main(String[] args) {
-        DataBase dataBase = new DataBase();
-        dataBase.dropCreateDB();
+        ConnectionPool connectionPool = new ConnectionPool();
+        connectionPool.dropCreateDB();
 //        GroupDao groupDao = new GroupDao();
 //        groupDao.save(Group.build("Test"));
 //        groupDao.saveAll(Group.build("Test1"),Group.build("Test2"),Group.build("Test3"));

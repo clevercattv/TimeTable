@@ -1,6 +1,6 @@
-package com.clevercattv.table.models;
+package com.clevercattv.table.model;
 
-import com.clevercattv.table.exceptions.NamingException;
+import com.clevercattv.table.exception.NamingException;
 import com.sun.deploy.util.StringUtils;
 
 import java.util.Arrays;

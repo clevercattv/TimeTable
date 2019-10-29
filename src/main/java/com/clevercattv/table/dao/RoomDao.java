@@ -1,8 +1,7 @@
 package com.clevercattv.table.dao;
 
-import com.clevercattv.table.jdbc.DataBase;
-import com.clevercattv.table.models.Group;
-import com.clevercattv.table.models.Room;
+import com.clevercattv.table.db.ConnectionPool;
+import com.clevercattv.table.model.Room;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -19,7 +18,7 @@ public class RoomDao extends DaoImpl<Room> {
 
     @Override
     public Optional<Room> get(int id) {
-        try (Connection connection = DataBase.getConnection();
+        try (Connection connection = ConnectionPool.getConnection();
              PreparedStatement stmt = connection.prepareStatement(
                      "SELECT * FROM " + tableName + " WHERE id = ?")) {
             stmt.setLong(1, id);
