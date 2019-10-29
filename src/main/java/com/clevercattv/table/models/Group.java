@@ -8,8 +8,9 @@ import java.util.Objects;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-public class Group {
+public class Group implements EntityId<Group> {
 
+    private int id;
     private String name;
     private final boolean combined;
     public static final String DIVIDER = "-";
@@ -22,9 +23,17 @@ public class Group {
     private Group(boolean combined) { this.combined = combined; }
 
     private static Group build(String name, boolean combined) {
-        Group group = new Group(combined);
-        group.setName(name);
-        return group;
+        return new Group(combined).setName(name);
+    }
+
+    public static Group build(int id, String name, boolean combined) {
+        return new Group(combined)
+                .setId(id)
+                .setName(name);
+    }
+
+    public static Group build(int id, String name) {
+        return build(id, name,false);
     }
 
     public static Group build(String name) {
@@ -47,11 +56,20 @@ public class Group {
     @Override
     public int hashCode() { return Objects.hash(name); }
 
+    @Override
+    public String toString() {
+        return "Group{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", combined=" + combined +
+                '}';
+    }
+
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public Group setName(String name) {
         if (name.length() < MIN_NAME_LENGTH) throw new NamingException("Group name length less than minimum.");
         if (name.length() > MAX_NAME_LENGTH) throw new NamingException("Group name length more than maximum.");
         if (!NAME_PATTERN.matcher(name).matches()) {
@@ -59,10 +77,21 @@ public class Group {
                     "Please use 'a-z A-Z 0-9' and '-' as group divider. ");
         }
         this.name = name;
+        return this;
     }
 
     public boolean isCombined() {
         return combined;
     }
 
+    @Override
+    public int getId() {
+        return id;
+    }
+
+    @Override
+    public Group setId(int id) {
+        this.id = id;
+        return this;
+    }
 }

@@ -3,16 +3,18 @@ package com.clevercattv.table.dao;
 import java.util.List;
 import java.util.Optional;
 
-public abstract class Dao<T> {
+public interface Dao<T> {
 
-    abstract Optional<T> get(int id);
+    Optional<T> get(int id);
 
-    abstract List<T> getAll();
+    List<T> getAll();
 
-    abstract void save(T t);
+    void save(T t);
 
-    abstract void update(T t);
+    void saveAll(T... t);
 
-    abstract void delete(T t);
+    void update(T t);
+
+    void delete(T t);
 
 }
