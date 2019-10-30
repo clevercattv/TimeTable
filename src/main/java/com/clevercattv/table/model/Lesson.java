@@ -1,7 +1,8 @@
 package com.clevercattv.table.model;
 
 import com.clevercattv.table.exception.NamingException;
-import com.clevercattv.table.service.TimeTableService;
+import com.clevercattv.table.validation.Validator;
+import com.clevercattv.table.validation.PerformedMessage;
 
 import java.time.LocalTime;
 import java.util.Objects;
@@ -10,6 +11,7 @@ public class Lesson {
 
     public final static int MIN_NAME_LENGTH = 4;
     public final static int MAX_NAME_LENGTH = 32;
+    public final static String NAME_PATTERN = "^[a-z A-Z]+$";
 
     private String name;
     private Teacher teacher;
@@ -17,17 +19,17 @@ public class Lesson {
     private Group group;
     private Room room;//
 
-    private Lesson(){ }
+    private Lesson() {
+    }
 
     public static Lesson build(Teacher teacher, Number number,
                                Group group, String lessonName, Room room) {
-        Lesson lesson = new Lesson();
-        lesson.setTeacher(teacher);
-        lesson.setNumber(number);
-        lesson.setGroup(group);
-        lesson.setName(lessonName);
-        lesson.setRoom(room);
-        return lesson;
+        return new Lesson()
+                .setTeacher(teacher)
+                .setNumber(number)
+                .setGroup(group)
+                .setName(lessonName)
+                .setRoom(room);
     }
 
     @Override
@@ -62,43 +64,55 @@ public class Lesson {
         return teacher;
     }
 
-    public void setTeacher(Teacher teacher) {
+    public Lesson setTeacher(Teacher teacher) {
         this.teacher = teacher;
+        return this;
     }
 
     public Number getNumber() {
         return number;
     }
 
-    public void setNumber(Number number) {
+    public Lesson setNumber(Number number) {
         this.number = number;
+        return this;
     }
 
     public Group getGroup() {
         return group;
     }
 
-    public void setGroup(Group group) {
+    public Lesson setGroup(Group group) {
         this.group = group;
+        return this;
     }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
-        if (name.length() < MIN_NAME_LENGTH) throw new NamingException("Lesson name length less than minimum.");
-        if (name.length() > MAX_NAME_LENGTH) throw new NamingException("Lesson name length more than maximum.");
-        if (!name.matches("^[a-z A-Z]+$")) throw new NamingException("Lesson name have have forbidden symbols.");
+    public Lesson setName(String name) {
+        Validator.filterByPerformedTrueAndResultMessagesToString(new PerformedMessage[]{
+                new PerformedMessage("Lesson name length less than minimum.",
+                        name.length() < MIN_NAME_LENGTH),
+                new PerformedMessage("Lesson name length more than maximum.",
+                        name.length() > MAX_NAME_LENGTH),
+                new PerformedMessage("Lesson name have forbidden symbols. Please use 'a-z A-Z'",
+                        !name.matches(NAME_PATTERN)),
+        }).ifPresent(e -> {
+            throw new NamingException(e);
+        });
         this.name = name;
+        return this;
     }
 
     public Room getRoom() {
         return room;
     }
 
-    public void setRoom(Room room) {
+    public Lesson setRoom(Room room) {
         this.room = room;
+        return this;
     }
 
     public enum Number {
@@ -113,17 +127,23 @@ public class Lesson {
         private final LocalTime start;
         private final LocalTime end;
 
-        Number(int number, LocalTime start, LocalTime end){
+        Number(int number, LocalTime start, LocalTime end) {
             this.number = number;
             this.start = start;
             this.end = end;
         }
 
-        public int getNumber(){ return number; }
+        public int getNumber() {
+            return number;
+        }
 
-        public LocalTime getStart() { return start; }
+        public LocalTime getStart() {
+            return start;
+        }
 
-        public LocalTime getEnd() { return end; }
+        public LocalTime getEnd() {
+            return end;
+        }
 
     }
 

@@ -12,30 +12,17 @@ import java.io.IOException;
 
 public class TimeTableJsonSerializer {
 
-    private static ObjectMapper MAPPER = new ObjectMapper();
-    private static ObjectWriter WRITER;
-
-    static {
-        MAPPER.registerModule(new JavaTimeModule());
-        WRITER = MAPPER.writer(new DefaultPrettyPrinter());
+    public static void serialize(TimeTable timeTable, String path) throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.registerModule(new JavaTimeModule());
+        ObjectWriter writer = mapper.writer(new DefaultPrettyPrinter());
+        writer.writeValue(new File(path), timeTable);
     }
 
-    public static void serialize(TimeTable timeTable, String path) {
-        try {
-            WRITER.writeValue(new File(path), timeTable);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public static TimeTable deserialize(String path) {
-        try {
-            return MAPPER.readValue(new FileInputStream(path), TimeTable.class);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-//        return EXECUTOR.submit(() -> MAPPER.readValue(new FileInputStream(path), TimeTable.class));
-        return null;
+    public static TimeTable deserialize(String path) throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.registerModule(new JavaTimeModule());
+        return mapper.readValue(new FileInputStream(path), TimeTable.class);
     }
 
 

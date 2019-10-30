@@ -1,4 +1,4 @@
-package com.clevercattv.table.db;
+package com.clevercattv.table.database;
 
 import com.clevercattv.table.model.Group;
 import com.clevercattv.table.model.Room;

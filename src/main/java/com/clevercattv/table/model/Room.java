@@ -1,9 +1,10 @@
 package com.clevercattv.table.model;
 
 import com.clevercattv.table.exception.NamingException;
+import com.clevercattv.table.validation.PerformedMessage;
+import com.clevercattv.table.validation.Validator;
 
 import java.util.Objects;
-import java.util.regex.Pattern;
 
 public class Room implements EntityId<Room>{
 
@@ -11,7 +12,7 @@ public class Room implements EntityId<Room>{
     private String name;
     private Type type;
     public static final int MAX_NAME_LENGTH = 16;
-    public static final Pattern NAME_PATTERN = Pattern.compile("^[a-z A-Z0-9]+$");
+    public static final String NAME_PATTERN = "^[a-z A-Z0-9]+$";
 
     private Room() { }
 
@@ -54,11 +55,16 @@ public class Room implements EntityId<Room>{
     }
 
     public Room setName(String name) {
-        if (name.isEmpty()) throw new NamingException("Auditory name length less than minimum.");
-        if (name.length() > MAX_NAME_LENGTH) throw new NamingException("Auditory name length more than maximum.");
-        if (!NAME_PATTERN.matcher(name).matches()) {
-            throw new NamingException("Auditory name have forbidden symbols. Please use 'a-z A-Z 0-9' ");
-        }
+        Validator.filterByPerformedTrueAndResultMessagesToString(new PerformedMessage[]{
+                new PerformedMessage("Room name is empty.",
+                        name.isEmpty()),
+                new PerformedMessage("Room name length more than maximum.",
+                        name.length() > MAX_NAME_LENGTH),
+                new PerformedMessage("Room name have forbidden symbols. Please use 'a-z A-Z 0-9' ",
+                        !name.matches(NAME_PATTERN)),
+        }).ifPresent(e -> {
+            throw new NamingException(e);
+        });
         this.name = name;
         return this;
     }

@@ -1,22 +1,24 @@
 package com.clevercattv.table.model;
 
 import com.clevercattv.table.exception.NamingException;
+import com.clevercattv.table.validation.PerformedMessage;
+import com.clevercattv.table.validation.Validator;
 import com.sun.deploy.util.StringUtils;
 
 import java.util.Arrays;
 import java.util.Objects;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class Group implements EntityId<Group> {
 
+    public static final int MIN_NAME_LENGTH = 3;
+    public static final int MAX_NAME_LENGTH = 16;
+    public static final String NAME_PATTERN = "^[a-z A-Z0-9-]+$";
+    public static final String DIVIDER = "-";
+
     private int id;
     private String name;
     private final boolean combined;
-    public static final String DIVIDER = "-";
-    public static final int MIN_NAME_LENGTH = 3;
-    public static final int MAX_NAME_LENGTH = 16;
-    public static final Pattern NAME_PATTERN = Pattern.compile("^[a-z A-Z0-9-]+$");
 
     private Group(){ this.combined = false; }
 
@@ -70,12 +72,17 @@ public class Group implements EntityId<Group> {
     }
 
     public Group setName(String name) {
-        if (name.length() < MIN_NAME_LENGTH) throw new NamingException("Group name length less than minimum.");
-        if (name.length() > MAX_NAME_LENGTH) throw new NamingException("Group name length more than maximum.");
-        if (!NAME_PATTERN.matcher(name).matches()) {
-            throw new NamingException("Group name have forbidden symbols. " +
-                    "Please use 'a-z A-Z 0-9' and '-' as group divider. ");
-        }
+        Validator.filterByPerformedTrueAndResultMessagesToString(new PerformedMessage[]{
+                new PerformedMessage("Group name length less than minimum.",
+                        name.length() < MIN_NAME_LENGTH),
+                new PerformedMessage("Group name length more than maximum.",
+                        name.length() > MAX_NAME_LENGTH),
+                new PerformedMessage("Group name have forbidden symbols. " +
+                        "Please use 'a-z A-Z 0-9' and '-' as group divider. ",
+                        !name.matches(NAME_PATTERN)),
+        }).ifPresent(e -> {
+            throw new NamingException(e);
+        });
         this.name = name;
         return this;
     }

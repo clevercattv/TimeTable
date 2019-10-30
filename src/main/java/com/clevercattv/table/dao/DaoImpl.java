@@ -1,6 +1,6 @@
 package com.clevercattv.table.dao;
 
-import com.clevercattv.table.db.ConnectionPool;
+import com.clevercattv.table.database.ConnectionPool;
 import com.clevercattv.table.model.EntityId;
 
 import java.sql.Connection;

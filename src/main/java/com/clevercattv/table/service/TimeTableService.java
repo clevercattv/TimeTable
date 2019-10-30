@@ -23,25 +23,26 @@ public class TimeTableService {
     }
 
     public void addLesson(DayOfWeek dayOfWeek, Lesson lesson) {
-        List<Lesson> lessons = timeTable.getDayOfWeek()
-                .computeIfAbsent(dayOfWeek, k -> new ArrayList<>());
         List<String> busyList = new ArrayList<>();
-        for (Lesson item : lessons) {
-            if (item.getNumber().equals(lesson.getNumber())) {
-                if (item.getRoom().equals(lesson.getRoom())){
-                    busyList.add(RoomBusyException.class.getSimpleName());
-                }
-                if (item.getTeacher().equals(lesson.getTeacher())){
-                    busyList.add(TeacherBusyException.class.getSimpleName());
-                }
-                checkGroupsIsBusy(item.getGroup(), lesson.getGroup())
-                        .ifPresent(busyList::add);
-                if (busyList.size() > 0) {
-                    throw new BusyException(busyList.toString());
-                }
-            }
+        timeTable.getDayOfWeek()
+                .computeIfAbsent(dayOfWeek, k -> new ArrayList<>())
+                .stream()
+                .filter(e -> e.getNumber().equals(lesson.getNumber()))
+                .forEach(item -> {
+                    if (item.getRoom().equals(lesson.getRoom())){
+                        busyList.add(RoomBusyException.class.getSimpleName());
+                    }
+                    if (item.getTeacher().equals(lesson.getTeacher())){
+                        busyList.add(TeacherBusyException.class.getSimpleName());
+                    }
+                    checkGroupsIsBusy(item.getGroup(), lesson.getGroup())
+                            .ifPresent(busyList::add);
+                });
+        if (busyList.isEmpty()){
+            timeTable.getDayOfWeek().get(dayOfWeek).add(lesson);
+        } else {
+            throw new BusyException(busyList.toString());
         }
-        lessons.add(lesson);
     }
 
     private Optional<String> checkGroupsIsBusy(Group group, Group newGroup) {
@@ -87,33 +88,22 @@ public class TimeTableService {
     }
 
     public Map<DayOfWeek, List<Lesson>> getDaysByGroup(Group group, DayOfWeek... days) {
-        Map<DayOfWeek, List<Lesson>> groupWeekLessons = timeTable.getDayOfWeek().entrySet().stream()
+        return timeTable.getDayOfWeek().entrySet().stream()
                 .filter(e -> Arrays.asList(days).contains(e.getKey()))
+                .peek(e -> e.setValue(e.getValue().stream()
+                        .filter(i -> i.getGroup().equals(group))
+                        .collect(Collectors.toList())
+                ))
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
-
-        for (Map.Entry<DayOfWeek, List<Lesson>> item : groupWeekLessons.entrySet()) {
-            List<Lesson> lessons = item.getValue()
-                    .stream()
-                    .filter(e -> e.getGroup().equals(group))
-                    .collect(Collectors.toList());
-            if (lessons.isEmpty()) {
-                groupWeekLessons.remove(item.getKey());
-            } else {
-                groupWeekLessons.replace(item.getKey(),lessons);
-            }
-        }
-        return groupWeekLessons;
     }
 
     public Map<DayOfWeek, List<Lesson>> getWeekByGroup(Group group) {
-        Map<DayOfWeek, List<Lesson>> groupWeekLessons = new HashMap<>();
-        for (Map.Entry<DayOfWeek, List<Lesson>> item : timeTable.getDayOfWeek().entrySet()) {
-            groupWeekLessons.put(item.getKey(),
-                    item.getValue().stream()
-                            .filter(e -> e.getGroup().equals(group))
-                            .collect(Collectors.toList()));
-        }
-        return groupWeekLessons;
+        return timeTable.getDayOfWeek().entrySet().stream()
+                .peek(e -> e.setValue(e.getValue().stream()
+                        .filter(i -> i.getGroup().equals(group))
+                        .collect(Collectors.toList())
+                ))
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 
     public List<Lesson> getLessonsByDayAndGroup(DayOfWeek day, Group group) {

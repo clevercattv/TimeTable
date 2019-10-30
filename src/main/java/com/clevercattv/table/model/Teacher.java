@@ -1,7 +1,8 @@
 package com.clevercattv.table.model;
 
 import com.clevercattv.table.exception.NamingException;
-import com.clevercattv.table.service.TimeTableService;
+import com.clevercattv.table.validation.PerformedMessage;
+import com.clevercattv.table.validation.Validator;
 
 import java.util.Objects;
 
@@ -18,10 +19,9 @@ public class Teacher {
     private Teacher() { }
 
     public static Teacher build(String fullName, Type type) {
-        Teacher teacher = new Teacher();
-        teacher.setFullName(fullName);
-        teacher.setType(type);
-        return teacher;
+        return new Teacher()
+                .setFullName(fullName)
+                .setType(type);
     }
 
     @Override
@@ -41,23 +41,35 @@ public class Teacher {
         return fullName;
     }
 
-    public void setFullName(String fullName) {
-        if (fullName.length() < MIN_NAME_LENGTH) throw new NamingException("Teacher name length less than minimum.");
-        if (fullName.length() > MAX_NAME_LENGTH) throw new NamingException("Teacher name length more than maximum.");
-        if (!fullName.matches("^[a-z A-Z]+$")) throw new NamingException("Teacher name have have forbidden symbols.");
+    public Teacher setFullName(String fullName) {
+        Validator.filterByPerformedTrueAndResultMessagesToString(new PerformedMessage[]{
+                new PerformedMessage("Teacher name length less than minimum.",
+                        fullName.length() < MIN_NAME_LENGTH),
+                new PerformedMessage("Teacher name length more than maximum.",
+                        fullName.length() > MAX_NAME_LENGTH),
+                new PerformedMessage("Teacher name have have forbidden symbols.",
+                        !fullName.matches("^[a-z A-Z]+$")),
+        }).ifPresent(e -> {
+            throw new NamingException(e);
+        });
         this.fullName = fullName;
+        return this;
     }
 
     public Type getType() {
         return type;
     }
 
-    public void setType(Type type) {
+    public Teacher setType(Type type) {
+        if (type == null) {
+            throw new NullPointerException();
+        }
         this.type = type;
+        return this;
     }
 
     public enum Type{
-        POST_GRADUATE("P-G"), // аспирант
+        POST_GRADUATE("P-G"),
         DOCENT("DOC"),
         PROFESSOR("PROF");
 

@@ -5,6 +5,7 @@ import com.clevercattv.table.serialize.TimeTableJsonSerializer;
 import com.clevercattv.table.service.TimeTableService;
 import org.junit.Test;
 
+import java.io.IOException;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 
@@ -37,12 +38,16 @@ public class TestSpeed {
             }
         }
         System.out.println("Adding time : " + (System.currentTimeMillis() - startTime));
-        startTime = System.currentTimeMillis();
-        TimeTableJsonSerializer.serialize(TIME_TABLE_SERVICE.getTimeTable(),"randomTest.json");
-        System.out.println("Writing json time : " + (System.currentTimeMillis() - startTime));
-        startTime = System.currentTimeMillis();
-        TimeTableJsonSerializer.deserialize("randomTest.json");
-        System.out.println("Reading json time : " + (System.currentTimeMillis() - startTime));
+        try {
+            startTime = System.currentTimeMillis();
+            TimeTableJsonSerializer.serialize(TIME_TABLE_SERVICE.getTimeTable(),"randomTest.json");
+            System.out.println("Writing json time : " + (System.currentTimeMillis() - startTime));
+            startTime = System.currentTimeMillis();
+            TimeTableJsonSerializer.deserialize("randomTest.json");
+            System.out.println("Reading json time : " + (System.currentTimeMillis() - startTime));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }
