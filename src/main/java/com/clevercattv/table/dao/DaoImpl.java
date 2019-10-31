@@ -15,14 +15,12 @@ public abstract class DaoImpl<T extends EntityId> implements Dao<T> {
         this.tableName = tableName;
     }
 
-    public void delete(T t){
+    public void delete(T t) throws SQLException{
         try(Connection connection = ConnectionPool.getConnection();
             PreparedStatement stmt = connection.prepareStatement(
                         "DELETE FROM " + tableName + " WHERE id = ?")) {
             stmt.setInt(1,t.getId());
-            stmt.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
+            stmt.execute();
         }
     }
 

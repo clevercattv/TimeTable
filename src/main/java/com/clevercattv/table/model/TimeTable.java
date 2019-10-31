@@ -2,18 +2,15 @@ package com.clevercattv.table.model;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class TimeTable {
 
     private final LocalDate firstSemesterDay;
     private final LocalDate lastSemesterDay;
-    private Map<DayOfWeek, List<Lesson>> dayOfWeek = new HashMap<>();
+    private Map<DayOfWeek, List<Lesson>> dayOfWeek = new EnumMap<>(DayOfWeek.class);
 
-    private static int COUNT_OF_WEEKS = 15; // semester weeks
+    private static int countOfWeeks = 15; // semester weeks
 
     private TimeTable() {
         this.firstSemesterDay = null;
@@ -22,7 +19,7 @@ public class TimeTable {
 
     public TimeTable(LocalDate firstSemesterDay) {
         this.firstSemesterDay = firstSemesterDay;
-        this.lastSemesterDay = firstSemesterDay.plusDays(firstSemesterDay.getDayOfYear() + (COUNT_OF_WEEKS * 7));
+        this.lastSemesterDay = firstSemesterDay.plusDays(firstSemesterDay.getDayOfYear() + (long)(countOfWeeks * 7));
     }
 
     @Override

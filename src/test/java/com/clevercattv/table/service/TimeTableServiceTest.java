@@ -29,6 +29,7 @@ public class TimeTableServiceTest extends MainTest {
         TIME_TABLE_SERVICE.addLesson(DayOfWeek.MONDAY, FIRST_LESSON);
         TIME_TABLE_SERVICE.addLesson(DayOfWeek.MONDAY, SECOND_LESSON);
         TIME_TABLE_SERVICE.addLesson(DayOfWeek.MONDAY, THIRD_LESSON);
+        TIME_TABLE_SERVICE.addLesson(DayOfWeek.MONDAY, COMBINED);
     }
 
     @DataProvider
@@ -46,8 +47,13 @@ public class TimeTableServiceTest extends MainTest {
                 { FIRST_LESSON.getTeacher(), FIRST_LESSON.getGroup(), Room.build("5", Room.Type.AUDITORY) },
                 { FIRST_LESSON.getTeacher(), FIRST_LESSON.getGroup(), FIRST_LESSON.getRoom() },
                 { Teacher.build("Test teacher",Teacher.Type.DOCENT),
-                        Group.build(Group.build("577"),FIRST_LESSON.getGroup()),
+                        Group.build(new Group[]{
+                                Group.build("577"),
+                                FIRST_LESSON.getGroup(),
+                                SECOND_LESSON.getGroup()
+                        }),
                         Room.build("5", Room.Type.AUDITORY) },
+                { FIRST_LESSON.getTeacher(), COMBINED.getGroup(), FIRST_LESSON.getRoom() },
         };
     }
 

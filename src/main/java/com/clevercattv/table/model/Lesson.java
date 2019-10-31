@@ -9,9 +9,9 @@ import java.util.Objects;
 
 public class Lesson {
 
-    public final static int MIN_NAME_LENGTH = 4;
-    public final static int MAX_NAME_LENGTH = 32;
-    public final static String NAME_PATTERN = "^[a-z A-Z]+$";
+    public static final int MIN_NAME_LENGTH = 4;
+    public static final int MAX_NAME_LENGTH = 32;
+    public static final String NAME_PATTERN = "^[a-z A-Z]+$";
 
     private String name;
     private Teacher teacher;
@@ -65,6 +65,7 @@ public class Lesson {
     }
 
     public Lesson setTeacher(Teacher teacher) {
+        if (teacher == null) throw new NullPointerException("Lesson teacher can't be null.");
         this.teacher = teacher;
         return this;
     }
@@ -74,15 +75,18 @@ public class Lesson {
     }
 
     public Lesson setNumber(Number number) {
+        if (number == null) throw new NullPointerException("Lesson number can't be null.");
         this.number = number;
         return this;
     }
 
     public Group getGroup() {
+
         return group;
     }
 
     public Lesson setGroup(Group group) {
+        if (group == null) throw new NullPointerException("Lesson group can't be null.");
         this.group = group;
         return this;
     }
@@ -111,6 +115,7 @@ public class Lesson {
     }
 
     public Lesson setRoom(Room room) {
+        if (room == null) throw new NullPointerException("Lesson room can't be null.");
         this.room = room;
         return this;
     }
@@ -123,18 +128,18 @@ public class Lesson {
         FOURTH(4, LocalTime.parse("13:00:00"), LocalTime.parse("14:20:00")),
         FIFTH(5, LocalTime.parse("14:40:00"), LocalTime.parse("16:00:00"));
 
-        private final int number;
+        private final int id;
         private final LocalTime start;
         private final LocalTime end;
 
-        Number(int number, LocalTime start, LocalTime end) {
-            this.number = number;
+        Number(int id, LocalTime start, LocalTime end) {
+            this.id = id;
             this.start = start;
             this.end = end;
         }
 
-        public int getNumber() {
-            return number;
+        public int getId() {
+            return id;
         }
 
         public LocalTime getStart() {

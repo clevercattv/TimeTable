@@ -9,12 +9,11 @@ import java.util.Objects;
 
 public class Teacher {
 
-    /** Teacher 'First name Last name Middle name' */
-//    @Pattern(regexp = TimeTableService.VALIDATION)
+    public static final int MIN_NAME_LENGTH = 10;
+    public static final int MAX_NAME_LENGTH = 48;
+
     private String fullName;
     private Type type;
-    public final static int MIN_NAME_LENGTH = 10;
-    public final static int MAX_NAME_LENGTH = 48;
 
     private Teacher() { }
 

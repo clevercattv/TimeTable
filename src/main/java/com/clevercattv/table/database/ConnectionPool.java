@@ -1,89 +1,47 @@
 package com.clevercattv.table.database;
 
-import com.clevercattv.table.model.Group;
-import com.clevercattv.table.model.Room;
-import com.clevercattv.table.model.Teacher;
 import org.postgresql.ds.PGConnectionPoolDataSource;
 
 import javax.sql.ConnectionPoolDataSource;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.sql.Statement;
+import java.util.Objects;
+import java.util.Properties;
 
 public class ConnectionPool {
 
+    private static final String PROPERTIES = "application.properties";
     private static ConnectionPoolDataSource poolDataSource;
 
+    private ConnectionPool() { }
+
     static {
+        try {
+            reconnect();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void reconnect() throws IOException {
         PGConnectionPoolDataSource source = new PGConnectionPoolDataSource();
-        source.setServerName("localhost");
-        source.setDatabaseName("SoftServeTimeTable");
-        source.setUser("postgres");
-        source.setPassword("root");
-        source.setApplicationName("CleverTimeTable");
+        Properties properties = new Properties();
+        properties.load(Thread.currentThread()
+                .getContextClassLoader()
+                .getResourceAsStream(PROPERTIES));
+        source.setServerName(properties.getProperty("jdbc.server.name"));
+        source.setDatabaseName(properties.getProperty("jdbc.database.name"));
+        source.setUser(properties.getProperty("jdbc.database.username"));
+        source.setPassword(properties.getProperty("jdbc.database.password"));
+        source.setApplicationName(properties.getProperty("application.name"));
         poolDataSource = source;
     }
 
-    public static Connection getConnection() {
-        try {
-            return poolDataSource.getPooledConnection()
-                    .getConnection();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-/*
-    private String url = "jdbc:postgresql://localhost:5432/SoftServeTimeTable";
-    private String user = "postgres";
-    private String password = "root";
-*/
-
-    public static void dropCreateDB() {
-        try {
-            Connection connection = getConnection();
-            Statement stmt = connection.createStatement();
-            stmt.execute("DROP SCHEMA public CASCADE ");
-            stmt.execute("CREATE SCHEMA public");
-            stmt.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        createTables();
-    }
-
-    public static void createTables() {
-        try(Connection connection = getConnection();
-            Statement stmt = connection.createStatement()) {
-
-            stmt.execute("CREATE TABLE IF NOT EXISTS Groups" +
-                    "(id SERIAL PRIMARY KEY, " +
-                    "name VARCHAR(" + Group.MAX_NAME_LENGTH + ") NOT NULL UNIQUE," +
-                    "combined BOOLEAN NOT NULL)");
-
-            stmt.execute("CREATE TABLE IF NOT EXISTS Rooms" +
-                    "(id SERIAL PRIMARY KEY, " +
-                    "name VARCHAR(" + Room.MAX_NAME_LENGTH + ") NOT NULL UNIQUE," +
-                    "type INT NOT NULL)");
-
-            stmt.execute("CREATE TABLE IF NOT EXISTS Teachers" +
-                    "(id SERIAL PRIMARY KEY, " +
-                    "fullName VARCHAR(" + Teacher.MAX_NAME_LENGTH + ") NOT NULL UNIQUE," +
-                    "type INT NOT NULL)");
-
-            stmt.execute("CREATE TABLE IF NOT EXISTS Lessons" +
-                    "(id SERIAL PRIMARY KEY, name VARCHAR(32) NOT NULL UNIQUE," +
-                    "teacher INT NOT NULL REFERENCES teachers(id), " +
-                    "number INT NOT NULL , " +
-                    "groups INT NOT NULL REFERENCES groups(id), " +
-                    "room INT NOT NULL REFERENCES rooms(id), " +
-                    "day INT NOT NULL)");
-
-            stmt.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+    public static Connection getConnection() throws SQLException {
+        Connection connection = poolDataSource.getPooledConnection().getConnection();
+        if (Objects.isNull(connection)) throw new NullPointerException();
+        return connection;
     }
 
 }

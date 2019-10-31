@@ -12,6 +12,8 @@ import java.io.IOException;
 
 public class TimeTableJsonSerializer {
 
+    private TimeTableJsonSerializer(){}
+
     public static void serialize(TimeTable timeTable, String path) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new JavaTimeModule());

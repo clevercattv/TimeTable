@@ -3,7 +3,6 @@ package com.clevercattv.table.model;
 import com.clevercattv.table.exception.NamingException;
 import com.clevercattv.table.validation.PerformedMessage;
 import com.clevercattv.table.validation.Validator;
-import com.sun.deploy.util.StringUtils;
 
 import java.util.Arrays;
 import java.util.Objects;
@@ -42,9 +41,11 @@ public class Group implements EntityId<Group> {
         return build(name,false);
     }
 
-    public static Group build(Group... groups) {
-        if (groups.length == 0) throw new IllegalArgumentException();
-        return build(StringUtils.join(Arrays.stream(groups).map(Group::getName).collect(Collectors.toList()), DIVIDER), true);
+    public static Group build(Group[] groups) {
+        if (groups.length < 2) throw new IllegalArgumentException("Combined group builds rom 2 or more groups.");
+        return build(Arrays.stream(groups)
+                .map(Group::getName)
+                .collect(Collectors.joining(DIVIDER)), true);
     }
 
     @Override

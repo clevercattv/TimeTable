@@ -9,7 +9,9 @@ import java.util.concurrent.Future;
 
 public class IOExecutor {
 
-    private static ExecutorService EXECUTOR = Executors.newSingleThreadExecutor();
+    private static final ExecutorService EXECUTOR = Executors.newSingleThreadExecutor();
+
+    private IOExecutor(){}
 
     public static Future<String> save(TimeTable timeTable, String path) {
         return EXECUTOR.submit(() -> {

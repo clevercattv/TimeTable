@@ -31,6 +31,18 @@ public class MainTest {
             Room.build("11", Room.Type.LABORATORY)
     );
 
+    protected static final Lesson COMBINED = Lesson.build(
+            Teacher.build("Post Graduate Name",Teacher.Type.POST_GRADUATE),
+            Lesson.Number.FIRST,
+            Group.build(new Group[]{
+                    Group.build("555"),
+                    Group.build("556"),
+                    Group.build("557")
+            }),
+            "Physic",
+            Room.build("12", Room.Type.LABORATORY)
+    );
+
 /*    // Complex exception
     @Test(expected = BusyException.class)
     public void testBusyException() {

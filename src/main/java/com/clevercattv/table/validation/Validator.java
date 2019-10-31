@@ -7,6 +7,8 @@ import java.util.stream.Collectors;
 
 public class Validator {
 
+    private Validator(){}
+
     public static Optional<String> filterByPerformedTrueAndResultMessagesToString(
             PerformedMessage[] performedMessages) {
         List<String> list = Arrays.stream(performedMessages)

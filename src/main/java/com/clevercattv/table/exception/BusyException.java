@@ -6,6 +6,4 @@ public class BusyException extends RuntimeException {
         super(message);
     }
 
-
-
 }

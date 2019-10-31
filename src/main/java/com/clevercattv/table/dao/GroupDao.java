@@ -15,27 +15,28 @@ public class GroupDao extends DaoImpl<Group> {
     }
 
     @Override
-    public Optional<Group> get(int id) {
+    public Optional<Group> get(int id) throws SQLException {
+        ResultSet rs = null;
         try (Connection connection = ConnectionPool.getConnection();
              PreparedStatement stmt = connection.prepareStatement(
                      "SELECT * FROM " + tableName + " WHERE id = ?")) {
             stmt.setLong(1, id);
-            ResultSet rs = stmt.executeQuery();
+            rs = stmt.executeQuery();
             rs.next();
             Group group = Group.build(id,
                     rs.getString("name"),
                     rs.getBoolean("combined")
             );
-            rs.close();
             return Optional.of(group);
-        } catch (SQLException e) {
-            e.printStackTrace();
+        } finally {
+            if (rs != null) {
+                rs.close();
+            }
         }
-        return Optional.empty();
     }
 
     @Override
-    public List<Group> getAll() {
+    public List<Group> getAll() throws SQLException {
         try (Connection connection = ConnectionPool.getConnection();
              Statement stmt = connection.createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM " + tableName)) {
@@ -50,27 +51,22 @@ public class GroupDao extends DaoImpl<Group> {
                 );
             }
             return list;
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
-        return null;
     }
 
     @Override
-    public void save(Group group) {
+    public void save(Group group) throws SQLException {
         try (Connection connection = ConnectionPool.getConnection();
              PreparedStatement stmt = connection.prepareStatement(
                      "INSERT INTO " + tableName + "(name,combined) VALUES (?,?)")) {
             stmt.setString(1, group.getName());
             stmt.setBoolean(2, group.isCombined());
-            stmt.execute();
-        } catch (SQLException e) {
-            e.printStackTrace();
+            stmt.executeUpdate();
         }
     }
 
     @Override
-    public void saveAll(Group... groups) {
+    public void saveAll(Group... groups) throws SQLException {
         try (Connection connection = ConnectionPool.getConnection();
              PreparedStatement stmt = connection.prepareStatement(
                      "INSERT INTO " + tableName + "(name,combined) VALUES (?,?)")) {
@@ -80,23 +76,18 @@ public class GroupDao extends DaoImpl<Group> {
                 stmt.addBatch();
             }
             stmt.executeBatch();
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
     }
 
     @Override
-    public void update(Group group) {
+    public void update(Group group) throws SQLException {
         try (Connection connection = ConnectionPool.getConnection();
              PreparedStatement stmt = connection.prepareStatement(
-                     "UPDATE " + tableName + " SET name = ?, combined = ? WHERE id = ?");) {
+                     "UPDATE " + tableName + " SET name = ?, combined = ? WHERE id = ?")) {
             stmt.setString(1, group.getName());
             stmt.setBoolean(2, group.isCombined());
             stmt.setInt(3, group.getId());
             stmt.executeUpdate();
-            stmt.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
     }
 
