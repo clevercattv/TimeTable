@@ -1,35 +1,38 @@
 package com.clevercattv.table.model;
 
 import com.clevercattv.table.exception.NamingException;
-import com.clevercattv.table.validation.Validator;
 import com.clevercattv.table.validation.PerformedMessage;
+import com.clevercattv.table.validation.Validator;
 
+import java.time.DayOfWeek;
 import java.time.LocalTime;
 import java.util.Objects;
 
-public class Lesson {
+// todo add day
+public class Lesson implements EntityId<Lesson> {
 
     public static final int MIN_NAME_LENGTH = 4;
     public static final int MAX_NAME_LENGTH = 32;
     public static final String NAME_PATTERN = "^[a-z A-Z]+$";
 
+    private int id;
     private String name;
-    private Teacher teacher;
     private Number number;
+    private Teacher teacher;
     private Group group;
     private Room room;//
+    private DayOfWeek day;
 
-    private Lesson() {
+    public Lesson() {
     }
 
-    public static Lesson build(Teacher teacher, Number number,
-                               Group group, String lessonName, Room room) {
-        return new Lesson()
-                .setTeacher(teacher)
-                .setNumber(number)
-                .setGroup(group)
-                .setName(lessonName)
-                .setRoom(room);
+    public Lesson(int id, String name, Number number, Teacher teacher, Group group, Room room) {
+        this.id = id;
+        this.name = name;
+        this.number = number;
+        this.teacher = teacher;
+        this.group = group;
+        this.room = room;
     }
 
     @Override
@@ -52,12 +55,24 @@ public class Lesson {
     @Override
     public String toString() {
         return "\nLesson{" +
-                "  lessonNumber=" + number.name() +
-                ", group=" + group.getName() + ", " + group.isCombined() +
+                "  id=" + id +
+                "  lessonNumber=" + number +
+                ", group=" + group +
                 ", name=" + name +
-                ", teacher=" + teacher.getFullName() +
-                ", auditory=" + room.getName() +
+                ", teacher=" + teacher +
+                ", auditory=" + room +
                 '}';
+    }
+
+    @Override
+    public int getId() {
+        return id;
+    }
+
+    @Override
+    public Lesson setId(int id) {
+        this.id = id;
+        return this;
     }
 
     public Teacher getTeacher() {
@@ -96,7 +111,7 @@ public class Lesson {
     }
 
     public Lesson setName(String name) {
-        Validator.filterByPerformedTrueAndResultMessagesToString(new PerformedMessage[]{
+        Validator.getMessagesByPerformedTrue(new PerformedMessage[]{
                 new PerformedMessage("Lesson name length less than minimum.",
                         name.length() < MIN_NAME_LENGTH),
                 new PerformedMessage("Lesson name length more than maximum.",
@@ -118,6 +133,14 @@ public class Lesson {
         if (room == null) throw new NullPointerException("Lesson room can't be null.");
         this.room = room;
         return this;
+    }
+
+    public DayOfWeek getDay() {
+        return day;
+    }
+
+    public void setDay(DayOfWeek day) {
+        this.day = day;
     }
 
     public enum Number {

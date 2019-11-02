@@ -34,19 +34,22 @@ public class RoomTest extends MainTest {
             "Room namesssssssssssssssssssssssssssssssssssssssssssssssssss"
     })
     public void testValidation(String str) {
-        Room.build(str,Room.Type.AUDITORY);
+        new Room().setName(str).setType(Room.Type.AUDITORY);
     }
 
     @Test(expected = BusyException.class)
     public void testRoomBusyException() {
         TIME_TABLE_SERVICE.addLesson(DayOfWeek.MONDAY,
-                Lesson.build(
-                        Teacher.build("Docent name third",Teacher.Type.DOCENT),
-                        Lesson.Number.FIRST,
-                        Group.build("508"),
-                        "Math",
-                        FIRST_LESSON.getRoom()
-                )
+                new Lesson()
+                        .setName("Math")
+                        .setNumber(Lesson.Number.FIRST)
+                        .setTeacher(
+                                new Teacher()
+                                        .setFullName("Docent name third")
+                                        .setType(Teacher.Type.DOCENT)
+                        )
+                        .setRoom(FIRST_LESSON.getRoom())
+                        .setGroup(new Group().setName("508"))
         );
     }
 

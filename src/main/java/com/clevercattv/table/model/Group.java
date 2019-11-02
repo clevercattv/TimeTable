@@ -17,36 +17,7 @@ public class Group implements EntityId<Group> {
 
     private int id;
     private String name;
-    private final boolean combined;
-
-    private Group(){ this.combined = false; }
-
-    private Group(boolean combined) { this.combined = combined; }
-
-    private static Group build(String name, boolean combined) {
-        return new Group(combined).setName(name);
-    }
-
-    public static Group build(int id, String name, boolean combined) {
-        return new Group(combined)
-                .setId(id)
-                .setName(name);
-    }
-
-    public static Group build(int id, String name) {
-        return build(id, name,false);
-    }
-
-    public static Group build(String name) {
-        return build(name,false);
-    }
-
-    public static Group build(Group[] groups) {
-        if (groups.length < 2) throw new IllegalArgumentException("Combined group builds rom 2 or more groups.");
-        return build(Arrays.stream(groups)
-                .map(Group::getName)
-                .collect(Collectors.joining(DIVIDER)), true);
-    }
+    private boolean combined;
 
     @Override
     public boolean equals(Object o) {
@@ -68,12 +39,21 @@ public class Group implements EntityId<Group> {
                 '}';
     }
 
+    public Group setCombinedGroups(Group[] groups) {
+        if (groups.length < 2) throw new IllegalArgumentException("Combined group builds rom 2 or more groups.");
+        this.combined = true;
+        this.setName(Arrays.stream(groups)
+                .map(Group::getName)
+                .collect(Collectors.joining(DIVIDER)));
+        return this;
+    }
+
     public String getName() {
         return name;
     }
 
     public Group setName(String name) {
-        Validator.filterByPerformedTrueAndResultMessagesToString(new PerformedMessage[]{
+        Validator.getMessagesByPerformedTrue(new PerformedMessage[]{
                 new PerformedMessage("Group name length less than minimum.",
                         name.length() < MIN_NAME_LENGTH),
                 new PerformedMessage("Group name length more than maximum.",
@@ -90,6 +70,11 @@ public class Group implements EntityId<Group> {
 
     public boolean isCombined() {
         return combined;
+    }
+
+    public Group setCombined(boolean combined) {
+        this.combined = combined;
+        return this;
     }
 
     @Override

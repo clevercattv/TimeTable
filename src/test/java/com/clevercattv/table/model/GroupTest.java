@@ -31,19 +31,26 @@ public class GroupTest extends MainTest {
             "525name looooooooo"
     })
     public void testValidation(String str) {
-        Group.build(str);
+        new Group().setName(str);
     }
 
     @Test(expected = BusyException.class)
     public void testGroupBusyException() {
         TIME_TABLE_SERVICE.addLesson(DayOfWeek.MONDAY,
-                Lesson.build(
-                        Teacher.build("Docent name second",Teacher.Type.DOCENT),
-                        Lesson.Number.FIRST,
-                        FIRST_LESSON.getGroup(),
-                        "Math",
-                        Room.build("103", Room.Type.AUDITORY)
-                )
+                new Lesson()
+                        .setName("Math")
+                        .setNumber(Lesson.Number.FIRST)
+                        .setTeacher(
+                                new Teacher()
+                                        .setFullName("Docent name second")
+                                        .setType(Teacher.Type.DOCENT)
+                        )
+                        .setRoom(
+                                new Room()
+                                        .setName("103")
+                                        .setType(Room.Type.AUDITORY)
+                        )
+                        .setGroup(FIRST_LESSON.getGroup())
         );
     }
 

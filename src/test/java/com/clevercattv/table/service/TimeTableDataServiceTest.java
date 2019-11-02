@@ -20,7 +20,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(DataProviderRunner.class)
-public class TimeTableServiceTest extends MainTest {
+public class TimeTableDataServiceTest extends MainTest {
 
     private static final TimeTableService TIME_TABLE_SERVICE = new TimeTableService(new TimeTable(LocalDate.now()));
 
@@ -34,35 +34,35 @@ public class TimeTableServiceTest extends MainTest {
 
     @DataProvider
     public static Object[][] lessonDataProvider() {
-        return new Object[][] {
-                { FIRST_LESSON.getTeacher(), Group.build("577"),
-                        Room.build("5", Room.Type.AUDITORY) },
-                { Teacher.build("Test teacher",Teacher.Type.DOCENT),
-                        FIRST_LESSON.getGroup(), Room.build("5", Room.Type.AUDITORY) },
-                { Teacher.build("Test teacher",Teacher.Type.DOCENT),
-                        Group.build("577"), FIRST_LESSON.getRoom() },
-                { Teacher.build("Test teacher",Teacher.Type.DOCENT),
-                        FIRST_LESSON.getGroup(), FIRST_LESSON.getRoom() },
-                { FIRST_LESSON.getTeacher(), Group.build("577"), FIRST_LESSON.getRoom() },
-                { FIRST_LESSON.getTeacher(), FIRST_LESSON.getGroup(), Room.build("5", Room.Type.AUDITORY) },
-                { FIRST_LESSON.getTeacher(), FIRST_LESSON.getGroup(), FIRST_LESSON.getRoom() },
-                { Teacher.build("Test teacher",Teacher.Type.DOCENT),
-                        Group.build(new Group[]{
-                                Group.build("577"),
+        return new Object[][]{
+                {FIRST_LESSON.getTeacher(), new Group().setName("577"),
+                        new Room().setName("5").setType(Room.Type.AUDITORY)},
+                {new Teacher().setFullName("Test teacher").setType(Teacher.Type.DOCENT),
+                        FIRST_LESSON.getGroup(), new Room().setName("5").setType(Room.Type.AUDITORY)},
+                {new Teacher().setFullName("Test teacher").setType(Teacher.Type.DOCENT),
+                        new Group().setName("577"), FIRST_LESSON.getRoom()},
+                {new Teacher().setFullName("Test teacher").setType(Teacher.Type.DOCENT),
+                        FIRST_LESSON.getGroup(), FIRST_LESSON.getRoom()},
+                {FIRST_LESSON.getTeacher(), new Group().setName("577"), FIRST_LESSON.getRoom()},
+                {FIRST_LESSON.getTeacher(), FIRST_LESSON.getGroup(), new Room().setName("5").setType(Room.Type.AUDITORY)},
+                {FIRST_LESSON.getTeacher(), FIRST_LESSON.getGroup(), FIRST_LESSON.getRoom()},
+                {new Teacher().setFullName("Test teacher").setType(Teacher.Type.DOCENT),
+                        new Group().setCombinedGroups(new Group[]{
+                                new Group().setName("577"),
                                 FIRST_LESSON.getGroup(),
                                 SECOND_LESSON.getGroup()
                         }),
-                        Room.build("5", Room.Type.AUDITORY) },
-                { FIRST_LESSON.getTeacher(), COMBINED.getGroup(), FIRST_LESSON.getRoom() },
+                        new Room().setName("5").setType(Room.Type.AUDITORY)},
+                {FIRST_LESSON.getTeacher(), COMBINED.getGroup(), FIRST_LESSON.getRoom()},
         };
     }
 
     @DataProvider
     public static Object[][] daysDataProvider() {
-        return new Object[][] {
-                { DayOfWeek.MONDAY, DayOfWeek.THURSDAY, },
-                { DayOfWeek.WEDNESDAY, DayOfWeek.THURSDAY, },
-                { DayOfWeek.SATURDAY, DayOfWeek.THURSDAY, }
+        return new Object[][]{
+                {DayOfWeek.MONDAY, DayOfWeek.THURSDAY,},
+                {DayOfWeek.WEDNESDAY, DayOfWeek.THURSDAY,},
+                {DayOfWeek.SATURDAY, DayOfWeek.THURSDAY,}
         };
     }
 
@@ -70,7 +70,12 @@ public class TimeTableServiceTest extends MainTest {
     @UseDataProvider("lessonDataProvider")
     public void testAddLesson(Teacher teacher, Group group, Room room) {
         TIME_TABLE_SERVICE.addLesson(DayOfWeek.MONDAY,
-                Lesson.build(teacher,Lesson.Number.FIRST,group,"Math",room));
+                new Lesson()
+                        .setName("Math")
+                        .setNumber(Lesson.Number.FIRST)
+                        .setTeacher(teacher)
+                        .setRoom(room)
+                        .setGroup(group));
     }
 
     @Test
@@ -85,14 +90,9 @@ public class TimeTableServiceTest extends MainTest {
 //        }
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void testGetDaysWithArgumentEmpty() {
-        TIME_TABLE_SERVICE.getDays();
-    }
-
     @Test
     public void testGetDaysByGroup() {
-        assertTrue(TIME_TABLE_SERVICE.getDaysByGroup(FIRST_LESSON.getGroup(),DayOfWeek.MONDAY).size() == 1);
+        assertTrue(TIME_TABLE_SERVICE.getDaysByGroup(FIRST_LESSON.getGroup(), DayOfWeek.MONDAY).size() == 1);
     }
 
     @Test

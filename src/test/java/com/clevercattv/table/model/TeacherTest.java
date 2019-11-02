@@ -31,23 +31,29 @@ public class TeacherTest extends MainTest {
             "Docent namesssssssssssssssssssssssssssssssssssssssssssssssssss"
     })
     public void testValidation(String str) {
-        Teacher.build(str,Teacher.Type.DOCENT);
+        new Teacher().setFullName(str).setType(Teacher.Type.DOCENT);
     }
-
-//    public void testJavaxValidation() {
-//        validator.validate(Teacher.build("Docsss norm",Teacher.Type.DOCENT),Teacher.class);
-//    }
 
     @Test(expected = BusyException.class)
     public void testTeacherBusyException() {
         TIME_TABLE_SERVICE.addLesson(DayOfWeek.MONDAY,
-                Lesson.build(
-                        Teacher.build("Docent name",Teacher.Type.DOCENT),
-                        Lesson.Number.FIRST,
-                        Group.build("506"),
-                        "Math",
-                        Room.build("11", Room.Type.AUDITORY)
-                )
+                new Lesson()
+                        .setName("Math")
+                        .setNumber(Lesson.Number.FIRST)
+                        .setTeacher(
+                                new Teacher()
+                                        .setFullName("Docent name")
+                                        .setType(Teacher.Type.DOCENT)
+                        )
+                        .setRoom(
+                                new Room()
+                                        .setName("11")
+                                        .setType(Room.Type.AUDITORY)
+                        )
+                        .setGroup(
+                                new Group()
+                                        .setName("506")
+                        )
         );
     }
 

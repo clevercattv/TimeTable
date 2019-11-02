@@ -7,54 +7,79 @@ import com.clevercattv.table.model.Teacher;
 
 public class MainTest {
 
-    protected static final Lesson FIRST_LESSON = Lesson.build(
-            Teacher.build("Docent name",Teacher.Type.DOCENT),
-            Lesson.Number.FIRST,
-            Group.build("509"),
-            "Math",
-            Room.build("10", Room.Type.AUDITORY)
-    );
+    protected static final Lesson FIRST_LESSON = new Lesson()
+            .setName("Math")
+            .setNumber(Lesson.Number.FIRST)
+            .setTeacher(
+                    new Teacher()
+                            .setFullName("Docent name")
+                            .setType(Teacher.Type.DOCENT)
+            )
+            .setRoom(
+                    new Room()
+                            .setName("10")
+                            .setType(Room.Type.AUDITORY)
+            )
+            .setGroup(
+                    new Group()
+                            .setName("509")
+            );
 
-    protected static final Lesson SECOND_LESSON = Lesson.build(
-            Teacher.build("Professor name",Teacher.Type.PROFESSOR),
-            Lesson.Number.FIRST,
-            Group.build("508"),
-            "Physic",
-            Room.build("11", Room.Type.LABORATORY)
-    );
+    protected static final Lesson SECOND_LESSON = new Lesson()
+            .setName("Physic")
+            .setNumber(Lesson.Number.FIRST)
+            .setTeacher(
+                    new Teacher()
+                            .setFullName("Professor name")
+                            .setType(Teacher.Type.PROFESSOR)
+            )
+            .setRoom(
+                    new Room()
+                            .setName("11")
+                            .setType(Room.Type.LABORATORY)
+            )
+            .setGroup(
+                    new Group()
+                            .setName("508")
+            );
 
-    protected static final Lesson THIRD_LESSON = Lesson.build(
-            Teacher.build("Post Graduate Name",Teacher.Type.POST_GRADUATE),
-            Lesson.Number.THIRD,
-            Group.build("508"),
-            "Physic",
-            Room.build("11", Room.Type.LABORATORY)
-    );
+    protected static final Lesson THIRD_LESSON = new Lesson()
+            .setName("Physic")
+            .setNumber(Lesson.Number.THIRD)
+            .setTeacher(
+                    new Teacher()
+                            .setFullName("Post Graduate Name")
+                            .setType(Teacher.Type.POST_GRADUATE)
+            )
+            .setRoom(
+                    new Room()
+                            .setName("11")
+                            .setType(Room.Type.LABORATORY)
+            )
+            .setGroup(
+                    new Group()
+                            .setName("508")
+            );
 
-    protected static final Lesson COMBINED = Lesson.build(
-            Teacher.build("Post Graduate Name",Teacher.Type.POST_GRADUATE),
-            Lesson.Number.FIRST,
-            Group.build(new Group[]{
-                    Group.build("555"),
-                    Group.build("556"),
-                    Group.build("557")
-            }),
-            "Physic",
-            Room.build("12", Room.Type.LABORATORY)
-    );
-
-/*    // Complex exception
-    @Test(expected = BusyException.class)
-    public void testBusyException() {
-        TIME_TABLE_SERVICE.addLesson(DayOfWeek.MONDAY,
-                Lesson.build(
-                        Teacher.build("Docent name",Teacher.Type.DOCENT),
-                        Lesson.Number.FIRST,
-                        Group.build("509"),
-                        "Math",
-                        Room.build("10", Room.Type.AUDITORY)
-                )
-        );
-    }*/
+    protected static final Lesson COMBINED = new Lesson()
+            .setName("Physic")
+            .setNumber(Lesson.Number.FIRST)
+            .setTeacher(
+                    new Teacher()
+                            .setFullName("Post Graduate Name")
+                            .setType(Teacher.Type.POST_GRADUATE)
+            )
+            .setRoom(
+                    new Room()
+                            .setName("12")
+                            .setType(Room.Type.LABORATORY)
+            )
+            .setGroup(
+                    new Group().setCombinedGroups(new Group[]{
+                            new Group().setName("555"),
+                            new Group().setName("556"),
+                            new Group().setName("557")
+                    })
+            );
 
 }

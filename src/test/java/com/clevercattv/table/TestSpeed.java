@@ -23,16 +23,25 @@ public class TestSpeed {
             for (int number = 0; number < Lesson.Number.values().length; number++) {
                 for (int group = 0; group < 8; group++) {
                     TIME_TABLE_SERVICE.addLesson(DayOfWeek.values()[day],
-                            Lesson.build(
-                                    Teacher.build("test teacher name " +
-                                            CHAR_LIST[day] +
-                                            CHAR_LIST[number] +
-                                            CHAR_LIST[group],Teacher.Type.DOCENT),
-                                    Lesson.Number.values()[number],
-                                    Group.build("51" + group),
-                                    "Math",
-                                    Room.build("24" + group, Room.Type.AUDITORY)
-                            )
+                            new Lesson().setName("Math")
+                                    .setNumber(Lesson.Number.values()[number])
+                                    .setTeacher(
+                                            new Teacher()
+                                                    .setFullName("test teacher name " +
+                                                            CHAR_LIST[day] +
+                                                            CHAR_LIST[number] +
+                                                            CHAR_LIST[group])
+                                                    .setType(Teacher.Type.DOCENT)
+                                    )
+                                    .setRoom(
+                                            new Room()
+                                                    .setName("24" + group)
+                                                    .setType(Room.Type.AUDITORY)
+                                    )
+                                    .setGroup(
+                                            new Group()
+                                                    .setName("51" + group)
+                                    )
                     );
                 }
             }
@@ -40,7 +49,7 @@ public class TestSpeed {
         System.out.println("Adding time : " + (System.currentTimeMillis() - startTime));
         try {
             startTime = System.currentTimeMillis();
-            TimeTableJsonSerializer.serialize(TIME_TABLE_SERVICE.getTimeTable(),"randomTest.json");
+            TimeTableJsonSerializer.serialize(TIME_TABLE_SERVICE.getTimeTable(), "randomTest.json");
             System.out.println("Writing json time : " + (System.currentTimeMillis() - startTime));
             startTime = System.currentTimeMillis();
             TimeTableJsonSerializer.deserialize("randomTest.json");

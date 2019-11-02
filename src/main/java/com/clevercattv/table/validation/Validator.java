@@ -9,7 +9,7 @@ public class Validator {
 
     private Validator(){}
 
-    public static Optional<String> filterByPerformedTrueAndResultMessagesToString(
+    public static Optional<String> getMessagesByPerformedTrue(
             PerformedMessage[] performedMessages) {
         List<String> list = Arrays.stream(performedMessages)
                 .filter(PerformedMessage::isPerformed)
@@ -20,6 +20,5 @@ public class Validator {
         }
         return Optional.of(list.toString());
     }
-
 
 }

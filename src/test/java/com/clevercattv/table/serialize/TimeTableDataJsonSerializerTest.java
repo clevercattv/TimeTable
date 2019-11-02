@@ -24,7 +24,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
 @RunWith(DataProviderRunner.class)
-public class TimeTableJsonSerializerTest extends MainTest {
+public class TimeTableDataJsonSerializerTest extends MainTest {
 
     private static final TimeTableService TIME_TABLE_SERVICE = new TimeTableService(new TimeTable(LocalDate.now()));
 

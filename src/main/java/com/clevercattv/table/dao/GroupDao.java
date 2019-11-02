@@ -5,29 +5,37 @@ import com.clevercattv.table.model.Group;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
 public class GroupDao extends DaoImpl<Group> {
 
+    private static final String TABLE_NAME = "groups";
+    private static final String FIND_ALL = "SELECT id, name, combined FROM " + TABLE_NAME;
+    private static final String FIND_BY_ID = FIND_ALL + " WHERE id = ?";
+    private static final String SAVE = "INSERT INTO " + TABLE_NAME + "(name,combined) VALUES (?,?)";
+    private static final String UPDATE = "UPDATE " + TABLE_NAME + " SET name = ?, combined = ? WHERE id = ?";
+
     public GroupDao() {
-        super("groups");
+        super(TABLE_NAME);
     }
 
     @Override
-    public Optional<Group> get(int id) throws SQLException {
+    public Optional<Group> findById(int id) throws SQLException {
         ResultSet rs = null;
         try (Connection connection = ConnectionPool.getConnection();
-             PreparedStatement stmt = connection.prepareStatement(
-                     "SELECT * FROM " + tableName + " WHERE id = ?")) {
-            stmt.setLong(1, id);
+             PreparedStatement stmt = connection.prepareStatement(FIND_BY_ID)) {
+            stmt.setInt(1, id);
             rs = stmt.executeQuery();
-            rs.next();
-            Group group = Group.build(id,
-                    rs.getString("name"),
-                    rs.getBoolean("combined")
-            );
-            return Optional.of(group);
+            if (rs.next()) {
+                return Optional.of(new Group()
+                        .setId(id)
+                        .setName(rs.getString("name"))
+                        .setCombined(rs.getBoolean("combined")));
+            } else {
+                return Optional.empty();
+            }
         } finally {
             if (rs != null) {
                 rs.close();
@@ -36,18 +44,16 @@ public class GroupDao extends DaoImpl<Group> {
     }
 
     @Override
-    public List<Group> getAll() throws SQLException {
+    public List<Group> findAll() throws SQLException {
         try (Connection connection = ConnectionPool.getConnection();
              Statement stmt = connection.createStatement();
-             ResultSet rs = stmt.executeQuery("SELECT * FROM " + tableName)) {
+             ResultSet rs = stmt.executeQuery(FIND_ALL)) {
             List<Group> list = new ArrayList<>();
             while (rs.next()) {
-                list.add(
-                        Group.build(
-                                rs.getInt("id"),
-                                rs.getString("name"),
-                                rs.getBoolean("combined")
-                        )
+                list.add(new Group()
+                        .setId(rs.getInt("id"))
+                        .setName(rs.getString("name"))
+                        .setCombined(rs.getBoolean("combined"))
                 );
             }
             return list;
@@ -55,35 +61,34 @@ public class GroupDao extends DaoImpl<Group> {
     }
 
     @Override
-    public void save(Group group) throws SQLException {
+    public Group save(Group group) throws SQLException {
         try (Connection connection = ConnectionPool.getConnection();
-             PreparedStatement stmt = connection.prepareStatement(
-                     "INSERT INTO " + tableName + "(name,combined) VALUES (?,?)")) {
+             PreparedStatement stmt = connection.prepareStatement(SAVE, Statement.RETURN_GENERATED_KEYS)) {
             stmt.setString(1, group.getName());
             stmt.setBoolean(2, group.isCombined());
             stmt.executeUpdate();
+            return fillById(group,stmt);
         }
     }
 
     @Override
-    public void saveAll(Group... groups) throws SQLException {
+    public Collection<Group> saveAll(Collection<Group> groups) throws SQLException {
         try (Connection connection = ConnectionPool.getConnection();
-             PreparedStatement stmt = connection.prepareStatement(
-                     "INSERT INTO " + tableName + "(name,combined) VALUES (?,?)")) {
+             PreparedStatement stmt = connection.prepareStatement(SAVE, Statement.RETURN_GENERATED_KEYS)) {
             for (Group group : groups) {
                 stmt.setString(1, group.getName());
                 stmt.setBoolean(2, group.isCombined());
                 stmt.addBatch();
             }
             stmt.executeBatch();
+            return fillAllByIds(groups,stmt);
         }
     }
 
     @Override
     public void update(Group group) throws SQLException {
         try (Connection connection = ConnectionPool.getConnection();
-             PreparedStatement stmt = connection.prepareStatement(
-                     "UPDATE " + tableName + " SET name = ?, combined = ? WHERE id = ?")) {
+             PreparedStatement stmt = connection.prepareStatement(UPDATE)) {
             stmt.setString(1, group.getName());
             stmt.setBoolean(2, group.isCombined());
             stmt.setInt(3, group.getId());

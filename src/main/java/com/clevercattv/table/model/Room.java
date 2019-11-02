@@ -14,21 +14,6 @@ public class Room implements EntityId<Room>{
     public static final int MAX_NAME_LENGTH = 16;
     public static final String NAME_PATTERN = "^[a-z A-Z0-9]+$";
 
-    private Room() { }
-
-    public static Room build(String name, Type type) {
-        return new Room()
-                .setName(name)
-                .setType(type);
-    }
-
-    public static Room build(int id, String name, int type) {
-        return new Room()
-                .setId(id)
-                .setName(name)
-                .setType(Type.values()[type]);
-    }
-    
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -55,7 +40,7 @@ public class Room implements EntityId<Room>{
     }
 
     public Room setName(String name) {
-        Validator.filterByPerformedTrueAndResultMessagesToString(new PerformedMessage[]{
+        Validator.getMessagesByPerformedTrue(new PerformedMessage[]{
                 new PerformedMessage("Room name is empty.",
                         name.isEmpty()),
                 new PerformedMessage("Room name length more than maximum.",
