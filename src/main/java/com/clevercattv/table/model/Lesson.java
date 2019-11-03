@@ -6,9 +6,9 @@ import com.clevercattv.table.validation.Validator;
 
 import java.time.DayOfWeek;
 import java.time.LocalTime;
+import java.util.Arrays;
 import java.util.Objects;
 
-// todo add day
 public class Lesson implements EntityId<Lesson> {
 
     public static final int MIN_NAME_LENGTH = 4;
@@ -111,16 +111,14 @@ public class Lesson implements EntityId<Lesson> {
     }
 
     public Lesson setName(String name) {
-        Validator.getMessagesByPerformedTrue(new PerformedMessage[]{
+        Validator.getMessagesByPerformedTrue(Arrays.asList(
                 new PerformedMessage("Lesson name length less than minimum.",
                         name.length() < MIN_NAME_LENGTH),
                 new PerformedMessage("Lesson name length more than maximum.",
                         name.length() > MAX_NAME_LENGTH),
                 new PerformedMessage("Lesson name have forbidden symbols. Please use 'a-z A-Z'",
-                        !name.matches(NAME_PATTERN)),
-        }).ifPresent(e -> {
-            throw new NamingException(e);
-        });
+                        !name.matches(NAME_PATTERN))
+        ));
         this.name = name;
         return this;
     }
@@ -139,8 +137,9 @@ public class Lesson implements EntityId<Lesson> {
         return day;
     }
 
-    public void setDay(DayOfWeek day) {
+    public Lesson setDay(DayOfWeek day) {
         this.day = day;
+        return this;
     }
 
     public enum Number {

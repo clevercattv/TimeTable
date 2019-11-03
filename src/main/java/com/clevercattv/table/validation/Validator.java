@@ -1,24 +1,22 @@
 package com.clevercattv.table.validation;
 
-import java.util.Arrays;
+import com.clevercattv.table.exception.NamingException;
+
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class Validator {
 
     private Validator(){}
 
-    public static Optional<String> getMessagesByPerformedTrue(
-            PerformedMessage[] performedMessages) {
-        List<String> list = Arrays.stream(performedMessages)
+    public static void getMessagesByPerformedTrue(List<PerformedMessage> messages) {
+        List<String> list = messages.stream()
                 .filter(PerformedMessage::isPerformed)
                 .map(PerformedMessage::getMessage)
                 .collect(Collectors.toList());
-        if (list.isEmpty()) {
-            return Optional.empty();
+        if (!list.isEmpty()) {
+            throw new NamingException(list.toString());
         }
-        return Optional.of(list.toString());
     }
 
 }

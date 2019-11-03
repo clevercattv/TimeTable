@@ -11,10 +11,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.time.DayOfWeek;
-import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -22,14 +20,14 @@ import static org.junit.Assert.assertTrue;
 @RunWith(DataProviderRunner.class)
 public class TimeTableDataServiceTest extends MainTest {
 
-    private static final TimeTableService TIME_TABLE_SERVICE = new TimeTableService(new TimeTable(LocalDate.now()));
+    private static final LessonService TIME_TABLE_SERVICE = new LessonService();
 
     @BeforeClass
     public static void beforeClass() {
-        TIME_TABLE_SERVICE.addLesson(DayOfWeek.MONDAY, FIRST_LESSON);
-        TIME_TABLE_SERVICE.addLesson(DayOfWeek.MONDAY, SECOND_LESSON);
-        TIME_TABLE_SERVICE.addLesson(DayOfWeek.MONDAY, THIRD_LESSON);
-        TIME_TABLE_SERVICE.addLesson(DayOfWeek.MONDAY, COMBINED);
+        TIME_TABLE_SERVICE.addLesson(FIRST_LESSON);
+        TIME_TABLE_SERVICE.addLesson(SECOND_LESSON);
+        TIME_TABLE_SERVICE.addLesson(THIRD_LESSON);
+        TIME_TABLE_SERVICE.addLesson(COMBINED);
     }
 
     @DataProvider
@@ -60,39 +58,36 @@ public class TimeTableDataServiceTest extends MainTest {
     @DataProvider
     public static Object[][] daysDataProvider() {
         return new Object[][]{
-                {DayOfWeek.MONDAY, DayOfWeek.THURSDAY,},
-                {DayOfWeek.WEDNESDAY, DayOfWeek.THURSDAY,},
-                {DayOfWeek.SATURDAY, DayOfWeek.THURSDAY,}
+                {DayOfWeek.MONDAY, DayOfWeek.THURSDAY},
+                {DayOfWeek.WEDNESDAY, DayOfWeek.THURSDAY},
+                {DayOfWeek.SATURDAY, DayOfWeek.THURSDAY},
         };
     }
 
     @Test(expected = BusyException.class)
     @UseDataProvider("lessonDataProvider")
     public void testAddLesson(Teacher teacher, Group group, Room room) {
-        TIME_TABLE_SERVICE.addLesson(DayOfWeek.MONDAY,
+        TIME_TABLE_SERVICE.addLesson(
                 new Lesson()
                         .setName("Math")
                         .setNumber(Lesson.Number.FIRST)
                         .setTeacher(teacher)
                         .setRoom(room)
-                        .setGroup(group));
+                        .setGroup(group)
+                        .setDay(DayOfWeek.MONDAY));
     }
 
     @Test
     @UseDataProvider("daysDataProvider")
     public void testGetDays(DayOfWeek... days) {
-        Map<DayOfWeek, List<Lesson>> daysMap = TIME_TABLE_SERVICE.getDays(days);
-        daysMap.forEach((key, value) -> assertTrue(Arrays.asList(days).contains(key)));
-        assertTrue(days.length >= daysMap.size());
-//        List<DayOfWeek> dayList = Arrays.asList(days);
-//        for (Map.Entry<DayOfWeek, List<Lesson>> dayOfWeekListEntry : TIME_TABLE_SERVICE.getDays(days).entrySet()) {
-//            assertTrue(dayList.contains(dayOfWeekListEntry.getKey()));
-//        }
+        List<DayOfWeek> list = Arrays.asList(days);
+        List<Lesson> lessons = TIME_TABLE_SERVICE.getDays(list);
+        lessons.forEach(e -> assertTrue(list.contains(e.getDay())));
     }
 
     @Test
     public void testGetDaysByGroup() {
-        assertTrue(TIME_TABLE_SERVICE.getDaysByGroup(FIRST_LESSON.getGroup(), DayOfWeek.MONDAY).size() == 1);
+        assertTrue(TIME_TABLE_SERVICE.getDaysByGroup(FIRST_LESSON.getGroup(), Arrays.asList(DayOfWeek.MONDAY)).size() == 1);
     }
 
     @Test

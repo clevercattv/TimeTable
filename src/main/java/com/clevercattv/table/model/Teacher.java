@@ -1,9 +1,9 @@
 package com.clevercattv.table.model;
 
-import com.clevercattv.table.exception.NamingException;
 import com.clevercattv.table.validation.PerformedMessage;
 import com.clevercattv.table.validation.Validator;
 
+import java.util.Arrays;
 import java.util.Objects;
 
 
@@ -54,16 +54,14 @@ public class Teacher implements EntityId<Teacher>{
     }
 
     public Teacher setFullName(String fullName) {
-        Validator.getMessagesByPerformedTrue(new PerformedMessage[]{
+        Validator.getMessagesByPerformedTrue(Arrays.asList(
                 new PerformedMessage("Teacher name length less than minimum.",
                         fullName.length() < MIN_NAME_LENGTH),
                 new PerformedMessage("Teacher name length more than maximum.",
                         fullName.length() > MAX_NAME_LENGTH),
                 new PerformedMessage("Teacher name have have forbidden symbols.",
-                        !fullName.matches("^[a-z A-Z]+$")),
-        }).ifPresent(e -> {
-            throw new NamingException(e);
-        });
+                        !fullName.matches("^[a-z A-Z]+$"))
+        ));
         this.fullName = fullName;
         return this;
     }

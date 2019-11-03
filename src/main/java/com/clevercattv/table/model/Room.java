@@ -4,6 +4,7 @@ import com.clevercattv.table.exception.NamingException;
 import com.clevercattv.table.validation.PerformedMessage;
 import com.clevercattv.table.validation.Validator;
 
+import java.util.Arrays;
 import java.util.Objects;
 
 public class Room implements EntityId<Room>{
@@ -40,16 +41,14 @@ public class Room implements EntityId<Room>{
     }
 
     public Room setName(String name) {
-        Validator.getMessagesByPerformedTrue(new PerformedMessage[]{
+        Validator.getMessagesByPerformedTrue(Arrays.asList(
                 new PerformedMessage("Room name is empty.",
                         name.isEmpty()),
                 new PerformedMessage("Room name length more than maximum.",
                         name.length() > MAX_NAME_LENGTH),
                 new PerformedMessage("Room name have forbidden symbols. Please use 'a-z A-Z 0-9' ",
-                        !name.matches(NAME_PATTERN)),
-        }).ifPresent(e -> {
-            throw new NamingException(e);
-        });
+                        !name.matches(NAME_PATTERN))
+        ));
         this.name = name;
         return this;
     }

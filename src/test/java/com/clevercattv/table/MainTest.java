@@ -5,6 +5,8 @@ import com.clevercattv.table.model.Lesson;
 import com.clevercattv.table.model.Room;
 import com.clevercattv.table.model.Teacher;
 
+import java.time.DayOfWeek;
+
 public class MainTest {
 
     protected static final Lesson FIRST_LESSON = new Lesson()
@@ -23,7 +25,8 @@ public class MainTest {
             .setGroup(
                     new Group()
                             .setName("509")
-            );
+            )
+            .setDay(DayOfWeek.MONDAY);
 
     protected static final Lesson SECOND_LESSON = new Lesson()
             .setName("Physic")
@@ -41,7 +44,8 @@ public class MainTest {
             .setGroup(
                     new Group()
                             .setName("508")
-            );
+            )
+            .setDay(DayOfWeek.MONDAY);
 
     protected static final Lesson THIRD_LESSON = new Lesson()
             .setName("Physic")
@@ -59,7 +63,8 @@ public class MainTest {
             .setGroup(
                     new Group()
                             .setName("508")
-            );
+            )
+            .setDay(DayOfWeek.MONDAY);
 
     protected static final Lesson COMBINED = new Lesson()
             .setName("Physic")
@@ -80,6 +85,7 @@ public class MainTest {
                             new Group().setName("556"),
                             new Group().setName("557")
                     })
-            );
+            )
+            .setDay(DayOfWeek.MONDAY);
 
 }

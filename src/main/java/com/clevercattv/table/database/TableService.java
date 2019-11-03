@@ -1,18 +1,12 @@
 package com.clevercattv.table.database;
 
-import com.clevercattv.table.dao.GroupDao;
-import com.clevercattv.table.dao.LessonDao;
-import com.clevercattv.table.dao.RoomDao;
-import com.clevercattv.table.dao.TeacherDao;
 import com.clevercattv.table.model.Group;
-import com.clevercattv.table.model.Lesson;
 import com.clevercattv.table.model.Room;
 import com.clevercattv.table.model.Teacher;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.time.DayOfWeek;
 
 public class TableService {
 
@@ -47,26 +41,6 @@ public class TableService {
             "CONSTRAINT RoomBusy UNIQUE (number,day,roomId))";
 
     private TableService(){}
-
-    public static void main(String[] args) throws SQLException {
-        GroupDao groupDao = new GroupDao();
-        RoomDao roomDao = new RoomDao();
-        TeacherDao teacherDao = new TeacherDao();
-        LessonDao lessonDao = new LessonDao();
-        Group group = new Group().setName("name").setCombined(false);
-        dropTables();
-        createTables();
-        groupDao.save(group);
-        roomDao.save(new Room().setName("502").setType(Room.Type.AUDITORY));
-        teacherDao.save(new Teacher().setFullName("Teacher full name").setType(Teacher.Type.DOCENT));
-        lessonDao.save(new Lesson()
-                .setName("name")
-                .setNumber(Lesson.Number.FIRST)
-                .setGroup(group)
-                .setRoom(roomDao.findById(1).get())
-                .setTeacher(teacherDao.findById(1).get()), DayOfWeek.MONDAY);
-
-    }
 
     public static void dropTables() throws SQLException {
         try (Connection connection = ConnectionPool.getConnection();

@@ -16,6 +16,7 @@ public class Group implements EntityId<Group> {
     public static final String DIVIDER = "-";
 
     private int id;
+
     private String name;
     private boolean combined;
 
@@ -53,17 +54,15 @@ public class Group implements EntityId<Group> {
     }
 
     public Group setName(String name) {
-        Validator.getMessagesByPerformedTrue(new PerformedMessage[]{
+        Validator.getMessagesByPerformedTrue(Arrays.asList(
                 new PerformedMessage("Group name length less than minimum.",
                         name.length() < MIN_NAME_LENGTH),
                 new PerformedMessage("Group name length more than maximum.",
                         name.length() > MAX_NAME_LENGTH),
                 new PerformedMessage("Group name have forbidden symbols. " +
                         "Please use 'a-z A-Z 0-9' and '-' as group divider. ",
-                        !name.matches(NAME_PATTERN)),
-        }).ifPresent(e -> {
-            throw new NamingException(e);
-        });
+                        !name.matches(NAME_PATTERN))
+        ));
         this.name = name;
         return this;
     }
@@ -87,4 +86,5 @@ public class Group implements EntityId<Group> {
         this.id = id;
         return this;
     }
+
 }

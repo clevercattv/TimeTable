@@ -41,8 +41,4 @@ public class ConnectionPool {
         return connection;
     }
 
-    public static DatabaseMetaData getMetaData() throws SQLException {
-        return getConnection().getMetaData();
-    }
-
 }
