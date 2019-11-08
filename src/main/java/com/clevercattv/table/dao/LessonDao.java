@@ -1,31 +1,43 @@
 package com.clevercattv.table.dao;
 
 import com.clevercattv.table.database.ConnectionPool;
+import com.clevercattv.table.exception.BusyException;
 import com.clevercattv.table.model.Group;
 import com.clevercattv.table.model.Lesson;
 import com.clevercattv.table.model.Room;
 import com.clevercattv.table.model.Teacher;
 
 import java.sql.*;
+import java.time.DayOfWeek;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class LessonDao extends DaoImpl<Lesson> {
 
+    private static final LessonDao DAO = new LessonDao();
+
     private static final String TABLE_NAME = "lessons";
-    private static final String FIND_ALL = "SELECT l.id, l.name, l.number, t.id, t.fullname, t.type, " +
-            "r.id, r.name, r.type" +
-            "g.id, g.name, g.combined, l.day FROM lessons l " +
+
+    private static final String FIND_QUERY = "SELECT l.id, l.name, l.number, " +
+            "t.id, t.fullname, t.type, " +
+            "r.id, r.name, r.type, " +
+            "g.id, g.name, l.day FROM lessons l " +
             "LEFT JOIN teachers t ON t.id = l.teacherId " +
             "LEFT JOIN groups g ON g.id = l.groupId " +
             "LEFT JOIN rooms r ON r.id = l.roomId ";
-    private static final String FIND_BY_ID = FIND_ALL + "WHERE l.id = ? ";
+    private static final String FIND_ALL = FIND_QUERY + "ORDER BY l.day ASC, l.number ASC, g.name ASC ";
+    private static final String FIND_BY_ID = FIND_QUERY + "WHERE l.id = ? ";
     private static final String SAVE = "INSERT INTO " + TABLE_NAME + "" +
             "(name,number,teacherid,roomid,groupid,day) VALUES (?,?,?,?,?,?)";
     private static final String UPDATE = "UPDATE " + TABLE_NAME + " SET name = ?," +
             " number = ?, teacherId = ?, roomId = ?, groupId = ?, day = ? WHERE id = ?";
 
-    public LessonDao() {
+    private LessonDao() {
         super(TABLE_NAME);
+    }
+
+    public static LessonDao getInstance() {
+        return DAO;
     }
 
     @Override
@@ -64,9 +76,9 @@ public class LessonDao extends DaoImpl<Lesson> {
     public Lesson save(Lesson lesson) throws SQLException {
         try (Connection connection = ConnectionPool.getConnection();
              PreparedStatement stmt = connection.prepareStatement(SAVE, Statement.RETURN_GENERATED_KEYS)) {
-            fillSaveStatement(stmt,lesson);
+            fillSaveStatement(stmt, lesson);
             stmt.executeUpdate();
-            return fillById(lesson,stmt);
+            return fillById(lesson, stmt);
         }
     }
 
@@ -75,11 +87,11 @@ public class LessonDao extends DaoImpl<Lesson> {
         try (Connection connection = ConnectionPool.getConnection();
              PreparedStatement stmt = connection.prepareStatement(SAVE, Statement.RETURN_GENERATED_KEYS)) {
             for (Lesson lesson : lessons) {
-                fillSaveStatement(stmt,lesson);
+                fillSaveStatement(stmt, lesson);
                 stmt.addBatch();
             }
             stmt.executeBatch();
-            return fillAllByIds(lessons,stmt);
+            return fillAllByIds(lessons, stmt);
         }
     }
 
@@ -87,7 +99,8 @@ public class LessonDao extends DaoImpl<Lesson> {
     public void update(Lesson lesson) throws SQLException {
         try (Connection connection = ConnectionPool.getConnection();
              PreparedStatement stmt = connection.prepareStatement(UPDATE)) {
-            fillSaveStatement(stmt,lesson);
+            fillSaveStatement(stmt, lesson);
+            stmt.setInt(7, lesson.getId());
             stmt.executeUpdate();
         }
     }
@@ -113,8 +126,8 @@ public class LessonDao extends DaoImpl<Lesson> {
                         new Group()
                                 .setId(rs.getInt(10))
                                 .setName(rs.getString(11))
-                                .setCombined(rs.getBoolean(12))
-                );
+                )
+                .setDay(DayOfWeek.of(rs.getInt(12)));
     }
 
     private void fillSaveStatement(PreparedStatement stmt, Lesson lesson) throws SQLException {

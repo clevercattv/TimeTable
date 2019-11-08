@@ -57,10 +57,10 @@ public class Lesson implements EntityId<Lesson> {
         return "\nLesson{" +
                 "  id=" + id +
                 "  lessonNumber=" + number +
-                ", group=" + group +
+                ", group=" + group.toString() +
                 ", name=" + name +
-                ", teacher=" + teacher +
-                ", auditory=" + room +
+                ", teacher=" + teacher.toString() +
+                ", auditory=" + room.toString() +
                 '}';
     }
 
@@ -96,7 +96,6 @@ public class Lesson implements EntityId<Lesson> {
     }
 
     public Group getGroup() {
-
         return group;
     }
 

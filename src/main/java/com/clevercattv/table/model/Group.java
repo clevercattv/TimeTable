@@ -1,24 +1,21 @@
 package com.clevercattv.table.model;
 
-import com.clevercattv.table.exception.NamingException;
 import com.clevercattv.table.validation.PerformedMessage;
 import com.clevercattv.table.validation.Validator;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-public class Group implements EntityId<Group> {
+public class Group implements EntityId<Group>, Comparable<Group> {
 
     public static final int MIN_NAME_LENGTH = 3;
     public static final int MAX_NAME_LENGTH = 16;
     public static final String NAME_PATTERN = "^[a-z A-Z0-9-]+$";
-    public static final String DIVIDER = "-";
 
     private int id;
-
     private String name;
-    private boolean combined;
 
     @Override
     public boolean equals(Object o) {
@@ -36,17 +33,7 @@ public class Group implements EntityId<Group> {
         return "Group{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", combined=" + combined +
                 '}';
-    }
-
-    public Group setCombinedGroups(Group[] groups) {
-        if (groups.length < 2) throw new IllegalArgumentException("Combined group builds rom 2 or more groups.");
-        this.combined = true;
-        this.setName(Arrays.stream(groups)
-                .map(Group::getName)
-                .collect(Collectors.joining(DIVIDER)));
-        return this;
     }
 
     public String getName() {
@@ -67,15 +54,6 @@ public class Group implements EntityId<Group> {
         return this;
     }
 
-    public boolean isCombined() {
-        return combined;
-    }
-
-    public Group setCombined(boolean combined) {
-        this.combined = combined;
-        return this;
-    }
-
     @Override
     public int getId() {
         return id;
@@ -85,6 +63,11 @@ public class Group implements EntityId<Group> {
     public Group setId(int id) {
         this.id = id;
         return this;
+    }
+
+    @Override
+    public int compareTo(Group o) {
+        return name.compareTo(o.name);
     }
 
 }

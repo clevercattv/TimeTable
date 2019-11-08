@@ -1,6 +1,5 @@
 package com.clevercattv.table.model;
 
-import com.clevercattv.table.exception.NamingException;
 import com.clevercattv.table.validation.PerformedMessage;
 import com.clevercattv.table.validation.Validator;
 
@@ -12,6 +11,7 @@ public class Room implements EntityId<Room>{
     private int id;
     private String name;
     private Type type;
+
     public static final int MAX_NAME_LENGTH = 16;
     public static final String NAME_PATTERN = "^[a-z A-Z0-9]+$";
 

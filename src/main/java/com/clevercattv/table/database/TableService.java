@@ -15,8 +15,7 @@ public class TableService {
 
     private static final String CREATE_GROUPS = "CREATE TABLE IF NOT EXISTS Groups(" +
             ID_SERIAL +
-            "name VARCHAR(" + Group.MAX_NAME_LENGTH + ") " + NOT_NULL_UNIQUE + "," +
-            "combined BOOLEAN NOT NULL)";
+            "name VARCHAR(" + Group.MAX_NAME_LENGTH + ") " + NOT_NULL_UNIQUE + ")";
 
     private static final String CREATE_ROOMS = "CREATE TABLE IF NOT EXISTS Rooms(" +
             ID_SERIAL +
@@ -47,6 +46,7 @@ public class TableService {
              Statement stmt = connection.createStatement()) {
             stmt.execute("DROP SCHEMA public CASCADE ");
             stmt.execute("CREATE SCHEMA public");
+
         }
     }
 

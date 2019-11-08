@@ -27,7 +27,6 @@ public class TimeTableDataServiceTest extends MainTest {
         TIME_TABLE_SERVICE.addLesson(FIRST_LESSON);
         TIME_TABLE_SERVICE.addLesson(SECOND_LESSON);
         TIME_TABLE_SERVICE.addLesson(THIRD_LESSON);
-        TIME_TABLE_SERVICE.addLesson(COMBINED);
     }
 
     @DataProvider
@@ -44,14 +43,6 @@ public class TimeTableDataServiceTest extends MainTest {
                 {FIRST_LESSON.getTeacher(), new Group().setName("577"), FIRST_LESSON.getRoom()},
                 {FIRST_LESSON.getTeacher(), FIRST_LESSON.getGroup(), new Room().setName("5").setType(Room.Type.AUDITORY)},
                 {FIRST_LESSON.getTeacher(), FIRST_LESSON.getGroup(), FIRST_LESSON.getRoom()},
-                {new Teacher().setFullName("Test teacher").setType(Teacher.Type.DOCENT),
-                        new Group().setCombinedGroups(new Group[]{
-                                new Group().setName("577"),
-                                FIRST_LESSON.getGroup(),
-                                SECOND_LESSON.getGroup()
-                        }),
-                        new Room().setName("5").setType(Room.Type.AUDITORY)},
-                {FIRST_LESSON.getTeacher(), COMBINED.getGroup(), FIRST_LESSON.getRoom()},
         };
     }
 

@@ -1,16 +1,20 @@
 package com.clevercattv.table.database;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.postgresql.ds.PGConnectionPoolDataSource;
+import org.postgresql.util.PSQLException;
 
 import javax.sql.ConnectionPoolDataSource;
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.DatabaseMetaData;
 import java.sql.SQLException;
 import java.util.Objects;
 import java.util.Properties;
 
 public class ConnectionPool {
+
+    private static final Logger LOGGER = LogManager.getLogger(ConnectionPool.class);
 
     private static final String PROPERTIES = "application.properties";
     private static ConnectionPoolDataSource poolDataSource;
@@ -31,14 +35,21 @@ public class ConnectionPool {
             source.setApplicationName(properties.getProperty("application.name"));
             poolDataSource = source;
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.error(e);
         }
     }
 
     public static Connection getConnection() throws SQLException {
-        Connection connection = poolDataSource.getPooledConnection().getConnection();
-        if (Objects.isNull(connection)) throw new NullPointerException();
-        return connection;
+//        try{
+            Connection connection = poolDataSource.getPooledConnection().getConnection();
+            if (Objects.isNull(connection)) throw new NullPointerException();
+            return connection;
+//        } catch (PSQLException e){
+//            if (e.getSQLState().equals("53300")){
+//
+//            }
+//        }
+//        return null;
     }
 
 }

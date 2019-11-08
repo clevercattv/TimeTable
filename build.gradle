@@ -2,6 +2,7 @@ group 'TimeTable'
 version '1.0-SNAPSHOT'
 
 apply plugin: 'java'
+apply plugin: 'war'
 
 sourceCompatibility = 1.8
 
@@ -16,6 +17,12 @@ dependencies {
     // POSTGRESQL DATABASE
     compile group: 'org.postgresql', name: 'postgresql', version: '42.2.8'
 
+    // SERVLET
+    providedCompile group: 'javax.servlet', name: 'javax.servlet-api', version: '4.0.1'
+    compile group: 'javax.servlet', name: 'jstl', version: '1.2'
+
+    // LOGGER
+    compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.12.1'
 
     // JSON
     compile group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.10.0'

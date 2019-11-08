@@ -15,6 +15,8 @@ public class LessonService {
     private static final String ROOM_BUSY = "ROOM";
     @JsonIgnore
     private static final String TEACHER_BUSY = "TEACHER";
+    @JsonIgnore
+    private static final String GROUP_BUSY = "GROUP";
 
     private List<Lesson> lessons;
 
@@ -38,24 +40,15 @@ public class LessonService {
                     if (item.getTeacher().equals(lesson.getTeacher())) {
                         busyList.add(TEACHER_BUSY);
                     }
-                    getBusyGroupsNames(item.getGroup(), lesson.getGroup())
-                            .ifPresent(busyList::add);
+                    if (item.getGroup().equals(lesson.getGroup())){
+                        busyList.add(GROUP_BUSY);
+                    }
                 });
         if (busyList.isEmpty()) {
             lessons.add(lesson);
         } else {
             throw new BusyException(busyList.toString());
         }
-    }
-
-    private Optional<String> getBusyGroupsNames(Group group, Group newGroup) {
-        List<String> busyGroups = new ArrayList<>();
-        for (String groupItem : group.getName().split(Group.DIVIDER)) {
-            for (String newGroupItem : newGroup.getName().split(Group.DIVIDER)) {
-                if (groupItem.equals(newGroupItem)) busyGroups.add(groupItem);
-            }
-        }
-        return busyGroups.isEmpty() ? Optional.empty() : Optional.of(busyGroups.toString());
     }
 
     public List<Lesson> getLessons() {
