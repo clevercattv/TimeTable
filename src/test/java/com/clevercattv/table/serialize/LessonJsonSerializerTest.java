@@ -3,7 +3,7 @@ package com.clevercattv.table.serialize;
 import com.clevercattv.table.MainTest;
 import com.clevercattv.table.model.Lesson;
 import com.clevercattv.table.service.IOExecutor;
-import com.clevercattv.table.service.LessonService;
+import com.clevercattv.table.service.TimeTableService;
 import com.tngtech.java.junit.dataprovider.DataProvider;
 import com.tngtech.java.junit.dataprovider.DataProviderRunner;
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
@@ -22,7 +22,7 @@ import static org.junit.Assert.assertNull;
 @RunWith(DataProviderRunner.class)
 public class LessonJsonSerializerTest extends MainTest {
 
-    private static final LessonService TIME_TABLE_SERVICE = new LessonService();
+    private static final TimeTableService TIME_TABLE_SERVICE = new TimeTableService();
 
     @BeforeClass
     public static void beforeClass() {

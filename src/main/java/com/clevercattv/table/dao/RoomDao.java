@@ -8,14 +8,20 @@ import java.util.*;
 
 public class RoomDao extends DaoImpl<Room> {
 
+    private static final RoomDao ROOM_DAO = new RoomDao();
     private static final String TABLE_NAME = "rooms";
-    private static final String FIND_ALL = "SELECT id, name, type FROM " + TABLE_NAME;
-    private static final String FIND_BY_ID = FIND_ALL + " WHERE id = ?";
+    private static final String FIND = "SELECT id, name, type FROM " + TABLE_NAME;
+    private static final String FIND_ALL = FIND + " ORDER BY name ASC ";
+    private static final String FIND_BY_ID = FIND + " WHERE id = ?";
     private static final String SAVE = "INSERT INTO " + TABLE_NAME + "(name,type) VALUES (?,?)";
     private static final String UPDATE = "UPDATE " + TABLE_NAME + " SET name = ?, type = ? WHERE id = ?";
 
-    public RoomDao() {
+    private RoomDao() {
         super(TABLE_NAME);
+    }
+
+    public static RoomDao getInstance() {
+        return ROOM_DAO;
     }
 
     @Override

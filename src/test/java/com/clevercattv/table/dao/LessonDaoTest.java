@@ -20,7 +20,7 @@ public class LessonDaoTest extends MainTest {
 
     private static final LessonDao DAO = LessonDao.getInstance();
     private static final GroupDao GROUP_DAO = GroupDao.getInstance();
-    private static final RoomDao ROOM_DAO = new RoomDao();
+    private static final RoomDao ROOM_DAO = RoomDao.getInstance();
     private static final TeacherDao TEACHER_DAO = new TeacherDao();
 
     @Before

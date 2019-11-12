@@ -7,25 +7,23 @@ import com.clevercattv.table.dao.TeacherDao;
 import com.clevercattv.table.database.TableService;
 import com.clevercattv.table.model.*;
 import com.clevercattv.table.serialize.LessonJsonSerializer;
-import com.clevercattv.table.service.LessonService;
+import com.clevercattv.table.service.TimeTableService;
 import org.junit.Test;
 
 import java.io.IOException;
 import java.sql.SQLException;
 import java.time.DayOfWeek;
-import java.util.Arrays;
-import java.util.List;
 
 public class TestSpeed {
 
-    private static final LessonService TIME_TABLE_SERVICE = new LessonService();
+    private static final TimeTableService TIME_TABLE_SERVICE = new TimeTableService();
 
     private static final char[] CHAR_LIST =
             "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ".toCharArray();
 
     private static final LessonDao DAO = LessonDao.getInstance();
     private static final GroupDao GROUP_DAO = GroupDao.getInstance();
-    private static final RoomDao ROOM_DAO = new RoomDao();
+    private static final RoomDao ROOM_DAO = RoomDao.getInstance();
     private static final TeacherDao TEACHER_DAO = new TeacherDao();
 
     @Test

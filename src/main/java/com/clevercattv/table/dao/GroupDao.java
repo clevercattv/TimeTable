@@ -14,8 +14,9 @@ public class GroupDao extends DaoImpl<Group> {
     private static final GroupDao DAO = new GroupDao();
 
     private static final String TABLE_NAME = "groups";
-    private static final String FIND_ALL = "SELECT id, name FROM " + TABLE_NAME;
-    private static final String FIND_BY_ID = FIND_ALL + " WHERE id = ?";
+    private static final String FIND = "SELECT id, name FROM " + TABLE_NAME;
+    private static final String FIND_ALL = FIND + " ORDER BY name ASC ";
+    private static final String FIND_BY_ID = FIND + " WHERE id = ?";
     private static final String SAVE = "INSERT INTO " + TABLE_NAME + "(name) VALUES (?)";
     private static final String UPDATE = "UPDATE " + TABLE_NAME + " SET name = ? WHERE id = ?";
 

@@ -1,7 +1,10 @@
 package com.clevercattv.table.controller;
 
 import com.clevercattv.table.dao.LessonDao;
+import com.clevercattv.table.dao.RoomDao;
 import com.clevercattv.table.dto.TimeTableDTO;
+import com.clevercattv.table.exception.NamingException;
+import com.clevercattv.table.model.Room;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -34,12 +37,7 @@ public class TimeTableController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) {
-        try (PrintWriter writer = resp.getWriter()) {
-            String name = req.getParameter("name");
-            writer.println("Welcome " + name);
-        } catch (IOException e) {
-            LOGGER.error(e);
-        }
+
     }
 
 }

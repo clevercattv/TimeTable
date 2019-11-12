@@ -20,7 +20,7 @@ import static org.junit.Assert.assertTrue;
 @RunWith(DataProviderRunner.class)
 public class TimeTableDataServiceTest extends MainTest {
 
-    private static final LessonService TIME_TABLE_SERVICE = new LessonService();
+    private static final TimeTableService TIME_TABLE_SERVICE = new TimeTableService();
 
     @BeforeClass
     public static void beforeClass() {

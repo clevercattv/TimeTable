@@ -3,7 +3,7 @@ package com.clevercattv.table.model;
 import com.clevercattv.table.MainTest;
 import com.clevercattv.table.exception.BusyException;
 import com.clevercattv.table.exception.NamingException;
-import com.clevercattv.table.service.LessonService;
+import com.clevercattv.table.service.TimeTableService;
 import com.tngtech.java.junit.dataprovider.DataProvider;
 import com.tngtech.java.junit.dataprovider.DataProviderRunner;
 import org.junit.BeforeClass;
@@ -15,7 +15,7 @@ import java.time.DayOfWeek;
 @RunWith(DataProviderRunner.class)
 public class GroupTest extends MainTest {
 
-    private static final LessonService TIME_TABLE_SERVICE = new LessonService();
+    private static final TimeTableService TIME_TABLE_SERVICE = new TimeTableService();
 
     @BeforeClass
     public static void beforeClass() {

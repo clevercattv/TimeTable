@@ -13,13 +13,6 @@
     <title>Title</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <style>
-        .vericaltext {
-            width: 1px;
-            word-wrap: break-word;
-            white-space: pre-wrap;
-        }
-    </style>
 </head>
 <body>
 <div class="container">
@@ -49,7 +42,6 @@
                 <div class="tab-pane fade" id="week" role="tabpanel" aria-labelledby="contact-tab">test3</div>
             </div>
             <div class="row">
-                <%--${timeTable}--%>
                 <table class="table" style="text-align:center">
                     <thead class="thead-light">
                     <tr>
@@ -60,74 +52,38 @@
                         </c:forEach>
                     </tr>
                     </thead>
-
                     <tbody>
                     <c:forEach items="${timeTable.dayOfWeeks}" var="day">
-                        <tr>
-                            <th rowspan="${fn:length(timeTable.lessonTime)}" scope="col" style="position: relative">
-                                <div class="vericaltext" style="position: absolute; left: 45%">
-                                    <c:out value="${day}"/>
-                                </div>
-                            </th>
-                            <%--<th>${timeTable.lessonTime[0]}</th>--%>
-                            <c:forEach items="${timeTable.groups}" var="group">
-                                <c:set var="isNotFindLesson" scope="page" value="${true}"/>
-                                <c:forEach items="${timeTable.lessons}" var="lesson">
-                                    <c:if test="${group eq lesson.group}">
-                                        <th>${lesson.name}</th>
-                                        <c:set var="isNotFindLesson" scope="page" value="${false}"/>
-                                        <%-- todo delete lesson from lessons --%>
-                                    </c:if>
-                                </c:forEach>
-                                <c:if test="${isNotFindLesson}">
-                                    <th>space <br> ${group} <br> ${isNotFindLesson}</th>
-                                </c:if>
-                            </c:forEach>
-                        </tr>
-                        <c:forEach items="${timeTable.lessonTime}" begin="1" var="time">
+                        <c:forEach items="${timeTable.lessonTime}" var="time">
                             <tr>
-                                <th><c:out value="${time}"/></th>
+                                <th scope="col" style="position: relative">
+                                    <div>
+                                        <c:out value="${day}"/>
+                                    </div>
+                                </th>
+                                <th>${time}</th>
                                 <c:forEach items="${timeTable.groups}" var="group">
-                                    <th><c:out value="${group}"/></th>
+                                    <c:set var="isNotFindLesson" scope="page" value="${true}"/>
+                                    <c:forEach items="${timeTable.lessons}" var="lesson">
+                                        <c:if test="${day eq lesson.day and time eq lesson.lessonTime and group eq lesson.group}">
+                                            <th>
+                                                    <%--<div>${lesson.lessonTime}</div>--%>
+                                                    <%--<div>${lesson.day}</div>--%>
+                                                <div>${lesson.name}</div>
+                                                <div>${lesson.teacher}</div>
+                                                    <%--<div>${lesson.group}</div>--%>
+                                                <div>${lesson.room}</div>
+                                            </th>
+                                            <c:set var="isNotFindLesson" scope="page" value="${false}"/>
+                                        </c:if>
+                                    </c:forEach>
+                                    <c:if test="${isNotFindLesson}">
+                                        <th></th>
+                                    </c:if>
                                 </c:forEach>
                             </tr>
                         </c:forEach>
                     </c:forEach>
-
-                    <%--<tr>--%>
-                    <%--<th rowspan="4" scope="col" style="position: relative">--%>
-                    <%--<div class="vericaltext" style="position: absolute; left: 45%">Monday</div>--%>
-                    <%--</th>--%>
-                    <%--<th>Monday</th>--%>
-                    <%--<th>Tuesday</th>--%>
-                    <%--<th>Wednesday</th>--%>
-                    <%--<th>Thursday</th>--%>
-                    <%--<th>Friday</th>--%>
-                    <%--<th>Friday</th>--%>
-                    <%--</tr>--%>
-                    <%--<tr>--%>
-                    <%--<th>Monday</th>--%>
-                    <%--<th>Tuesday</th>--%>
-                    <%--<th>Wednesday</th>--%>
-                    <%--<th>Thursday</th>--%>
-                    <%--<th>Friday</th>--%>
-                    <%--<th>Friday</th>--%>
-                    <%--</tr>--%>
-                    <%--<tr>--%>
-                    <%--<th>Monday</th>--%>
-                    <%--<th>Tuesday</th>--%>
-                    <%--<th>Wednesday</th>--%>
-                    <%--<th>Thursday</th>--%>
-                    <%--<th>Friday</th>--%>
-                    <%--<th>Friday</th>--%>
-                    <%--</tr>--%>
-                    <%--<tr>--%>
-                    <%--<th>Monday</th>--%>
-                    <%--<th>Tuesday</th>--%>
-                    <%--<th>Wednesday</th>--%>
-                    <%--<th>Thursday</th>--%>
-                    <%--<th>Friday</th>--%>
-                    <%--</tr>--%>
                     </tbody>
                 </table>
             </div>
