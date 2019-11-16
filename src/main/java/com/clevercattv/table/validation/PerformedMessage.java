@@ -2,7 +2,6 @@ package com.clevercattv.table.validation;
 
 public class PerformedMessage {
 
-    /** Message if condition true */
     private String message;
     private boolean performed;
 

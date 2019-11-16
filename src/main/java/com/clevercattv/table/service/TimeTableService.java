@@ -88,4 +88,7 @@ public class TimeTableService {
                 .collect(Collectors.toList());
     }
 
+    public TimeTable getTimeTable() {
+        return timeTable;
+    }
 }

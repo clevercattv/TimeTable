@@ -9,7 +9,7 @@ public class Validator {
 
     private Validator(){}
 
-    public static void getMessagesByPerformedTrue(List<PerformedMessage> messages) {
+    public static void throwExceptionIfPerformedTrue(List<PerformedMessage> messages) {
         List<String> list = messages.stream()
                 .filter(PerformedMessage::isPerformed)
                 .map(PerformedMessage::getMessage)

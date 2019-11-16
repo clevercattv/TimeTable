@@ -109,7 +109,7 @@ public class Lesson implements EntityId<Lesson> {
     }
 
     public Lesson setName(String name) {
-        Validator.getMessagesByPerformedTrue(Arrays.asList(
+        Validator.throwExceptionIfPerformedTrue(Arrays.asList(
                 new PerformedMessage("Lesson name length less than minimum",
                         name.length() < MIN_NAME_LENGTH),
                 new PerformedMessage("Lesson name length more than maximum",

@@ -61,7 +61,7 @@ public class Teacher implements EntityId<Teacher>{
     }
 
     public Teacher setFullName(String fullName) {
-        Validator.getMessagesByPerformedTrue(Arrays.asList(
+        Validator.throwExceptionIfPerformedTrue(Arrays.asList(
                 new PerformedMessage("Teacher name length less than minimum",
                         fullName.length() < MIN_NAME_LENGTH),
                 new PerformedMessage("Teacher name length more than maximum",

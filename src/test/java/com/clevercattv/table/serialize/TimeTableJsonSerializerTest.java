@@ -2,6 +2,7 @@ package com.clevercattv.table.serialize;
 
 import com.clevercattv.table.MainTest;
 import com.clevercattv.table.model.Lesson;
+import com.clevercattv.table.model.TimeTable;
 import com.clevercattv.table.service.IOExecutor;
 import com.clevercattv.table.service.TimeTableService;
 import com.tngtech.java.junit.dataprovider.DataProvider;
@@ -20,7 +21,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
 @RunWith(DataProviderRunner.class)
-public class LessonJsonSerializerTest extends MainTest {
+public class TimeTableJsonSerializerTest extends MainTest {
 
     private static final TimeTableService TIME_TABLE_SERVICE = new TimeTableService();
 
@@ -33,18 +34,18 @@ public class LessonJsonSerializerTest extends MainTest {
     @DataProvider
     public static Object[][] dayOfWeekDataProvider() {
         return new Object[][]{
-                {TIME_TABLE_SERVICE.getLessons(), "Test1.json"},
-                {TIME_TABLE_SERVICE.getDays(Arrays.asList(DayOfWeek.MONDAY, DayOfWeek.THURSDAY)), "Test2.json"},
-                {TIME_TABLE_SERVICE.getDaysByGroup(FIRST_LESSON.getGroup(), Arrays.asList(DayOfWeek.MONDAY)), "Test3.json"},
-                {TIME_TABLE_SERVICE.getWeekByGroup(SECOND_LESSON.getGroup()), "Test4.json"}
+                {new TimeTable(TIME_TABLE_SERVICE.getLessons()), "Test1.json"},
+                {new TimeTable(TIME_TABLE_SERVICE.getDays(Arrays.asList(DayOfWeek.MONDAY, DayOfWeek.THURSDAY))), "Test2.json"},
+                {new TimeTable(TIME_TABLE_SERVICE.getDaysByGroup(FIRST_LESSON.getGroup(), Arrays.asList(DayOfWeek.MONDAY))), "Test3.json"},
+                {new TimeTable(TIME_TABLE_SERVICE.getWeekByGroup(SECOND_LESSON.getGroup())), "Test4.json"}
         };
     }
 
     @Test
     @UseDataProvider("dayOfWeekDataProvider")
-    public void saveLoadTimeTable(List<Lesson> days, String path) throws ExecutionException, InterruptedException {
-        IOExecutor.save(days, path);
-        assertEquals(IOExecutor.load(path).get(), days);
+    public void saveLoadTimeTable(TimeTable timeTable, String path) throws ExecutionException, InterruptedException {
+        IOExecutor.save(timeTable, path);
+        assertEquals(IOExecutor.load(path).get(), timeTable);
     }
 
     @Test(expected = ExecutionException.class)

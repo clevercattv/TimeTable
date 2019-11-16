@@ -25,20 +25,21 @@ public class RoomController extends Controller {
     private static final Logger LOGGER = LogManager.getLogger(RoomController.class);
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
             String filterName = req.getParameter("fName");
-            String filterType = req.getParameter("fType");
-            if (Strings.isEmpty(filterName) && Strings.isEmpty(filterType)){
+            if (Strings.isEmpty(filterName)){
                 req.setAttribute("response", new CrudRoomDTO(RoomDao.getInstance().findAll()));
             } else {
                 req.setAttribute("response", new CrudRoomDTO(RoomDao.getInstance()
-                        .findByNameAndType(filterName,filterType)));
+                        .findByNameAndType(filterName,req.getParameter("fType"))));
             }
             RequestDispatcher requestDispatcher = req.getRequestDispatcher("/CRUD_Room.jsp");
             requestDispatcher.forward(req, resp);
         } catch (ServletException | IOException | SQLException e) {
             LOGGER.error(e);
+            req.getRequestDispatcher("/Error500.jsp")
+                    .forward(req, resp);
         }
     }
 

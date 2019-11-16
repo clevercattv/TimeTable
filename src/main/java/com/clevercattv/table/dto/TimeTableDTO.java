@@ -18,7 +18,7 @@ public class TimeTableDTO {
     public TimeTableDTO toDto(List<Lesson> lessons) {
         for (Lesson lesson : lessons) {
             this.groups.add(lesson.getGroup().getName());
-            this.lessonTime.add(lesson.getNumber().getStart().toString());
+            this.lessonTime.add(lesson.getNumber().name());
             this.dayOfWeek.add(lesson.getDay().name());
             this.lessons.add(new ViewLessonDTO().toDto(lesson));
         }

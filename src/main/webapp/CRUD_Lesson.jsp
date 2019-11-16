@@ -61,7 +61,7 @@
                     <tr>
                         <th scope="col">Name</th>
                         <th scope="col">Number</th>
-                        <th scope="col">Day</th>
+                        <th scope="col">Day of week</th>
                         <th scope="col">Teacher</th>
                         <th scope="col">Group</th>
                         <th scope="col">Room</th>
@@ -108,7 +108,7 @@
                                     <input type="text" class="createRoom form-control my-1 mr-2" id="itemFucName" name="name">
                                 </div>
                                 <div class="form-group col-4">
-                                    <label for="itemFucNumber" class="mr-2 text-dark add--text" style="font-weight: 700; font-size: 24px">Time</label>
+                                    <label for="itemFucNumber" class="mr-2 text-dark add--text" style="font-weight: 700; font-size: 24px">Number</label>
                                     <select class="form-control" id="itemFucNumber">
                                         <c:forEach items="${response.number}" var="item">
                                             <option>${item}</option>

@@ -49,7 +49,7 @@ public class Room implements EntityId<Room>{
     }
 
     public Room setName(String name) {
-        Validator.getMessagesByPerformedTrue(Arrays.asList(
+        Validator.throwExceptionIfPerformedTrue(Arrays.asList(
                 new PerformedMessage("Room name is empty",
                         name.isEmpty()),
                 new PerformedMessage("Room name length more than maximum (" + MAX_NAME_LENGTH + ")",

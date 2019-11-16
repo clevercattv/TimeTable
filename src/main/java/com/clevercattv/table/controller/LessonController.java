@@ -30,7 +30,7 @@ public class LessonController extends Controller {
     private static final Logger LOGGER = LogManager.getLogger(LessonController.class);
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
             if (req.getParameter("fName") == null) {
                 req.setAttribute("response",
@@ -53,7 +53,8 @@ public class LessonController extends Controller {
             requestDispatcher.forward(req, resp);
         } catch (ServletException | IOException | SQLException e) {
             LOGGER.error(e);
-            // todo exception page!!!
+            req.getRequestDispatcher("/Error500.jsp")
+                    .forward(req, resp);
         }
     }
 
@@ -114,7 +115,8 @@ public class LessonController extends Controller {
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) {
         try {
-            LessonDao.getInstance().delete(Integer.parseInt(req.getParameter("id")));
+            LessonDao.getInstance()
+                    .delete(Integer.parseInt(req.getParameter("id")));
         } catch (SQLException e) {
             LOGGER.error(e);
             req.setAttribute(Controller.ERROR, "You can't delete this lesson before it used in " +

@@ -46,7 +46,7 @@ public class Group implements EntityId<Group>, Comparable<Group> {
     }
 
     public Group setName(String name) {
-        Validator.getMessagesByPerformedTrue(Arrays.asList(
+        Validator.throwExceptionIfPerformedTrue(Arrays.asList(
                 new PerformedMessage("Group name length less than minimum",
                         name.length() < MIN_NAME_LENGTH),
                 new PerformedMessage("Group name length more than maximum",

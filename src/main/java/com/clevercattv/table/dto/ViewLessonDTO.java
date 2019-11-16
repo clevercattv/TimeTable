@@ -39,6 +39,19 @@ public class ViewLessonDTO {
         return this;
     }
 
+    @Override
+    public String toString() {
+        return "ViewLessonDTO{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", number='" + number + '\'' +
+                ", teacher='" + teacher + '\'' +
+                ", group='" + group + '\'' +
+                ", room='" + room + '\'' +
+                ", day='" + day + '\'' +
+                '}';
+    }
+
     public int getId() {
         return id;
     }

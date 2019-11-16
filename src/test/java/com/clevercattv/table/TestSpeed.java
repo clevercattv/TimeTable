@@ -6,7 +6,7 @@ import com.clevercattv.table.dao.RoomDao;
 import com.clevercattv.table.dao.TeacherDao;
 import com.clevercattv.table.database.TableService;
 import com.clevercattv.table.model.*;
-import com.clevercattv.table.serialize.LessonJsonSerializer;
+import com.clevercattv.table.serialize.TimeTableJsonSerializer;
 import com.clevercattv.table.service.TimeTableService;
 import org.junit.Test;
 
@@ -64,10 +64,10 @@ public class TestSpeed {
         System.out.println("Adding time : " + (System.currentTimeMillis() - startTime));
         try {
             startTime = System.currentTimeMillis();
-            LessonJsonSerializer.serialize(TIME_TABLE_SERVICE.getLessons(), "randomTest.json");
+            TimeTableJsonSerializer.serialize(TIME_TABLE_SERVICE.getTimeTable(), "randomTest.json");
             System.out.println("Writing json time : " + (System.currentTimeMillis() - startTime));
             startTime = System.currentTimeMillis();
-            LessonJsonSerializer.deserialize("randomTest.json");
+            TimeTableJsonSerializer.deserialize("randomTest.json");
             System.out.println("Reading json time : " + (System.currentTimeMillis() - startTime));
         } catch (IOException e) {
             e.printStackTrace();

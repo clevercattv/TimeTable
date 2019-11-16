@@ -21,15 +21,17 @@ public class TimeTableController extends HttpServlet {
     private static final Logger LOGGER = LogManager.getLogger(TimeTableController.class);
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
             TimeTableDTO timeTableDTO = new TimeTableDTO();
             req.setAttribute("filter", TimeTableFilter.build());
             req.setAttribute("timeTable",timeTableDTO.toDto(LessonDao.getInstance().findAll()));
-            RequestDispatcher requestDispatcher = req.getRequestDispatcher("/FormTest.jsp");
+            RequestDispatcher requestDispatcher = req.getRequestDispatcher("/TimeTable.jsp");
             requestDispatcher.forward(req, resp);
         } catch (SQLException | ServletException | IOException e) {
             LOGGER.error(e);
+            req.getRequestDispatcher("/Error500.jsp")
+                    .forward(req, resp);
         }
     }
 

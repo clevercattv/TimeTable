@@ -5,12 +5,14 @@ import com.clevercattv.table.model.Group;
 import com.clevercattv.table.model.Lesson;
 import com.clevercattv.table.model.Room;
 import com.clevercattv.table.model.Teacher;
-import com.clevercattv.table.serialize.SqlJsonSerializer;
 
 import javax.servlet.http.HttpServletRequest;
 import java.sql.*;
 import java.time.DayOfWeek;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Optional;
 
 public class LessonDao extends DaoImpl<Lesson> {
 
@@ -33,23 +35,6 @@ public class LessonDao extends DaoImpl<Lesson> {
             "(name,number,teacherid,roomid,groupid,day) VALUES (?,?,?,?,?,?)";
     private static final String UPDATE = "UPDATE " + TABLE_NAME + " SET name = ?," +
             " number = ?, teacherId = ?, roomId = ?, groupId = ?, day = ? WHERE id = ?";
-
-    public static void main(String[] args) {
-        System.out.println(Thread.currentThread()
-                .getContextClassLoader().getResource("application.properties"));
-    }
-
-    static {
-//        Map<String, String> daoMap = new HashMap<>();
-//        daoMap.put("TABLE_NAME",TABLE_NAME);
-//        daoMap.put("FIND_QUERY",FIND_QUERY);
-//        daoMap.put("FIND_ALL",FIND_ALL);
-//        daoMap.put("FIND_FILTERED",FIND_FILTERED);
-//        daoMap.put("FIND_BY_ID",FIND_BY_ID);
-//        daoMap.put("SAVE",SAVE);
-//        daoMap.put("UPDATE",UPDATE);
-//        SqlJsonSerializer.serialize(daoMap,"");
-    }
 
     private LessonDao() {
         super(TABLE_NAME, "name");

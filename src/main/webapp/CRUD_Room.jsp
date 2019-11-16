@@ -44,10 +44,12 @@
                     <h2 class="text-white" style="font-weight: 700">Rooms</h2>
                 </div>
                 <div class="col-9" style="align-self: center; text-align: right">
-                    <em class="material-icons icon--button mt-1 text-success" style="font-size: 2em;" data-toggle="modal"
+                    <em class="material-icons icon--button mt-1 text-success" style="font-size: 2em;"
+                        data-toggle="modal"
                         data-target="#itemFucModal" onclick="fillCreateRoomModal()">add_box</em>
                     <em class="material-icons icon--button mt-1 text-warning" data-toggle="modal"
-                        data-target="#itemFucModal" onclick="fillFilterRoomModal('${param.fName}','${param.fType}')" style="font-size: 2em;">filter_list</em>
+                        data-target="#itemFucModal" onclick="fillFilterRoomModal('${param.fName}','${param.fType}')"
+                        style="font-size: 2em;">filter_list</em>
                 </div>
             </div>
             <div class="row">
@@ -92,11 +94,14 @@
                         <div class="modal-body" style="display: flex">
                             <div class="row">
                                 <div class="form-group col-4">
-                                    <label for="itemFucName" class="mr-2 text-dark add--text" style="font-weight: 700; font-size: 24px">Name</label>
-                                    <input type="text" class="form-control my-1 mr-2" id="itemFucName" placeholder="Room name">
+                                    <label for="itemFucName" class="mr-2 text-dark add--text"
+                                           style="font-weight: 700; font-size: 24px">Name</label>
+                                    <input type="text" class="form-control my-1 mr-2"
+                                           id="itemFucName" placeholder="Room name">
                                 </div>
                                 <div class="form-group col-4">
-                                    <label for="itemFucType" class="mr-2 text-dark add--text" style="font-weight: 700; font-size: 24px">Name</label>
+                                    <label for="itemFucType" class="mr-2 text-dark add--text"
+                                           style="font-weight: 700; font-size: 24px">Type</label>
                                     <select class="form-control my-1 mr-2" id="itemFucType">
                                         <c:forEach items="${response.types}" var="type">
                                             <option>${type}</option>
@@ -105,9 +110,11 @@
                                 </div>
                                 <div class="form-group col-4 d-flex align-self-end">
                                     <button onclick="modalAction(createRoom,updateRoom,filterRoom)"
-                                            class="btn btn-primary my-1 mr-2" id="itemFucSubmit">Edit</button>
+                                            class="btn btn-primary my-1 mr-2" id="itemFucSubmit">Edit
+                                    </button>
                                     <button onclick="window.location.href = '?'"
-                                            class="btn btn-warning my-1 mr-2" id="itemFucClear">Clear</button>
+                                            class="btn btn-warning my-1 mr-2" id="itemFucClear">Clear
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -128,8 +135,11 @@
                             </button>
                         </div>
                         <div class="modal-body" style="display: flex">
-                            <button class="btn btn-danger my-1 mr-2" onclick="removeItem('room_','/timetable/room')" style="width: 50%">OK</button>
-                            <button class="btn btn-primary my-1 mr-2" data-dismiss="modal" aria-label="Close" style="width: 50%">Cancel
+                            <button class="btn btn-danger my-1 mr-2"
+                                    onclick="removeItem('room_','/timetable/room')" style="width: 50%">OK
+                            </button>
+                            <button class="btn btn-primary my-1 mr-2"
+                                    data-dismiss="modal" aria-label="Close" style="width: 50%">Cancel
                             </button>
                         </div>
                         <div class="alert alert-danger mx-2" role="alert" id="deleteItemError"
