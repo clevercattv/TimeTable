@@ -2,6 +2,10 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <bytecodeTargetLevel>
+      <module name="timetable.main" target="1.8" />
+      <module name="timetable.test" target="1.8" />
+      <module name="TimeTable.timetable.main" target="1.8" />
+      <module name="TimeTable.timetable.test" target="1.8" />
       <module name="timetable_main" target="1.8" />
       <module name="timetable_test" target="1.8" />
     </bytecodeTargetLevel>

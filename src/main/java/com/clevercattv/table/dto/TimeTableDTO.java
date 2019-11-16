@@ -10,19 +10,17 @@ import java.util.stream.Collectors;
 
 public class TimeTableDTO {
 
-    private Set<String> dayOfWeeks = new HashSet<>();
+    private Set<String> dayOfWeek = new HashSet<>();
     private List<String> lessonTime = new ArrayList<>();
     private Set<String> groups = new HashSet<>();
-    private List<LessonDTO> lessons = new ArrayList<>();
-
-    public TimeTableDTO() { }
+    private List<ViewLessonDTO> lessons = new ArrayList<>();
 
     public TimeTableDTO toDto(List<Lesson> lessons) {
         for (Lesson lesson : lessons) {
             this.groups.add(lesson.getGroup().getName());
             this.lessonTime.add(lesson.getNumber().getStart().toString());
-            this.dayOfWeeks.add(lesson.getDay().name());
-            this.lessons.add(new LessonDTO().toDto(lesson));
+            this.dayOfWeek.add(lesson.getDay().name());
+            this.lessons.add(new ViewLessonDTO().toDto(lesson));
         }
         this.lessonTime = this.lessonTime.stream()
                 .distinct()
@@ -34,7 +32,7 @@ public class TimeTableDTO {
     @Override
     public String toString() {
         return "TimeTableDTO{" +
-                "dayOfWeeks=" + dayOfWeeks +
+                "dayOfWeek=" + dayOfWeek +
                 ", lessonTime=" + lessonTime +
                 ", groups=" + groups +
                 ", lessons=" + lessons +
@@ -45,15 +43,16 @@ public class TimeTableDTO {
         return lessonTime;
     }
 
-    public Set<String> getDayOfWeeks() {
-        return dayOfWeeks;
+    public Set<String> getDayOfWeek() {
+        return dayOfWeek;
     }
 
     public Set<String> getGroups() {
         return groups;
     }
 
-    public List<LessonDTO> getLessons() {
+    public List<ViewLessonDTO> getLessons() {
         return lessons;
     }
+
 }

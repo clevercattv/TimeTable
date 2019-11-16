@@ -1,3 +1,8 @@
+.table-top{
+    background: #4b5366;
+    border: 1px solid #4b5366;
+    border-radius: 2px;
+}
 .table-title .btn i {
     float: left;
     font-size: 21px;
@@ -38,12 +43,12 @@ table.table th i {
 }
 table.table td a {
     font-weight: 400;
-    color: #566787;
+    color: #566787!important;
     display: inline-block;
     text-decoration: none;
 }
 table.table td a:hover {
-    color: #2196F3;
+    color: #2196F3!important;
 }
 table.table td a.view i {
     font-size: 22px;

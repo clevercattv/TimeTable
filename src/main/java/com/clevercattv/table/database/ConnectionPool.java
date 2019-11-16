@@ -6,9 +6,10 @@ import org.postgresql.ds.PGConnectionPoolDataSource;
 import org.postgresql.util.PSQLException;
 
 import javax.sql.ConnectionPoolDataSource;
-import java.io.IOException;
+import java.io.*;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Objects;
 import java.util.Properties;
 
@@ -19,7 +20,8 @@ public class ConnectionPool {
     private static final String PROPERTIES = "application.properties";
     private static ConnectionPoolDataSource poolDataSource;
 
-    private ConnectionPool() { }
+    private ConnectionPool() {
+    }
 
     static {
         try {
@@ -40,16 +42,9 @@ public class ConnectionPool {
     }
 
     public static Connection getConnection() throws SQLException {
-//        try{
-            Connection connection = poolDataSource.getPooledConnection().getConnection();
-            if (Objects.isNull(connection)) throw new NullPointerException();
-            return connection;
-//        } catch (PSQLException e){
-//            if (e.getSQLState().equals("53300")){
-//
-//            }
-//        }
-//        return null;
+        Connection connection = poolDataSource.getPooledConnection().getConnection();
+        if (Objects.isNull(connection)) throw new NullPointerException();
+        return connection;
     }
 
 }

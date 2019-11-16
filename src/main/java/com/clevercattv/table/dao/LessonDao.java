@@ -1,23 +1,21 @@
 package com.clevercattv.table.dao;
 
 import com.clevercattv.table.database.ConnectionPool;
-import com.clevercattv.table.exception.BusyException;
 import com.clevercattv.table.model.Group;
 import com.clevercattv.table.model.Lesson;
 import com.clevercattv.table.model.Room;
 import com.clevercattv.table.model.Teacher;
+import com.clevercattv.table.serialize.SqlJsonSerializer;
 
+import javax.servlet.http.HttpServletRequest;
 import java.sql.*;
 import java.time.DayOfWeek;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class LessonDao extends DaoImpl<Lesson> {
 
     private static final LessonDao DAO = new LessonDao();
-
     private static final String TABLE_NAME = "lessons";
-
     private static final String FIND_QUERY = "SELECT l.id, l.name, l.number, " +
             "t.id, t.fullname, t.type, " +
             "r.id, r.name, r.type, " +
@@ -26,14 +24,35 @@ public class LessonDao extends DaoImpl<Lesson> {
             "LEFT JOIN groups g ON g.id = l.groupId " +
             "LEFT JOIN rooms r ON r.id = l.roomId ";
     private static final String FIND_ALL = FIND_QUERY + "ORDER BY l.day ASC, l.number ASC, g.name ASC ";
+    private static final String FIND_FILTERED = FIND_QUERY +
+            "WHERE l.name ILIKE ? AND l.number LIKE ? AND t.fullname LIKE ? " +
+            "AND r.name LIKE ? AND g.name LIKE ? AND l.day LIKE ? " +
+            "ORDER BY l.day ASC, l.number ASC, g.name ASC ";
     private static final String FIND_BY_ID = FIND_QUERY + "WHERE l.id = ? ";
     private static final String SAVE = "INSERT INTO " + TABLE_NAME + "" +
             "(name,number,teacherid,roomid,groupid,day) VALUES (?,?,?,?,?,?)";
     private static final String UPDATE = "UPDATE " + TABLE_NAME + " SET name = ?," +
             " number = ?, teacherId = ?, roomId = ?, groupId = ?, day = ? WHERE id = ?";
 
+    public static void main(String[] args) {
+        System.out.println(Thread.currentThread()
+                .getContextClassLoader().getResource("application.properties"));
+    }
+
+    static {
+//        Map<String, String> daoMap = new HashMap<>();
+//        daoMap.put("TABLE_NAME",TABLE_NAME);
+//        daoMap.put("FIND_QUERY",FIND_QUERY);
+//        daoMap.put("FIND_ALL",FIND_ALL);
+//        daoMap.put("FIND_FILTERED",FIND_FILTERED);
+//        daoMap.put("FIND_BY_ID",FIND_BY_ID);
+//        daoMap.put("SAVE",SAVE);
+//        daoMap.put("UPDATE",UPDATE);
+//        SqlJsonSerializer.serialize(daoMap,"");
+    }
+
     private LessonDao() {
-        super(TABLE_NAME);
+        super(TABLE_NAME, "name");
     }
 
     public static LessonDao getInstance() {
@@ -69,6 +88,29 @@ public class LessonDao extends DaoImpl<Lesson> {
                 list.add(buildLesson(rs));
             }
             return list;
+        }
+    }
+
+    public List<Lesson> findFilteredByRequest(HttpServletRequest req) throws SQLException {
+        ResultSet rs = null;
+        try (Connection connection = ConnectionPool.getConnection();
+             PreparedStatement stmt = connection.prepareStatement(FIND_FILTERED)) {
+            stmt.setString(1,"%" + req.getParameter("fName") + "%");
+            stmt.setString(2,"%" + req.getParameter("fNumber") + "%");
+            stmt.setString(3,"%" + req.getParameter("fTeacher") + "%");
+            stmt.setString(4,"%" + req.getParameter("fGroup") + "%");
+            stmt.setString(5,"%" + req.getParameter("fRoom") + "%");
+            stmt.setString(6,"%" + req.getParameter("fDay") + "%");
+            rs = stmt.executeQuery();
+            List<Lesson> list = new ArrayList<>();
+            while (rs.next()) {
+                list.add(buildLesson(rs));
+            }
+            return list;
+        } finally {
+            if (rs != null) {
+                rs.close();
+            }
         }
     }
 
@@ -109,34 +151,34 @@ public class LessonDao extends DaoImpl<Lesson> {
         return new Lesson()
                 .setId(rs.getInt(1))
                 .setName(rs.getString(2))
-                .setNumber(Lesson.Number.values()[rs.getInt(3)])
+                .setNumber(Lesson.Number.valueOf(rs.getString(3)))
                 .setTeacher(
                         new Teacher()
                                 .setId(rs.getInt(4))
                                 .setFullName(rs.getString(5))
-                                .setType(Teacher.Type.values()[rs.getInt(6)])
+                                .setType(Teacher.Type.valueOf(rs.getString(6)))
                 )
                 .setRoom(
                         new Room()
                                 .setId(rs.getInt(7))
                                 .setName(rs.getString(8))
-                                .setType(Room.Type.values()[rs.getInt(9)])
+                                .setType(Room.Type.valueOf(rs.getString(9)))
                 )
                 .setGroup(
                         new Group()
                                 .setId(rs.getInt(10))
                                 .setName(rs.getString(11))
                 )
-                .setDay(DayOfWeek.of(rs.getInt(12)));
+                .setDay(DayOfWeek.valueOf(rs.getString(12)));
     }
 
     private void fillSaveStatement(PreparedStatement stmt, Lesson lesson) throws SQLException {
         stmt.setString(1, lesson.getName());
-        stmt.setInt(2, Arrays.asList(Lesson.Number.values()).indexOf(lesson.getNumber()));
+        stmt.setString(2, lesson.getNumber().name());
         stmt.setInt(3, lesson.getTeacher().getId());
         stmt.setInt(4, lesson.getRoom().getId());
         stmt.setInt(5, lesson.getGroup().getId());
-        stmt.setInt(6, lesson.getDay().getValue());
+        stmt.setString(6, lesson.getDay().name());
     }
 
 }

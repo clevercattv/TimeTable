@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="SoftServeTimeTable@localhost" uuid="721c8c59-0293-423e-abb4-421419da244c">
+    <data-source source="LOCAL" name="softservetimetable@localhost" uuid="721c8c59-0293-423e-abb4-421419da244c">
       <driver-ref>postgresql</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.postgresql.Driver</jdbc-driver>
-      <jdbc-url>jdbc:postgresql://localhost:5432/SoftServeTimeTable</jdbc-url>
+      <jdbc-url>jdbc:postgresql://localhost:5432/softservetimetable</jdbc-url>
       <driver-properties>
         <property name="ApplicationName" value="DataGrip" />
       </driver-properties>
     </data-source>
-    <data-source source="LOCAL" name="SoftServeTimeTableTest@localhost" uuid="1608742b-5f96-4803-baea-904167158dd9">
+    <data-source source="LOCAL" name="softservetimetabletest@localhost" uuid="1608742b-5f96-4803-baea-904167158dd9">
       <driver-ref>postgresql</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.postgresql.Driver</jdbc-driver>
-      <jdbc-url>jdbc:postgresql://localhost:5432/SoftServeTimeTableTest</jdbc-url>
+      <jdbc-url>jdbc:postgresql://localhost:5432/softservetimetabletest</jdbc-url>
       <driver-properties>
         <property name="ApplicationName" value="DataGrip" />
       </driver-properties>

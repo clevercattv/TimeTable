@@ -2,10 +2,12 @@ package com.clevercattv.table.controller;
 
 import com.clevercattv.table.dao.RoomDao;
 import com.clevercattv.table.dto.CrudRoomDTO;
+import com.clevercattv.table.exception.ModifyDatabaseException;
 import com.clevercattv.table.exception.NamingException;
 import com.clevercattv.table.model.Room;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.util.Strings;
 import org.postgresql.util.PSQLException;
 
 import javax.servlet.RequestDispatcher;
@@ -18,14 +20,21 @@ import java.io.IOException;
 import java.sql.SQLException;
 
 @WebServlet(name = "Room", urlPatterns = "/room")
-public class RoomController extends HttpServlet {
+public class RoomController extends Controller {
 
     private static final Logger LOGGER = LogManager.getLogger(RoomController.class);
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) {
         try {
-            req.setAttribute("response", new CrudRoomDTO(RoomDao.getInstance().findAll()));
+            String filterName = req.getParameter("fName");
+            String filterType = req.getParameter("fType");
+            if (Strings.isEmpty(filterName) && Strings.isEmpty(filterType)){
+                req.setAttribute("response", new CrudRoomDTO(RoomDao.getInstance().findAll()));
+            } else {
+                req.setAttribute("response", new CrudRoomDTO(RoomDao.getInstance()
+                        .findByNameAndType(filterName,filterType)));
+            }
             RequestDispatcher requestDispatcher = req.getRequestDispatcher("/CRUD_Room.jsp");
             requestDispatcher.forward(req, resp);
         } catch (ServletException | IOException | SQLException e) {
@@ -40,21 +49,58 @@ public class RoomController extends HttpServlet {
                     .setName(req.getParameter("name"))
                     .setType(req.getParameter("type"))
             );
-            req.setAttribute("complete", req.getParameter("name") + " successfully added!");
         } catch (NamingException e) {
+            LOGGER.error(e);
             req.setAttribute(Controller.ERROR, e.getMessage());
-            LOGGER.error(e);
+            throw new ModifyDatabaseException();
         } catch (SQLException e) {
-            if (e.getSQLState().equals("23505")){
-                req.setAttribute(Controller.ERROR, "Cannot add room becouse " +
-                        ((PSQLException) e).getServerErrorMessage().getDetail());
-            }
             LOGGER.error(e);
+            req.setAttribute(Controller.ERROR, "Room with this name already exist!");
+            throw new ModifyDatabaseException();
         } catch (IllegalArgumentException e) {
-            req.setAttribute(Controller.ERROR, "Select type of room!");
             LOGGER.error(e);
-        } finally {
-            doGet(req, resp);
+            req.setAttribute(Controller.ERROR, "Select type of room!");
+            throw new IllegalArgumentException();
+        }
+    }
+
+    @Override
+    protected void doPut(HttpServletRequest req, HttpServletResponse resp) {
+        try {
+            RoomDao.getInstance().update(new Room()
+                    .setId(Integer.parseInt(req.getParameter("id")))
+                    .setName(req.getParameter("name"))
+                    .setType(req.getParameter("type"))
+            );
+            req.setAttribute("complete", req.getParameter("name") + " successfully updated!");
+        } catch (SQLException e) {
+            LOGGER.error(e);
+            req.setAttribute(Controller.ERROR,"Room name already used!");
+            throw new ModifyDatabaseException();
+        } catch (NumberFormatException e) {
+            LOGGER.error(e);
+            req.setAttribute(Controller.ERROR,"Can't parse id from request. Please refresh page and try again.");
+            throw new IllegalArgumentException();
+        } catch (NamingException e){
+            LOGGER.error(e);
+            req.setAttribute(Controller.ERROR,e.getMessage());
+            throw new NamingException();
+        }
+    }
+
+    @Override
+    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) {
+        try {
+            RoomDao.getInstance().delete(Integer.parseInt(req.getParameter("id")));
+        } catch (SQLException e) {
+            LOGGER.error(e);
+            req.setAttribute(Controller.ERROR, "You can't delete this room before it used in " +
+                    ((PSQLException) e).getServerErrorMessage().getTable());
+            throw new ModifyDatabaseException();
+        } catch (NumberFormatException e) {
+            LOGGER.error(e);
+            req.setAttribute(Controller.ERROR, "Can't parse id from request. Please refresh page and try again.");
+            throw new IllegalArgumentException();
         }
     }
 

@@ -8,14 +8,19 @@ import java.util.*;
 
 public class TeacherDao extends DaoImpl<Teacher> {
 
+    private static final TeacherDao dao = new TeacherDao();
     private static final String TABLE_NAME = "teachers";
     private static final String FIND_ALL = "SELECT id, fullname, type FROM " + TABLE_NAME;
     private static final String FIND_BY_ID = FIND_ALL + " WHERE id = ?";
     private static final String SAVE = "INSERT INTO " + TABLE_NAME + "(fullname,type) VALUES (?,?)";
     private static final String UPDATE = "UPDATE " + TABLE_NAME + " SET fullname = ?, type = ? WHERE id = ?";
 
-    public TeacherDao() {
-        super(TABLE_NAME);
+    private TeacherDao() {
+        super(TABLE_NAME, "fullname");
+    }
+
+    public static TeacherDao getInstance() {
+        return dao;
     }
 
     @Override
@@ -29,7 +34,7 @@ public class TeacherDao extends DaoImpl<Teacher> {
             return Optional.of(new Teacher()
                     .setId(id)
                     .setFullName(rs.getString("fullname"))
-                    .setType(Teacher.Type.values()[rs.getInt("type")]));
+                    .setType(Teacher.Type.valueOf(rs.getString("type"))));
         } finally {
             if (rs != null) {
                 rs.close();
@@ -48,7 +53,7 @@ public class TeacherDao extends DaoImpl<Teacher> {
                         new Teacher()
                                 .setId(rs.getInt("id"))
                                 .setFullName(rs.getString("fullname"))
-                                .setType(Teacher.Type.values()[rs.getInt("type")])
+                                .setType(Teacher.Type.valueOf(rs.getString("type")))
                 );
             }
             return list;
@@ -60,7 +65,7 @@ public class TeacherDao extends DaoImpl<Teacher> {
         try (Connection connection = ConnectionPool.getConnection();
              PreparedStatement stmt = connection.prepareStatement(SAVE, Statement.RETURN_GENERATED_KEYS)) {
             stmt.setString(1, teacher.getFullName());
-            stmt.setInt(2, Arrays.asList(Teacher.Type.values()).indexOf(teacher.getType()));
+            stmt.setString(2, teacher.getType().name());
             stmt.executeUpdate();
             return fillById(teacher,stmt);
         }
@@ -70,10 +75,9 @@ public class TeacherDao extends DaoImpl<Teacher> {
     public Collection<Teacher> saveAll(Collection<Teacher> teachers) throws SQLException {
         try (Connection connection = ConnectionPool.getConnection();
              PreparedStatement stmt = connection.prepareStatement(SAVE, Statement.RETURN_GENERATED_KEYS)) {
-            List<Teacher.Type> types = Arrays.asList(Teacher.Type.values());
             for (Teacher teacher : teachers) {
                 stmt.setString(1, teacher.getFullName());
-                stmt.setInt(2, types.indexOf(teacher.getType()));
+                stmt.setString(2, teacher.getType().name());
                 stmt.addBatch();
             }
             stmt.executeBatch();
@@ -86,7 +90,7 @@ public class TeacherDao extends DaoImpl<Teacher> {
         try (Connection connection = ConnectionPool.getConnection();
              PreparedStatement stmt = connection.prepareStatement(UPDATE)) {
             stmt.setString(1, teacher.getFullName());
-            stmt.setInt(2, Arrays.asList(Teacher.Type.values()).indexOf(teacher.getType()));
+            stmt.setString(2, teacher.getType().name());
             stmt.setInt(3, teacher.getId());
             stmt.executeUpdate();
         }

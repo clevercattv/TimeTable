@@ -2,11 +2,16 @@ package com.clevercattv.table.dto;
 
 import com.clevercattv.table.model.Room;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class CrudRoomDTO {
 
-    private Room.Type[] types = Room.Type.values();
+    private static final List<String> TYPES = Arrays.stream(Room.Type.values())
+            .map(Enum::name)
+            .collect(Collectors.toList());
+
     private List<Room> rooms;
 
     public CrudRoomDTO(List<Room> rooms) {
@@ -16,13 +21,13 @@ public class CrudRoomDTO {
     @Override
     public String toString() {
         return "CrudRoomDTO{" +
-                "types=" + types +
+                "types=" + TYPES +
                 ", rooms=" + rooms +
                 '}';
     }
 
-    public Room.Type[] getTypes() {
-        return types;
+    public List<String> getTypes() {
+        return TYPES;
     }
 
     public List<Room> getRooms() {

@@ -11,13 +11,15 @@ public class RoomDao extends DaoImpl<Room> {
     private static final RoomDao ROOM_DAO = new RoomDao();
     private static final String TABLE_NAME = "rooms";
     private static final String FIND = "SELECT id, name, type FROM " + TABLE_NAME;
-    private static final String FIND_ALL = FIND + " ORDER BY name ASC ";
+    private static final String ORDER_BY_NAME_ASC = " ORDER BY name ASC ";
+    private static final String FIND_ALL = FIND + ORDER_BY_NAME_ASC;
+    private static final String FIND_BY_NAME_AND_TYPE = FIND + " WHERE name ILIKE ? and type LIKE ?" + ORDER_BY_NAME_ASC;
     private static final String FIND_BY_ID = FIND + " WHERE id = ?";
     private static final String SAVE = "INSERT INTO " + TABLE_NAME + "(name,type) VALUES (?,?)";
     private static final String UPDATE = "UPDATE " + TABLE_NAME + " SET name = ?, type = ? WHERE id = ?";
 
     private RoomDao() {
-        super(TABLE_NAME);
+        super(TABLE_NAME, "name");
     }
 
     public static RoomDao getInstance() {
@@ -35,7 +37,7 @@ public class RoomDao extends DaoImpl<Room> {
                 return Optional.of(new Room()
                         .setId(id)
                         .setName(rs.getString("name"))
-                        .setType(Room.Type.values()[rs.getInt("type")]));
+                        .setType(Room.Type.valueOf(rs.getString("type"))));
             } else {
                 return Optional.empty();
             }
@@ -57,10 +59,34 @@ public class RoomDao extends DaoImpl<Room> {
                         new Room()
                                 .setId(rs.getInt("id"))
                                 .setName(rs.getString("name"))
-                                .setType(Room.Type.values()[rs.getInt("type")])
+                                .setType(Room.Type.valueOf(rs.getString("type")))
                 );
             }
             return list;
+        }
+    }
+
+    public List<Room> findByNameAndType(String name, String type) throws SQLException {
+        ResultSet rs = null;
+        try (Connection connection = ConnectionPool.getConnection();
+             PreparedStatement stmt = connection.prepareStatement(FIND_BY_NAME_AND_TYPE)) {
+            stmt.setString(1,"%" + name + "%");
+            stmt.setString(2,"%" + type + "%");
+            rs = stmt.executeQuery();
+            List<Room> list = new ArrayList<>();
+            while (rs.next()) {
+                list.add(
+                        new Room()
+                                .setId(rs.getInt("id"))
+                                .setName(rs.getString("name"))
+                                .setType(Room.Type.valueOf(rs.getString("type")))
+                );
+            }
+            return list;
+        } finally {
+            if (rs != null){
+                rs.close();
+            }
         }
     }
 
@@ -69,7 +95,7 @@ public class RoomDao extends DaoImpl<Room> {
         try (Connection connection = ConnectionPool.getConnection();
              PreparedStatement stmt = connection.prepareStatement(SAVE, Statement.RETURN_GENERATED_KEYS)) {
             stmt.setString(1, room.getName());
-            stmt.setInt(2, Arrays.asList(Room.Type.values()).indexOf(room.getType()));
+            stmt.setString(2, room.getType().name());
             stmt.executeUpdate();
             return fillById(room,stmt);
         }
@@ -79,10 +105,9 @@ public class RoomDao extends DaoImpl<Room> {
     public Collection<Room> saveAll(Collection<Room> rooms) throws SQLException {
         try (Connection connection = ConnectionPool.getConnection();
              PreparedStatement stmt = connection.prepareStatement(SAVE, Statement.RETURN_GENERATED_KEYS)) {
-            List<Room.Type> types = Arrays.asList(Room.Type.values());
             for (Room room : rooms) {
                 stmt.setString(1, room.getName());
-                stmt.setInt(2, types.indexOf(room.getType()));
+                stmt.setString(2, room.getType().name());
                 stmt.addBatch();
             }
             stmt.executeBatch();
@@ -95,7 +120,7 @@ public class RoomDao extends DaoImpl<Room> {
         try (Connection connection = ConnectionPool.getConnection();
              PreparedStatement stmt = connection.prepareStatement(UPDATE)) {
             stmt.setString(1, room.getName());
-            stmt.setInt(2, Arrays.asList(Room.Type.values()).indexOf(room.getType()));
+            stmt.setString(2, room.getType().name());
             stmt.setInt(3, room.getId());
             stmt.executeUpdate();
         }

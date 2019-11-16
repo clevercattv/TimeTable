@@ -20,21 +20,21 @@ public class TableService {
     private static final String CREATE_ROOMS = "CREATE TABLE IF NOT EXISTS Rooms(" +
             ID_SERIAL +
             "name VARCHAR(" + Room.MAX_NAME_LENGTH + ") " + NOT_NULL_UNIQUE + "," +
-            "type INT NOT NULL)";
+            "type VARCHAR NOT NULL)";
 
     private static final String CREATE_TEACHERS = "CREATE TABLE IF NOT EXISTS Teachers(" +
             ID_SERIAL +
             "fullname VARCHAR(" + Teacher.MAX_NAME_LENGTH + ") " + NOT_NULL_UNIQUE + "," +
-            "type INT NOT NULL)";
+            "type VARCHAR NOT NULL)";
 
     private static final String CREATE_LESSONS = "CREATE TABLE IF NOT EXISTS Lessons(" +
             ID_SERIAL +
             "name VARCHAR(32) NOT NULL ," +
             "teacherId INT NOT NULL REFERENCES teachers(id), " +
-            "number INT NOT NULL , " +
+            "number VARCHAR NOT NULL , " +
             "groupId INT NOT NULL REFERENCES groups(id), " +
             "roomId INT NOT NULL REFERENCES rooms(id), " +
-            "day INT NOT NULL, " +
+            "day VARCHAR NOT NULL, " +
             "CONSTRAINT TeacherBusy UNIQUE (number,day,teacherId), " +
             "CONSTRAINT GroupBusy UNIQUE (number,day,groupId), " +
             "CONSTRAINT RoomBusy UNIQUE (number,day,roomId))";
@@ -46,7 +46,6 @@ public class TableService {
              Statement stmt = connection.createStatement()) {
             stmt.execute("DROP SCHEMA public CASCADE ");
             stmt.execute("CREATE SCHEMA public");
-
         }
     }
 

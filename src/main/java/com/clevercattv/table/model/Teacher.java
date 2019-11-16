@@ -16,6 +16,13 @@ public class Teacher implements EntityId<Teacher>{
     private String fullName;
     private Type type;
 
+    public Teacher() {
+    }
+
+    public Teacher(int id) {
+        this.id = id;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -55,11 +62,11 @@ public class Teacher implements EntityId<Teacher>{
 
     public Teacher setFullName(String fullName) {
         Validator.getMessagesByPerformedTrue(Arrays.asList(
-                new PerformedMessage("Teacher name length less than minimum.",
+                new PerformedMessage("Teacher name length less than minimum",
                         fullName.length() < MIN_NAME_LENGTH),
-                new PerformedMessage("Teacher name length more than maximum.",
+                new PerformedMessage("Teacher name length more than maximum",
                         fullName.length() > MAX_NAME_LENGTH),
-                new PerformedMessage("Teacher name have have forbidden symbols.",
+                new PerformedMessage("Teacher name have have forbidden symbols",
                         !fullName.matches("^[a-z A-Z]+$"))
         ));
         this.fullName = fullName;

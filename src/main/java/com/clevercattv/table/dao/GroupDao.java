@@ -21,7 +21,7 @@ public class GroupDao extends DaoImpl<Group> {
     private static final String UPDATE = "UPDATE " + TABLE_NAME + " SET name = ? WHERE id = ?";
 
     private GroupDao() {
-        super(TABLE_NAME);
+        super(TABLE_NAME, "name");
     }
 
     public static GroupDao getInstance() {

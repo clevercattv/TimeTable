@@ -16,6 +16,13 @@ public class Room implements EntityId<Room>{
     public static final int MAX_NAME_LENGTH = 16;
     public static final String NAME_PATTERN = "^[a-z A-Z0-9]+$";
 
+    public Room() {
+    }
+
+    public Room(int id) {
+        this.id = id;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

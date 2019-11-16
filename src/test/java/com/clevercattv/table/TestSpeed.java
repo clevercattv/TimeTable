@@ -24,7 +24,7 @@ public class TestSpeed {
     private static final LessonDao DAO = LessonDao.getInstance();
     private static final GroupDao GROUP_DAO = GroupDao.getInstance();
     private static final RoomDao ROOM_DAO = RoomDao.getInstance();
-    private static final TeacherDao TEACHER_DAO = new TeacherDao();
+    private static final TeacherDao TEACHER_DAO = TeacherDao.getInstance();
 
     @Test
     public void createRandom() throws SQLException {

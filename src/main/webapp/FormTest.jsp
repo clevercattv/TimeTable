@@ -15,32 +15,68 @@
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
 <body>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="${pageContext.request.contextPath}">SoftServeAcademy TimeTable</a>
+    <div class="collapse navbar-collapse" id="navbar">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link" href="${pageContext.request.contextPath}/timetable">Full TimeTable</a>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+                   aria-haspopup="true" aria-expanded="false">
+                    CRUD
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="${pageContext.request.contextPath}/lesson">Lesson</a>
+                    <a class="dropdown-item" href="${pageContext.request.contextPath}/teacher">Teacher</a>
+                    <a class="dropdown-item" href="${pageContext.request.contextPath}/group">Group</a>
+                    <a class="dropdown-item" href="${pageContext.request.contextPath}/room">Room</a>
+                </div>
+            </li>
+        </ul>
+    </div>
+</nav>
 <div class="container">
     <div class="row">
         <div class="col-2">
-            Selectable options
+            <form> <%-- todo fill form data --%>
+                <div class="form-group">
+                    <label for="dayOfWeek">Day of week</label>
+                    <select multiple class="form-control" id="dayOfWeek">
+                        <c:forEach items="${filter.dayOfWeek}" var="day">
+                            <option>${day}</option>
+                        </c:forEach>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="groups">Group</label>
+                    <select multiple class="form-control" id="groups">
+                        <c:forEach items="${filter.groups}" var="group">
+                            <option>${group}</option>
+                        </c:forEach>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="teachers">Teacher</label>
+                    <select multiple class="form-control" id="teachers">
+                        <c:forEach items="${filter.teachers}" var="teacher">
+                            <option>${teacher}</option>
+                        </c:forEach>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="rooms">Room</label>
+                    <select multiple class="form-control" id="rooms">
+                        <c:forEach items="${filter.rooms}" var="room">
+                            <option>${room}</option>
+                        </c:forEach>
+                    </select>
+                </div>
+                <button class="btn btn-primary my-1 mr-2" type="submit" style="width: 100%">Filter</button>
+            </form>
         </div>
         <div class="col-10">
-            <ul class="nav nav-tabs" id="myTab" role="tablist">
-                <li class="nav-item">
-                    <a class="nav-link active" id="today-tab" data-toggle="tab" href="#today"
-                       role="tab" aria-controls="today" aria-selected="true">Today</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" id="tomorrow-tab" data-toggle="tab" href="#tomorrow"
-                       role="tab" aria-controls="tomorrow" aria-selected="false">Tomorrow</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" id="contact-tab" data-toggle="tab" href="#week"
-                       role="tab" aria-controls="week" aria-selected="false">For a week</a>
-                </li>
-            </ul>
-            <div class="tab-content" id="myTabContent">
-                <div class="tab-pane fade show active" id="today" role="tabpanel" aria-labelledby="today-tab">test1
-                </div>
-                <div class="tab-pane fade" id="tomorrow" role="tabpanel" aria-labelledby="tomorrow-tab">test2</div>
-                <div class="tab-pane fade" id="week" role="tabpanel" aria-labelledby="contact-tab">test3</div>
-            </div>
             <div class="row">
                 <table class="table" style="text-align:center">
                     <thead class="thead-light">
@@ -53,7 +89,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <c:forEach items="${timeTable.dayOfWeeks}" var="day">
+                    <c:forEach items="${timeTable.dayOfWeek}" var="day">
                         <c:forEach items="${timeTable.lessonTime}" var="time">
                             <tr>
                                 <th scope="col" style="position: relative">
@@ -65,7 +101,7 @@
                                 <c:forEach items="${timeTable.groups}" var="group">
                                     <c:set var="isNotFindLesson" scope="page" value="${true}"/>
                                     <c:forEach items="${timeTable.lessons}" var="lesson">
-                                        <c:if test="${day eq lesson.day and time eq lesson.lessonTime and group eq lesson.group}">
+                                        <c:if test="${day eq lesson.day and time eq lesson.number and group eq lesson.group}">
                                             <th>
                                                     <%--<div>${lesson.lessonTime}</div>--%>
                                                     <%--<div>${lesson.day}</div>--%>

@@ -14,3 +14,7 @@ body{
 .icon--button:hover {
     opacity: 0.7;
 }
+.add--text{
+    font-weight: 700;
+    font-size: 24px
+}
