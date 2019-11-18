@@ -15,7 +15,9 @@ public class GroupDao extends DaoImpl<Group> {
 
     private static final String TABLE_NAME = "groups";
     private static final String FIND = "SELECT id, name FROM " + TABLE_NAME;
-    private static final String FIND_ALL = FIND + " ORDER BY name ASC ";
+    private static final String ORDER_BY_NAME_ASC = " ORDER BY name ASC ";
+    private static final String FIND_ALL = FIND + ORDER_BY_NAME_ASC;
+    private static final String FIND_BY_NAME = FIND + " WHERE name ILIKE ? " + ORDER_BY_NAME_ASC;
     private static final String FIND_BY_ID = FIND + " WHERE id = ?";
     private static final String SAVE = "INSERT INTO " + TABLE_NAME + "(name) VALUES (?)";
     private static final String UPDATE = "UPDATE " + TABLE_NAME + " SET name = ? WHERE id = ?";
@@ -62,6 +64,28 @@ public class GroupDao extends DaoImpl<Group> {
                 );
             }
             return list;
+        }
+    }
+
+    public List<Group> findByName(String name) throws SQLException {
+        ResultSet rs = null;
+        try (Connection connection = ConnectionPool.getConnection();
+             PreparedStatement stmt = connection.prepareStatement(FIND_BY_NAME)) {
+            stmt.setString(1,"%" + name + "%");
+            rs = stmt.executeQuery();
+            List<Group> list = new ArrayList<>();
+            while (rs.next()) {
+                list.add(
+                        new Group()
+                                .setId(rs.getInt("id"))
+                                .setName(rs.getString("name"))
+                );
+            }
+            return list;
+        } finally {
+            if (rs != null){
+                rs.close();
+            }
         }
     }
 

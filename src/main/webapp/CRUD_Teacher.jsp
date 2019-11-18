@@ -12,10 +12,10 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/main.css">
     <script src="${pageContext.request.contextPath}/static/JQuery.js"></script>
     <script src="${pageContext.request.contextPath}/static/CommonModal.js"></script>
-    <script src="${pageContext.request.contextPath}/static/LessonModal.js"></script>
+    <script src="${pageContext.request.contextPath}/static/TeacherModal.js"></script>
     <style>
         table.table tr th:first-child {
-            width: 60px;
+            width: 25%;
         }
         table.table tr th:last-child {
             width: 80px;
@@ -50,17 +50,15 @@
         <div class="col-12 mt-3">
             <div class="row table-top">
                 <div class="col-3">
-                    <h2 class="text-white" style="font-weight: 700">Lessons</h2>
+                    <h2 class="text-white" style="font-weight: 700">Teachers</h2>
                 </div>
                 <div class="col-9" style="align-self: center; text-align: right">
-                    <em class="material-icons icon--button mt-1 text-success" style="font-size: 2em;" data-toggle="modal"
-                        data-target="#itemFucModal" onclick="fillCreateLessonModal()">add_box</em>
+                    <em class="material-icons icon--button mt-1 text-success" style="font-size: 2em;"
+                        data-toggle="modal"
+                        data-target="#itemFucModal" onclick="fillCreateTeacherModal()">add_box</em>
                     <em class="material-icons icon--button mt-1 text-warning" data-toggle="modal"
-                        data-target="#itemFucModal" onclick="fillFilterLessonModal({
-                            itemFucName:'${param.fName}',itemFucNumber:'${param.fNumber}',
-                            itemFucDayOfWeek:'${param.fDay}',itemFucTeacher:'${param.fTeacher}',
-                            itemFucGroup:'${param.fGroup}',itemFucRoom:'${param.fRoom}'
-                        })" style="font-size: 2em;">filter_list</em>
+                        data-target="#itemFucModal" onclick="fillFilterTeacherModal('${param.fName}','${param.fType}')"
+                        style="font-size: 2em;">filter_list</em>
                 </div>
             </div>
             <div class="row">
@@ -69,30 +67,22 @@
                     <thead>
                     <tr>
                         <th scope="col">Name</th>
-                        <th scope="col">Number</th>
-                        <th scope="col">Day of week</th>
-                        <th scope="col">Teacher</th>
-                        <th scope="col">Group</th>
-                        <th scope="col">Room</th>
+                        <th scope="col">Type</th>
                         <th scope="col">Actions</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <c:forEach items="${response.lessons}" var="lesson">
-                        <tr id="lesson_${lesson.id}">
-                            <td><a>${lesson.name}</a></td>
-                            <td><a>${lesson.number}</a></td>
-                            <td><a>${lesson.day}</a></td>
-                            <td><a>${lesson.teacher}</a></td>
-                            <td><a>${lesson.group}</a></td>
-                            <td><a>${lesson.room}</a></td>
+                    <c:forEach items="${response.teachers}" var="teacher">
+                        <tr id="teacher_${teacher.id}">
+                            <td><a>${teacher.fullName}</a></td>
+                            <td><a>${teacher.type}</a></td>
                             <td>
                                 <em class="material-icons icon--button" data-toggle="modal"
                                     data-target="#itemFucModal"
-                                    onclick="fillUpdateLessonModal(${lesson.id})">edit</em>
+                                    onclick="fillUpdateTeacherModal(${teacher.id})">edit</em>
                                 <em class="material-icons icon--button" data-toggle="modal"
                                     data-target="#deleteItemModal"
-                                    onclick="fillDeleteModalData(${lesson.id},'lesson')" style="color: #dc3545">delete</em>
+                                    onclick="fillDeleteModalData(${teacher.id},'teacher')" style="color: #dc3545">delete</em>
                             </td>
                         </tr>
                     </c:forEach>
@@ -102,7 +92,7 @@
             <!-- Filter/Update/Create MODAL -->
             <div class="modal fade" id="itemFucModal" tabindex="-1" role="dialog" aria-labelledby="itemFucModalTitle"
                  aria-hidden="true">
-                <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title" id="itemFucModalTitle"></h5>
@@ -113,54 +103,27 @@
                         <div class="modal-body" style="display: flex">
                             <div class="row">
                                 <div class="form-group col-4">
-                                    <label for="itemFucName" class="mr-2 text-dark add--text" style="font-weight: 700; font-size: 24px">Name</label>
-                                    <input type="text" class="createRoom form-control my-1 mr-2" id="itemFucName" name="name">
+                                    <label for="itemFucName" class="mr-2 text-dark add--text"
+                                           style="font-weight: 700; font-size: 24px">Name</label>
+                                    <input type="text" class="form-control my-1 mr-2"
+                                           id="itemFucName" placeholder="Room name">
                                 </div>
                                 <div class="form-group col-4">
-                                    <label for="itemFucNumber" class="mr-2 text-dark add--text" style="font-weight: 700; font-size: 24px">Number</label>
-                                    <select class="form-control" id="itemFucNumber">
-                                        <c:forEach items="${response.number}" var="item">
-                                            <option>${item}</option>
-                                        </c:forEach>
-                                    </select>
-                                </div>
-                                <div class="form-group col-4">
-                                    <label for="itemFucDayOfWeek" class="mr-2 text-dark add--text" style="font-weight: 700; font-size: 24px">Day of week</label>
-                                    <select class="form-control" id="itemFucDayOfWeek">
-                                        <c:forEach items="${response.dayOfWeek}" var="day">
-                                            <option>${day}</option>
-                                        </c:forEach>
-                                    </select>
-                                </div>
-                                <div class="form-group col-4">
-                                    <label for="itemFucTeacher" class="mr-2 text-dark add--text" style="font-weight: 700; font-size: 24px">Teacher</label>
-                                    <select class="form-control" id="itemFucTeacher">
-                                        <c:forEach items="${response.teachers}" var="teacher">
-                                            <option value="${teacher.id}">${teacher.name}</option>
-                                        </c:forEach>
-                                    </select>
-                                </div>
-                                <div class="form-group col-4">
-                                    <label for="itemFucGroup" class="mr-2 text-dark add--text" style="font-weight: 700; font-size: 24px">Group</label>
-                                    <select class="form-control" id="itemFucGroup">
-                                        <c:forEach items="${response.groups}" var="group">
-                                            <option value="${group.id}">${group.name}</option>
-                                        </c:forEach>
-                                    </select>
-                                </div>
-                                <div class="form-group col-4">
-                                    <label for="itemFucRoom" class="mr-2 text-dark add--text" style="font-weight: 700; font-size: 24px">Room</label>
-                                    <select class="form-control" id="itemFucRoom">
-                                        <c:forEach items="${response.rooms}" var="room">
-                                            <option value="${room.id}">${room.name}</option>
+                                    <label for="itemFucType" class="mr-2 text-dark add--text"
+                                           style="font-weight: 700; font-size: 24px">Type</label>
+                                    <select class="form-control my-1 mr-2" id="itemFucType">
+                                        <c:forEach items="${response.types}" var="type">
+                                            <option>${type}</option>
                                         </c:forEach>
                                     </select>
                                 </div>
                                 <div class="form-group col-4 d-flex align-self-end">
-                                    <button onclick="modalAction(createLesson,updateLesson,filterLesson)"
-                                            class="btn btn-primary my-1 mr-2" id="itemFucSubmit">Edit</button>
+                                    <button onclick="modalAction(createTeacher,updateTeacher,filterTeacher)"
+                                            class="btn btn-primary my-1 mr-2" id="itemFucSubmit">Edit
+                                    </button>
                                     <button onclick="window.location.href = '?'"
-                                            class="btn btn-warning my-1 mr-2" id="itemFucClear">Clear</button>
+                                            class="btn btn-warning my-1 mr-2" id="itemFucClear">Clear
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -182,8 +145,10 @@
                         </div>
                         <div class="modal-body" style="display: flex">
                             <button class="btn btn-danger my-1 mr-2"
-                                    onclick="removeItem('lesson_','/timetable/lesson')" style="width: 50%">OK</button>
-                            <button class="btn btn-primary my-1 mr-2" data-dismiss="modal" aria-label="Close" style="width: 50%">Cancel
+                                    onclick="removeItem('teacher_','/timetable/teacher')" style="width: 50%">OK
+                            </button>
+                            <button class="btn btn-primary my-1 mr-2"
+                                    data-dismiss="modal" aria-label="Close" style="width: 50%">Cancel
                             </button>
                         </div>
                         <div class="alert alert-danger mx-2" role="alert" id="deleteItemError"

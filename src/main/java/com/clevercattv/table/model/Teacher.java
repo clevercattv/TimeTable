@@ -1,5 +1,6 @@
 package com.clevercattv.table.model;
 
+import com.clevercattv.table.exception.NamingException;
 import com.clevercattv.table.validation.PerformedMessage;
 import com.clevercattv.table.validation.Validator;
 
@@ -82,6 +83,14 @@ public class Teacher implements EntityId<Teacher>{
             throw new NullPointerException();
         }
         this.type = type;
+        return this;
+    }
+
+    public Teacher setType(String type) {
+        if (type == null || type.isEmpty()){
+            throw new NamingException("Teacher type wrong!");
+        }
+        this.type = Type.valueOf(type);
         return this;
     }
 

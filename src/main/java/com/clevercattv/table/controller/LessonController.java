@@ -73,13 +73,14 @@ public class LessonController extends Controller {
         } catch (NamingException e) {
             LOGGER.error(e);
             req.setAttribute(Controller.ERROR, e.getMessage());
-            throw new NamingException();
+            throw e;
         } catch (SQLException e) {
             LOGGER.error(e);
             req.setAttribute(Controller.ERROR, "Lesson on this time already exist!");
             throw new ModifyDatabaseException();
         } catch (NumberFormatException e){
             LOGGER.error(e);
+            throw new IllegalArgumentException();
         }
     }
 
@@ -96,7 +97,6 @@ public class LessonController extends Controller {
                             .setDay(DayOfWeek.valueOf(req.getParameter("day")))
                             .setNumber(Lesson.Number.valueOf(req.getParameter("number")))
             );
-            req.setAttribute("complete", req.getParameter("name") + " successfully updated!");
         } catch (SQLException e) {
             LOGGER.error(e);
             req.setAttribute(Controller.ERROR, "Room name already used!");
@@ -108,7 +108,7 @@ public class LessonController extends Controller {
         } catch (NamingException e) {
             LOGGER.error(e);
             req.setAttribute(Controller.ERROR, e.getMessage());
-            throw new NamingException();
+            throw e;
         }
     }
 
@@ -125,7 +125,7 @@ public class LessonController extends Controller {
         } catch (NumberFormatException e) {
             LOGGER.error(e);
             req.setAttribute(Controller.ERROR, "Can't parse id from request. Please refresh page and try again.");
-            throw new IllegalArgumentException();
+            throw e;
         }
     }
 

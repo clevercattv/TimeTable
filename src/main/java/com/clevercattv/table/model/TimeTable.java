@@ -6,6 +6,9 @@ public class TimeTable {
 
     private List<Lesson> lessons;
 
+    private TimeTable() {
+    }
+
     public TimeTable(List<Lesson> lessons) {
         this.lessons = lessons;
     }

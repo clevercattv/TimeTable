@@ -55,4 +55,5 @@ public class CrudLessonDTO {
     public List<Name_Id> getGroups() {
         return groups;
     }
+
 }

@@ -21,11 +21,6 @@ public class TestSpeed {
     private static final char[] CHAR_LIST =
             "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ".toCharArray();
 
-    private static final LessonDao DAO = LessonDao.getInstance();
-    private static final GroupDao GROUP_DAO = GroupDao.getInstance();
-    private static final RoomDao ROOM_DAO = RoomDao.getInstance();
-    private static final TeacherDao TEACHER_DAO = TeacherDao.getInstance();
-
     @Test
     public void createRandom() throws SQLException {
         TableService.dropTables();
@@ -55,12 +50,6 @@ public class TestSpeed {
                 }
             }
         }
-//        for (Lesson lesson : TIME_TABLE_SERVICE.getLessons()) {
-//            ROOM_DAO.save(lesson.getRoom());
-//            GROUP_DAO.save(lesson.getGroup());
-//            TEACHER_DAO.save(lesson.getTeacher());
-//        }
-//        DAO.saveAll(TIME_TABLE_SERVICE.getLessons());
         System.out.println("Adding time : " + (System.currentTimeMillis() - startTime));
         try {
             startTime = System.currentTimeMillis();

@@ -7,11 +7,20 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="icon" href="data:;base64,iVBORw0KGgo=">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/Table.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/main.css">
     <script src="${pageContext.request.contextPath}/static/JQuery.js"></script>
     <script src="${pageContext.request.contextPath}/static/CommonModal.js"></script>
     <script src="${pageContext.request.contextPath}/static/RoomModal.js"></script>
+    <style>
+        table.table tr th:first-child {
+            width: 60px;
+        }
+        table.table tr th:last-child {
+            width: 80px;
+        }
+    </style>
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-light bg-light">

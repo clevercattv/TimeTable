@@ -10,8 +10,11 @@ public class TeacherDao extends DaoImpl<Teacher> {
 
     private static final TeacherDao dao = new TeacherDao();
     private static final String TABLE_NAME = "teachers";
-    private static final String FIND_ALL = "SELECT id, fullname, type FROM " + TABLE_NAME;
-    private static final String FIND_BY_ID = FIND_ALL + " WHERE id = ?";
+    private static final String FIND = "SELECT id, fullname, type FROM " + TABLE_NAME;
+    private static final String ORDER_BY_NAME_ASC = " ORDER BY fullname ASC ";
+    private static final String FIND_ALL = FIND + ORDER_BY_NAME_ASC;
+    private static final String FIND_BY_ID = FIND + " WHERE id = ?";
+    private static final String FIND_BY_NAME_AND_TYPE = FIND + " WHERE name ILIKE ? and type LIKE ?" + ORDER_BY_NAME_ASC;
     private static final String SAVE = "INSERT INTO " + TABLE_NAME + "(fullname,type) VALUES (?,?)";
     private static final String UPDATE = "UPDATE " + TABLE_NAME + " SET fullname = ?, type = ? WHERE id = ?";
 
@@ -57,6 +60,30 @@ public class TeacherDao extends DaoImpl<Teacher> {
                 );
             }
             return list;
+        }
+    }
+
+    public List<Teacher> findByNameAndType(String name, String type) throws SQLException {
+        ResultSet rs = null;
+        try (Connection connection = ConnectionPool.getConnection();
+             PreparedStatement stmt = connection.prepareStatement(FIND_BY_NAME_AND_TYPE)) {
+            stmt.setString(1,"%" + name + "%");
+            stmt.setString(2,"%" + type + "%");
+            rs = stmt.executeQuery();
+            List<Teacher> list = new ArrayList<>();
+            while (rs.next()) {
+                list.add(
+                        new Teacher()
+                                .setId(rs.getInt("id"))
+                                .setFullName(rs.getString("name"))
+                                .setType(Teacher.Type.valueOf(rs.getString("type")))
+                );
+            }
+            return list;
+        } finally {
+            if (rs != null){
+                rs.close();
+            }
         }
     }
 
