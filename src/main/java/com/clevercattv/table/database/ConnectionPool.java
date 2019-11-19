@@ -3,13 +3,11 @@ package com.clevercattv.table.database;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.postgresql.ds.PGConnectionPoolDataSource;
-import org.postgresql.util.PSQLException;
 
 import javax.sql.ConnectionPoolDataSource;
-import java.io.*;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.Objects;
 import java.util.Properties;
 

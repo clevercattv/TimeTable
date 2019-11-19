@@ -72,7 +72,6 @@ public class TeacherController extends Controller {
                     .setFullName(req.getParameter("name"))
                     .setType(req.getParameter("type"))
             );
-//            req.setAttribute("complete", req.getParameter("name") + " successfully updated!");
         } catch (SQLException e) {
             LOGGER.error(e);
             req.setAttribute(Controller.ERROR,"Teacher name already used!");

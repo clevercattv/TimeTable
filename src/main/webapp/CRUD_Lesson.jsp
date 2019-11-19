@@ -52,19 +52,19 @@
                 <div class="col-3">
                     <h2 class="text-white" style="font-weight: 700">Lessons</h2>
                 </div>
-                <div class="col-9" style="align-self: center; text-align: right">
-                    <em class="material-icons icon--button mt-1 text-success" style="font-size: 2em;" data-toggle="modal"
+                <div class="col-9 icon--right">
+                    <em class="material-icons icon--button mt-1 text-success font--size--2em" data-toggle="modal"
                         data-target="#itemFucModal" onclick="fillCreateLessonModal()">add_box</em>
-                    <em class="material-icons icon--button mt-1 text-warning" data-toggle="modal"
+                    <em class="material-icons icon--button mt-1 text-warning font--size--2em" data-toggle="modal"
                         data-target="#itemFucModal" onclick="fillFilterLessonModal({
                             itemFucName:'${param.fName}',itemFucNumber:'${param.fNumber}',
                             itemFucDayOfWeek:'${param.fDay}',itemFucTeacher:'${param.fTeacher}',
                             itemFucGroup:'${param.fGroup}',itemFucRoom:'${param.fRoom}'
-                        })" style="font-size: 2em;">filter_list</em>
+                        })">filter_list</em>
                 </div>
             </div>
             <div class="row">
-                <table id="itemsTable" class="table table-sm table-striped table-hover" style="background: white">
+                <table id="itemsTable" class="table table-sm table-striped table-hover">
                     <caption></caption>
                     <thead>
                     <tr>
@@ -90,9 +90,9 @@
                                 <em class="material-icons icon--button" data-toggle="modal"
                                     data-target="#itemFucModal"
                                     onclick="fillUpdateLessonModal(${lesson.id})">edit</em>
-                                <em class="material-icons icon--button" data-toggle="modal"
+                                <em class="material-icons icon--button color--red" data-toggle="modal"
                                     data-target="#deleteItemModal"
-                                    onclick="fillDeleteModalData(${lesson.id},'lesson')" style="color: #dc3545">delete</em>
+                                    onclick="fillDeleteModalData(${lesson.id},'lesson')">delete</em>
                             </td>
                         </tr>
                     </c:forEach>
@@ -110,14 +110,15 @@
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
-                        <div class="modal-body" style="display: flex">
+                        <div class="modal-body d-flex">
                             <div class="row">
                                 <div class="form-group col-4">
-                                    <label for="itemFucName" class="mr-2 text-dark add--text" style="font-weight: 700; font-size: 24px">Name</label>
+                                    <label for="itemFucName" class="mr-2 text-dark input--label"
+                                           >Name</label>
                                     <input type="text" class="createRoom form-control my-1 mr-2" id="itemFucName" name="name">
                                 </div>
                                 <div class="form-group col-4">
-                                    <label for="itemFucNumber" class="mr-2 text-dark add--text" style="font-weight: 700; font-size: 24px">Number</label>
+                                    <label for="itemFucNumber" class="mr-2 text-dark input--label">Number</label>
                                     <select class="form-control" id="itemFucNumber">
                                         <c:forEach items="${response.number}" var="item">
                                             <option>${item}</option>
@@ -125,7 +126,7 @@
                                     </select>
                                 </div>
                                 <div class="form-group col-4">
-                                    <label for="itemFucDayOfWeek" class="mr-2 text-dark add--text" style="font-weight: 700; font-size: 24px">Day of week</label>
+                                    <label for="itemFucDayOfWeek" class="mr-2 text-dark input--label">Day of week</label>
                                     <select class="form-control" id="itemFucDayOfWeek">
                                         <c:forEach items="${response.dayOfWeek}" var="day">
                                             <option>${day}</option>
@@ -133,7 +134,7 @@
                                     </select>
                                 </div>
                                 <div class="form-group col-4">
-                                    <label for="itemFucTeacher" class="mr-2 text-dark add--text" style="font-weight: 700; font-size: 24px">Teacher</label>
+                                    <label for="itemFucTeacher" class="mr-2 text-dark input--label">Teacher</label>
                                     <select class="form-control" id="itemFucTeacher">
                                         <c:forEach items="${response.teachers}" var="teacher">
                                             <option value="${teacher.id}">${teacher.name}</option>
@@ -141,7 +142,7 @@
                                     </select>
                                 </div>
                                 <div class="form-group col-4">
-                                    <label for="itemFucGroup" class="mr-2 text-dark add--text" style="font-weight: 700; font-size: 24px">Group</label>
+                                    <label for="itemFucGroup" class="mr-2 text-dark input--label">Group</label>
                                     <select class="form-control" id="itemFucGroup">
                                         <c:forEach items="${response.groups}" var="group">
                                             <option value="${group.id}">${group.name}</option>
@@ -149,7 +150,7 @@
                                     </select>
                                 </div>
                                 <div class="form-group col-4">
-                                    <label for="itemFucRoom" class="mr-2 text-dark add--text" style="font-weight: 700; font-size: 24px">Room</label>
+                                    <label for="itemFucRoom" class="mr-2 text-dark input--label">Room</label>
                                     <select class="form-control" id="itemFucRoom">
                                         <c:forEach items="${response.rooms}" var="room">
                                             <option value="${room.id}">${room.name}</option>
@@ -180,10 +181,10 @@
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
-                        <div class="modal-body" style="display: flex">
-                            <button class="btn btn-danger my-1 mr-2"
-                                    onclick="removeItem('lesson_','/timetable/lesson')" style="width: 50%">OK</button>
-                            <button class="btn btn-primary my-1 mr-2" data-dismiss="modal" aria-label="Close" style="width: 50%">Cancel
+                        <div class="modal-body d-flex">
+                            <button class="btn btn-danger my-1 mr-2 w-50"
+                                    onclick="removeItem('lesson_','/timetable/lesson')">OK</button>
+                            <button class="btn btn-primary my-1 mr-2 w-50" data-dismiss="modal" aria-label="Close">Cancel
                             </button>
                         </div>
                         <div class="alert alert-danger mx-2" role="alert" id="deleteItemError"

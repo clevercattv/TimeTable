@@ -4,7 +4,7 @@ import com.clevercattv.table.dao.GroupDao;
 import com.clevercattv.table.dao.LessonDao;
 import com.clevercattv.table.dao.RoomDao;
 import com.clevercattv.table.dao.TeacherDao;
-import com.clevercattv.table.dto.CrudLessonDTO;
+import com.clevercattv.table.dto.TimeTableModelsDTO;
 import com.clevercattv.table.exception.ModifyDatabaseException;
 import com.clevercattv.table.exception.NamingException;
 import com.clevercattv.table.model.Group;
@@ -34,7 +34,7 @@ public class LessonController extends Controller {
         try {
             if (req.getParameter("fName") == null) {
                 req.setAttribute("response",
-                        new CrudLessonDTO().toDto(
+                        new TimeTableModelsDTO().toDto(
                                 LessonDao.getInstance().findAll(),
                                 TeacherDao.getInstance().findAllIdAndName(),
                                 RoomDao.getInstance().findAllIdAndName(),
@@ -42,7 +42,7 @@ public class LessonController extends Controller {
                         ));
             } else {
                 req.setAttribute("response",
-                        new CrudLessonDTO().toDto(
+                        new TimeTableModelsDTO().toDto(
                                 LessonDao.getInstance().findFilteredByRequest(req),
                                 TeacherDao.getInstance().findAllIdAndName(),
                                 RoomDao.getInstance().findAllIdAndName(),

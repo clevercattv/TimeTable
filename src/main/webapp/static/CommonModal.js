@@ -12,10 +12,6 @@ function modalAction(create, update, filter) {
     }
 }
 
-function setSelectFirst(select) {
-    select.value = select.children[0].value;
-}
-
 function fillDeleteModalData(id, name) {
     document.getElementById('deleteModalTitle').textContent = 'Delete ' + name + ' : ' + document.getElementById(name + "_" + id).children[0].textContent;
     tempDeleteItem = id;
@@ -39,7 +35,6 @@ function ajaxRequest(method, url, data, success, errorId = "#fucModalError") {
                 text = text.substring(1, text.length - 1)
             }
             error.text(text);
-            console.log(text)
         }
     });
 }
@@ -52,16 +47,12 @@ function updateLesson() {
     let teacher = document.getElementById("itemFucTeacher");
     let group = document.getElementById("itemFucGroup");
     let room = document.getElementById("itemFucRoom");
-    ajaxRequest("PUT", "/timetable/teacher",
+    ajaxRequest("PUT", "/timetable/lesson",
         {
-            id: fucId,
-            name: name,
-            number: number,
-            day: day,
-            teacher: teacher.value,
-            group: group.value,
-            room: room.value
-        }, () => {
+            id: fucId, name: name, number: number, day: day,
+            teacher: teacher.value, group: group.value, room: room.value
+        },
+        () => {
             let lesson = document.getElementById("lesson_" + fucId).children;
             lesson[0].children[0].textContent = name;
             lesson[1].children[0].textContent = number;
@@ -82,9 +73,7 @@ function createLesson() {
             teacher: document.getElementById("itemFucTeacher").value,
             group: document.getElementById("itemFucGroup").value,
             room: document.getElementById("itemFucRoom").value
-        }, () => {
-            location.reload()
-        })
+        }, () => location.reload())
 }
 
 function updateTeacher() {
@@ -103,9 +92,7 @@ function createTeacher() {
         {
             name: document.getElementById("itemFucName").value,
             type: document.getElementById("itemFucType").value
-        }, () => {
-            location.reload()
-        })
+        }, () => location.reload())
 }
 
 function updateGroup() {
@@ -141,9 +128,7 @@ function createRoom() {
             name: document.getElementById("itemFucName").value,
             type: document.getElementById("itemFucType").value
         },
-        () => {
-            location.reload()
-        })
+        () => location.reload())
 }
 
 function removeItem(name, url) {

@@ -28,11 +28,11 @@
     <div class="collapse navbar-collapse" id="navbar">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item">
-                <a class="nav-link" href="${pageContext.request.contextPath}/timetable">Full TimeTable</a>
+                <a class="nav-link" href="${pageContext.request.contextPath}/">Full TimeTable</a>
             </li>
             <li class="nav-item dropdown active">
-                <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown"
-                   aria-haspopup="true" aria-expanded="false" style="cursor: pointer">
+                <a class="nav-link dropdown-toggle pointer" id="navbarDropdown" role="button" data-toggle="dropdown"
+                   aria-haspopup="true" aria-expanded="false">
                     Management
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -50,19 +50,18 @@
         <div class="col-12 mt-3">
             <div class="row table-top">
                 <div class="col-3">
-                    <h2 class="text-white" style="font-weight: 700">Teachers</h2>
+                    <h2 class="text-white font--weight--700">Teachers</h2>
                 </div>
-                <div class="col-9" style="align-self: center; text-align: right">
-                    <em class="material-icons icon--button mt-1 text-success" style="font-size: 2em;"
+                <div class="col-9 icon--right">
+                    <em class="material-icons icon--button mt-1 text-success font--size--2em"
                         data-toggle="modal"
                         data-target="#itemFucModal" onclick="fillCreateTeacherModal()">add_box</em>
-                    <em class="material-icons icon--button mt-1 text-warning" data-toggle="modal"
-                        data-target="#itemFucModal" onclick="fillFilterTeacherModal('${param.fName}','${param.fType}')"
-                        style="font-size: 2em;">filter_list</em>
+                    <em class="material-icons icon--button mt-1 text-warning font--size--2em" data-toggle="modal"
+                        data-target="#itemFucModal" onclick="fillFilterTeacherModal('${param.fName}','${param.fType}')">filter_list</em>
                 </div>
             </div>
             <div class="row">
-                <table id="itemsTable" class="table table-sm table-striped table-hover" style="background: white">
+                <table id="itemsTable" class="table table-sm table-striped table-hover">
                     <caption></caption>
                     <thead>
                     <tr>
@@ -80,9 +79,9 @@
                                 <em class="material-icons icon--button" data-toggle="modal"
                                     data-target="#itemFucModal"
                                     onclick="fillUpdateTeacherModal(${teacher.id})">edit</em>
-                                <em class="material-icons icon--button" data-toggle="modal"
+                                <em class="material-icons icon--button color--red" data-toggle="modal"
                                     data-target="#deleteItemModal"
-                                    onclick="fillDeleteModalData(${teacher.id},'teacher')" style="color: #dc3545">delete</em>
+                                    onclick="fillDeleteModalData(${teacher.id},'teacher')">delete</em>
                             </td>
                         </tr>
                     </c:forEach>
@@ -100,17 +99,15 @@
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
-                        <div class="modal-body" style="display: flex">
+                        <div class="modal-body d-flex">
                             <div class="row">
                                 <div class="form-group col-4">
-                                    <label for="itemFucName" class="mr-2 text-dark add--text"
-                                           style="font-weight: 700; font-size: 24px">Name</label>
+                                    <label for="itemFucName" class="mr-2 text-dark input--label">Name</label>
                                     <input type="text" class="form-control my-1 mr-2"
                                            id="itemFucName" placeholder="Room name">
                                 </div>
                                 <div class="form-group col-4">
-                                    <label for="itemFucType" class="mr-2 text-dark add--text"
-                                           style="font-weight: 700; font-size: 24px">Type</label>
+                                    <label for="itemFucType" class="mr-2 text-dark input--label">Type</label>
                                     <select class="form-control my-1 mr-2" id="itemFucType">
                                         <c:forEach items="${response.types}" var="type">
                                             <option>${type}</option>
@@ -143,12 +140,12 @@
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
-                        <div class="modal-body" style="display: flex">
-                            <button class="btn btn-danger my-1 mr-2"
-                                    onclick="removeItem('teacher_','/timetable/teacher')" style="width: 50%">OK
+                        <div class="modal-body d-flex">
+                            <button class="btn btn-danger my-1 mr-2 w-50"
+                                    onclick="removeItem('teacher_','/timetable/teacher')">OK
                             </button>
-                            <button class="btn btn-primary my-1 mr-2"
-                                    data-dismiss="modal" aria-label="Close" style="width: 50%">Cancel
+                            <button class="btn btn-primary my-1 mr-2 w-50"
+                                    data-dismiss="modal" aria-label="Close">Cancel
                             </button>
                         </div>
                         <div class="alert alert-danger mx-2" role="alert" id="deleteItemError"

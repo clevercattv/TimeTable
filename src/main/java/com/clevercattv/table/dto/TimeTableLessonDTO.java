@@ -2,9 +2,8 @@ package com.clevercattv.table.dto;
 
 import com.clevercattv.table.model.Lesson;
 
-public class CrudLessonDTO {
+public class TimeTableLessonDTO {
 
-    private int id;
     private String name;
     private String number;
     private String teacher;
@@ -12,23 +11,16 @@ public class CrudLessonDTO {
     private String room;
     private String day;
 
-    public CrudLessonDTO toDto(Lesson lesson) {
-        this.id = lesson.getId();
+    public TimeTableLessonDTO toDto(Lesson lesson) {
         this.name = lesson.getName();
-        this.number = lesson.getNumber().name();
-        this.teacher = lesson.getTeacher().getFullName();
+        this.number = lesson.getNumber().getStart().toString();
+        this.teacher = lesson.getTeacher().getFullName() + " " +
+                lesson.getTeacher().getType().getAbbreviation();
         this.group = lesson.getGroup().getName();
-        this.room = lesson.getRoom().getName();
+        this.room = lesson.getRoom().getName() + " " +
+                lesson.getRoom().getType().getName();
         this.day = lesson.getDay().name();
         return this;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getName() {
