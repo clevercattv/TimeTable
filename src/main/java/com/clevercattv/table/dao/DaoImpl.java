@@ -1,7 +1,7 @@
 package com.clevercattv.table.dao;
 
 import com.clevercattv.table.database.ConnectionPool;
-import com.clevercattv.table.dto.Name_Id;
+import com.clevercattv.table.dto.NameIdDTO;
 import com.clevercattv.table.model.EntityId;
 
 import java.sql.*;
@@ -12,20 +12,20 @@ import java.util.List;
 public abstract class DaoImpl<T extends EntityId> implements Dao<T> {
 
     private final String deleteQuery;
-    private final String findAllByNames;
+    private final String findAllIdAndNamesQuery;
 
-    DaoImpl(String tableName, String findAllByNames) {
+    DaoImpl(String tableName, String findAllIdAndNamesQuery) {
         this.deleteQuery = "DELETE FROM " + tableName + " WHERE id = ?";
-        this.findAllByNames = "SELECT id, " + findAllByNames + " FROM " + tableName;
+        this.findAllIdAndNamesQuery = "SELECT id, " + findAllIdAndNamesQuery + " FROM " + tableName;
     }
 
-    public List<Name_Id> findAllIdAndName() throws SQLException {
+    public List<NameIdDTO> findAllIdAndName() throws SQLException {
         try (Connection connection = ConnectionPool.getConnection();
              Statement stmt = connection.createStatement();
-             ResultSet rs = stmt.executeQuery(findAllByNames)) {
-            List<Name_Id> list = new ArrayList<>();
+             ResultSet rs = stmt.executeQuery(findAllIdAndNamesQuery)) {
+            List<NameIdDTO> list = new ArrayList<>();
             while (rs.next()) {
-                list.add(new Name_Id(rs.getInt(1),rs.getString(2)));
+                list.add(new NameIdDTO(rs.getInt(1),rs.getString(2)));
             }
             return list;
         }

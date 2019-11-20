@@ -2,7 +2,7 @@ var tempDeleteItem;
 var fucId;
 var fucAction;
 
-function modalAction(create, update, filter) {
+const modalAction = (create, update, filter) => {
     if (fucAction === "CREATE") {
         create();
     } else if (fucAction === "UPDATE") {
@@ -12,14 +12,14 @@ function modalAction(create, update, filter) {
     }
 }
 
-function fillDeleteModalData(id, name) {
+const fillDeleteModalData = (id, name) => {
     document.getElementById('deleteModalTitle').textContent = 'Delete ' + name + ' : ' + document.getElementById(name + "_" + id).children[0].textContent;
     tempDeleteItem = id;
     $('#deleteItemError').css('display', 'none');
-}
+};
 
 
-function ajaxRequest(method, url, data, success, errorId = "#fucModalError") {
+const ajaxRequest = (method, url, data, success, errorId = "#fucModalError") => {
     data.method = method;
     $.ajax({
         type: 'POST',
@@ -37,10 +37,10 @@ function ajaxRequest(method, url, data, success, errorId = "#fucModalError") {
             error.text(text);
         }
     });
-}
+};
 
 
-function updateLesson() {
+const updateLesson = () => {
     let name = document.getElementById("itemFucName").value;
     let number = document.getElementById("itemFucNumber").value;
     let day = document.getElementById("itemFucDayOfWeek").value;
@@ -62,9 +62,9 @@ function updateLesson() {
             lesson[5].children[0].textContent = Array.from(room.children).find(e => e.value === room.value).innerText;
             $('#itemFucModal').modal('hide'); // Hide modal dialog
         })
-}
+};
 
-function createLesson() {
+const createLesson = () => {
     ajaxRequest("POST", "/timetable/lesson",
         {
             name: document.getElementById("itemFucName").value,
@@ -74,9 +74,9 @@ function createLesson() {
             group: document.getElementById("itemFucGroup").value,
             room: document.getElementById("itemFucRoom").value
         }, () => location.reload())
-}
+};
 
-function updateTeacher() {
+const updateTeacher = () => {
     let name = document.getElementById("itemFucName").value;
     let type = document.getElementById("itemFucType").value;
     ajaxRequest("PUT", "/timetable/teacher", {id: fucId, name: name, type: type}, () => {
@@ -85,33 +85,33 @@ function updateTeacher() {
         room[1].children[0].textContent = type;
         $('#itemFucModal').modal('hide'); // Hide modal dialog
     })
-}
+};
 
-function createTeacher() {
+const createTeacher = () => {
     ajaxRequest("POST", "/timetable/teacher",
         {
             name: document.getElementById("itemFucName").value,
             type: document.getElementById("itemFucType").value
         }, () => location.reload())
-}
+};
 
-function updateGroup() {
+const updateGroup = () => {
     let name = document.getElementById("itemFucName").value;
     ajaxRequest("PUT", "/timetable/group", {id: fucId, name: name}, () => {
         document.getElementById("group_" + fucId).children[0].children[0].textContent = name;
         $('#itemFucModal').modal('hide'); // Hide modal dialog
     })
-}
+};
 
-function createGroup() {
+const createGroup = () => {
     let name = document.getElementById("itemFucName").value;
     ajaxRequest("POST", "/timetable/group", {name: name}, () => {
         location.reload()
     })
-}
+};
 
 
-function updateRoom() {
+const updateRoom = () => {
     let name = document.getElementById("itemFucName").value;
     let type = document.getElementById("itemFucType").value;
     ajaxRequest("PUT", "/timetable/room", {id: fucId, name: name, type: type}, () => {
@@ -120,20 +120,20 @@ function updateRoom() {
         room[1].children[0].textContent = type;
         $('#itemFucModal').modal('hide'); // Hide modal dialog
     })
-}
+};
 
-function createRoom() {
+const createRoom = () => {
     ajaxRequest("POST", "/timetable/room",
         {
             name: document.getElementById("itemFucName").value,
             type: document.getElementById("itemFucType").value
         },
         () => location.reload())
-}
+};
 
-function removeItem(name, url) {
+const removeItem = (name, url) => {
     ajaxRequest("DELETE", url, {id: tempDeleteItem}, () => {
         $('#deleteItemModal').modal('hide')
         document.getElementById(name + tempDeleteItem).remove();
     }, "#deleteItemError")
-}
+};

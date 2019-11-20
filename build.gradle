@@ -4,6 +4,10 @@ version '1.0-SNAPSHOT'
 apply plugin: 'java'
 apply plugin: 'war'
 
+//war {
+//    archiveName = 'timetable.war'
+//}
+
 sourceCompatibility = 1.8
 
 repositories {
@@ -13,18 +17,15 @@ repositories {
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
     testCompile group: 'com.tngtech.java', name: 'junit-dataprovider', version: '1.10.0'
+    testCompile group: 'org.mockito', name: 'mockito-core', version: '3.1.0'
 
-    // POSTGRESQL DATABASE
     compile group: 'org.postgresql', name: 'postgresql', version: '42.2.8'
 
-    // SERVLET
     providedCompile group: 'javax.servlet', name: 'javax.servlet-api', version: '4.0.1'
     compile group: 'javax.servlet', name: 'jstl', version: '1.2'
 
-    // LOGGER
     compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.12.1'
 
-    // JSON
     compile group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.10.0'
     compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.10.0'
     compile group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: '2.10.0'

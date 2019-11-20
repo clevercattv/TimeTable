@@ -8,7 +8,7 @@ import java.io.IOException;
 
 public abstract class Controller extends HttpServlet {
 
-    protected static final String ERROR = "response";
+    protected static final String ERROR = "error";
 
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

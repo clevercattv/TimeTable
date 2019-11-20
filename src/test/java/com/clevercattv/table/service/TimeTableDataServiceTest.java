@@ -1,33 +1,27 @@
 package com.clevercattv.table.service;
 
-import com.clevercattv.table.MainTest;
+import com.clevercattv.table.TestData;
 import com.clevercattv.table.exception.BusyException;
-import com.clevercattv.table.model.*;
+import com.clevercattv.table.model.Group;
+import com.clevercattv.table.model.Lesson;
+import com.clevercattv.table.model.Room;
+import com.clevercattv.table.model.Teacher;
 import com.tngtech.java.junit.dataprovider.DataProvider;
 import com.tngtech.java.junit.dataprovider.DataProviderRunner;
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.time.DayOfWeek;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(DataProviderRunner.class)
-public class TimeTableDataServiceTest extends MainTest {
-
-    private static final TimeTableService TIME_TABLE_SERVICE = new TimeTableService();
-
-    @BeforeClass
-    public static void beforeClass() {
-        TIME_TABLE_SERVICE.addLesson(FIRST_LESSON);
-        TIME_TABLE_SERVICE.addLesson(SECOND_LESSON);
-        TIME_TABLE_SERVICE.addLesson(THIRD_LESSON);
-    }
+public class TimeTableDataServiceTest extends TestData {
 
     @DataProvider
     public static Object[][] lessonDataProvider() {
@@ -78,13 +72,20 @@ public class TimeTableDataServiceTest extends MainTest {
 
     @Test
     public void testGetDaysByGroup() {
-        assertTrue(TIME_TABLE_SERVICE.getDaysByGroup(FIRST_LESSON.getGroup(), Arrays.asList(DayOfWeek.MONDAY)).size() == 1);
+        assertEquals(2, TIME_TABLE_SERVICE.getLessonsByDaysAndGroups(
+                Collections.singletonList(FIRST_LESSON.getGroup()),
+                Collections.singletonList(DayOfWeek.MONDAY)).size()
+        );
     }
 
     @Test
-    public void testGetLessonsByDayAndGroup() {
-        assertTrue(TIME_TABLE_SERVICE.getLessonsByDayAndGroup(DayOfWeek.MONDAY,
-                FIRST_LESSON.getGroup()).size() == 1);
+    public void testGetLessonsByGroup(){
+        assertEquals(2, TIME_TABLE_SERVICE.getLessonsByGroup(FIRST_LESSON.getGroup()).size());
+    }
+
+    @Test
+    public void testGetLessonsByDay(){
+        assertEquals(4, TIME_TABLE_SERVICE.getLessonsByDay(DayOfWeek.MONDAY).size());
     }
 
 }

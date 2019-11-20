@@ -10,16 +10,17 @@ public class TeacherDao extends DaoImpl<Teacher> {
 
     private static final TeacherDao dao = new TeacherDao();
     private static final String TABLE_NAME = "teachers";
+    private static final String TABLE_NAME_COLUMN = "fullname";
     private static final String FIND = "SELECT id, fullname, type FROM " + TABLE_NAME;
     private static final String ORDER_BY_NAME_ASC = " ORDER BY fullname ASC ";
     private static final String FIND_ALL = FIND + ORDER_BY_NAME_ASC;
     private static final String FIND_BY_ID = FIND + " WHERE id = ?";
-    private static final String FIND_BY_NAME_AND_TYPE = FIND + " WHERE name ILIKE ? and type LIKE ?" + ORDER_BY_NAME_ASC;
+    private static final String FIND_BY_NAME_AND_TYPE = FIND + " WHERE fullname ILIKE ? and type LIKE ?" + ORDER_BY_NAME_ASC;
     private static final String SAVE = "INSERT INTO " + TABLE_NAME + "(fullname,type) VALUES (?,?)";
     private static final String UPDATE = "UPDATE " + TABLE_NAME + " SET fullname = ?, type = ? WHERE id = ?";
 
     private TeacherDao() {
-        super(TABLE_NAME, "fullname");
+        super(TABLE_NAME, TABLE_NAME_COLUMN);
     }
 
     public static TeacherDao getInstance() {
@@ -36,7 +37,7 @@ public class TeacherDao extends DaoImpl<Teacher> {
             rs.next();
             return Optional.of(new Teacher()
                     .setId(id)
-                    .setFullName(rs.getString("fullname"))
+                    .setFullName(rs.getString(TABLE_NAME_COLUMN))
                     .setType(Teacher.Type.valueOf(rs.getString("type"))));
         } finally {
             if (rs != null) {
@@ -50,16 +51,7 @@ public class TeacherDao extends DaoImpl<Teacher> {
         try (Connection connection = ConnectionPool.getConnection();
              Statement stmt = connection.createStatement();
              ResultSet rs = stmt.executeQuery(FIND_ALL)) {
-            List<Teacher> list = new ArrayList<>();
-            while (rs.next()) {
-                list.add(
-                        new Teacher()
-                                .setId(rs.getInt("id"))
-                                .setFullName(rs.getString("fullname"))
-                                .setType(Teacher.Type.valueOf(rs.getString("type")))
-                );
-            }
-            return list;
+            return getTeachersFromResultSet(rs);
         }
     }
 
@@ -70,21 +62,25 @@ public class TeacherDao extends DaoImpl<Teacher> {
             stmt.setString(1,"%" + name + "%");
             stmt.setString(2,"%" + type + "%");
             rs = stmt.executeQuery();
-            List<Teacher> list = new ArrayList<>();
-            while (rs.next()) {
-                list.add(
-                        new Teacher()
-                                .setId(rs.getInt("id"))
-                                .setFullName(rs.getString("name"))
-                                .setType(Teacher.Type.valueOf(rs.getString("type")))
-                );
-            }
-            return list;
+            return getTeachersFromResultSet(rs);
         } finally {
             if (rs != null){
                 rs.close();
             }
         }
+    }
+
+    private List<Teacher> getTeachersFromResultSet(ResultSet rs) throws SQLException {
+        List<Teacher> list = new ArrayList<>();
+        while (rs.next()) {
+            list.add(
+                    new Teacher()
+                            .setId(rs.getInt("id"))
+                            .setFullName(rs.getString(TABLE_NAME_COLUMN))
+                            .setType(Teacher.Type.valueOf(rs.getString("type")))
+            );
+        }
+        return list;
     }
 
     @Override

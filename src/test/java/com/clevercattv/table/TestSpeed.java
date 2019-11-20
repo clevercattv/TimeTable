@@ -1,11 +1,10 @@
 package com.clevercattv.table;
 
-import com.clevercattv.table.dao.GroupDao;
-import com.clevercattv.table.dao.LessonDao;
-import com.clevercattv.table.dao.RoomDao;
-import com.clevercattv.table.dao.TeacherDao;
 import com.clevercattv.table.database.TableService;
-import com.clevercattv.table.model.*;
+import com.clevercattv.table.model.Group;
+import com.clevercattv.table.model.Lesson;
+import com.clevercattv.table.model.Room;
+import com.clevercattv.table.model.Teacher;
 import com.clevercattv.table.serialize.TimeTableJsonSerializer;
 import com.clevercattv.table.service.TimeTableService;
 import org.junit.Test;
@@ -30,7 +29,7 @@ public class TestSpeed {
             DayOfWeek dayOfWeek = DayOfWeek.values()[dayI];
             for (int numberI = 0; numberI < Lesson.Number.values().length; numberI++) {
                 Lesson.Number number = Lesson.Number.values()[numberI];
-                for (int groupI = 0; groupI < 1; groupI++) {
+                for (int groupI = 0; groupI < 8; groupI++) {
                     Group group = new Group().setName(numberI + "" + groupI + "" + dayI);
                     Room room = new Room().setName(numberI + "" + groupI + "" + dayI).setType(Room.Type.AUDITORY);
                     Teacher teacher = new Teacher()

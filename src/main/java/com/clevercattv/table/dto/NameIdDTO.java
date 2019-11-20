@@ -1,11 +1,11 @@
 package com.clevercattv.table.dto;
 
-public class Name_Id {
+public class NameIdDTO {
 
-    int id;
-    String name;
+    private int id;
+    private String name;
 
-    public Name_Id(int id, String name) {
+    public NameIdDTO(int id, String name) {
         this.id = id;
         this.name = name;
     }

@@ -27,7 +27,7 @@ public class TeacherController extends Controller {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
             String filterName = req.getParameter("fName");
-            if (Strings.isEmpty(filterName)){
+            if (filterName == null){
                 req.setAttribute("response", new CrudTeacherDTO(TeacherDao.getInstance().findAll()));
             } else {
                 req.setAttribute("response", new CrudTeacherDTO(TeacherDao.getInstance()

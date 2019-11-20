@@ -64,21 +64,15 @@ public class TimeTableService {
                 .collect(Collectors.toList());
     }
 
-    public List<Lesson> getDaysByGroup(Group group, List<DayOfWeek> days) {
+    public List<Lesson> getLessonsByDaysAndGroups(List<Group> groups, List<DayOfWeek> days) {
         return timeTable.getLessons().stream()
-                .filter(e -> days.contains(e.getDay()) && group.equals(e.getGroup()))
+                .filter(e -> days.contains(e.getDay()) && groups.contains(e.getGroup()))
                 .collect(Collectors.toList());
     }
 
-    public List<Lesson> getWeekByGroup(Group group) {
+    public List<Lesson> getLessonsByGroup(Group group) {
         return timeTable.getLessons().stream()
                 .filter(e -> group.equals(e.getGroup()))
-                .collect(Collectors.toList());
-    }
-
-    public List<Lesson> getLessonsByDayAndGroup(DayOfWeek day, Group group) {
-        return timeTable.getLessons().stream()
-                .filter(e -> e.getGroup().equals(group) && day.equals(e.getDay()))
                 .collect(Collectors.toList());
     }
 

@@ -1,6 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <title>Title</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
@@ -11,9 +11,7 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/main.css">
     <script src="${pageContext.request.contextPath}/static/JQuery.js"></script>
     <script src="${pageContext.request.contextPath}/static/TimeTable.js"></script>
-    <script>
-        $(document).ready(() => { buildTimeTable(JSON.parse('${timeTable}')) })
-    </script>
+    <script>$(document).ready(() => buildTimeTable(JSON.parse('${timeTable}')))</script>
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -53,7 +51,7 @@
             <div class="row">
                 <table class="table table-sm table-striped table-hover centered timetable" id="timeTable">
                     <caption></caption>
-                    <thead id="tableHead"></thead>
+                    <thead id="tableHead"><tr><th scope="col"></th></tr></thead>
                     <tbody id="tableBody"></tbody>
                 </table>
             </div>

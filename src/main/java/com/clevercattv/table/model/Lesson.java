@@ -10,9 +10,9 @@ import java.util.Objects;
 
 public class Lesson implements EntityId<Lesson> {
 
-    public static final int MIN_NAME_LENGTH = 4;
-    public static final int MAX_NAME_LENGTH = 32;
-    public static final String NAME_PATTERN = "^[a-z A-Z]+$";
+    private static final int MIN_NAME_LENGTH = 4;
+    private static final int MAX_NAME_LENGTH = 32;
+    private static final String NAME_PATTERN = "^[a-z A-Z]+$";
 
     private int id;
     private String name;
@@ -23,15 +23,6 @@ public class Lesson implements EntityId<Lesson> {
     private DayOfWeek day;
 
     public Lesson() {
-    }
-
-    public Lesson(int id, String name, Number number, Teacher teacher, Group group, Room room) {
-        this.id = id;
-        this.name = name;
-        this.number = number;
-        this.teacher = teacher;
-        this.group = group;
-        this.room = room;
     }
 
     @Override

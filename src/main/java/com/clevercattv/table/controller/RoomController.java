@@ -7,13 +7,11 @@ import com.clevercattv.table.exception.NamingException;
 import com.clevercattv.table.model.Room;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.util.Strings;
 import org.postgresql.util.PSQLException;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -28,7 +26,7 @@ public class RoomController extends Controller {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
             String filterName = req.getParameter("fName");
-            if (Strings.isEmpty(filterName)){
+            if (filterName == null){
                 req.setAttribute("response", new CrudRoomDTO(RoomDao.getInstance().findAll()));
             } else {
                 req.setAttribute("response", new CrudRoomDTO(RoomDao.getInstance()

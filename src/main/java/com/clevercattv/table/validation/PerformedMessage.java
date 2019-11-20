@@ -14,16 +14,8 @@ public class PerformedMessage {
         return message;
     }
 
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
     public boolean isPerformed() {
         return performed;
-    }
-
-    public void setPerformed(boolean performed) {
-        this.performed = performed;
     }
 
 }

@@ -17,12 +17,12 @@ public class TimeTableModelsDTO {
             .map(Enum::name)
             .collect(Collectors.toList());
     private List<CrudLessonDTO> lessons = new ArrayList<>();
-    private List<Name_Id> teachers;
-    private List<Name_Id> rooms;
-    private List<Name_Id> groups;
+    private List<NameIdDTO> teachers;
+    private List<NameIdDTO> rooms;
+    private List<NameIdDTO> groups;
 
-    public TimeTableModelsDTO toDto(List<Lesson> lessons, List<Name_Id> teachers,
-                                    List<Name_Id> rooms, List<Name_Id> groups) {
+    public TimeTableModelsDTO toDto(List<Lesson> lessons, List<NameIdDTO> teachers,
+                                    List<NameIdDTO> rooms, List<NameIdDTO> groups) {
         for (Lesson lesson : lessons) {
             this.lessons.add(new CrudLessonDTO().toDto(lesson));
         }
@@ -44,15 +44,15 @@ public class TimeTableModelsDTO {
         return number;
     }
 
-    public List<Name_Id> getTeachers() {
+    public List<NameIdDTO> getTeachers() {
         return teachers;
     }
 
-    public List<Name_Id> getRooms() {
+    public List<NameIdDTO> getRooms() {
         return rooms;
     }
 
-    public List<Name_Id> getGroups() {
+    public List<NameIdDTO> getGroups() {
         return groups;
     }
 

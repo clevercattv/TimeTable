@@ -6,7 +6,7 @@ import com.clevercattv.table.validation.Validator;
 import java.util.Arrays;
 import java.util.Objects;
 
-public class Group implements EntityId<Group>, Comparable<Group> {
+public class Group implements EntityId<Group> {
 
     public static final int MIN_NAME_LENGTH = 3;
     public static final int MAX_NAME_LENGTH = 16;
@@ -68,11 +68,6 @@ public class Group implements EntityId<Group>, Comparable<Group> {
     public Group setId(int id) {
         this.id = id;
         return this;
-    }
-
-    @Override
-    public int compareTo(Group o) {
-        return name.compareTo(o.name);
     }
 
 }
