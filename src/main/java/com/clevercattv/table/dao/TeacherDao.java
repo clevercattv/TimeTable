@@ -49,38 +49,37 @@ public class TeacherDao extends DaoImpl<Teacher> {
     @Override
     public List<Teacher> findAll() throws SQLException {
         try (Connection connection = ConnectionPool.getConnection();
-             Statement stmt = connection.createStatement();
-             ResultSet rs = stmt.executeQuery(FIND_ALL)) {
-            return getTeachersFromResultSet(rs);
+             Statement stmt = connection.createStatement()) {
+            return getTeachersFromResultSet(stmt.executeQuery(FIND_ALL));
         }
     }
 
     public List<Teacher> findByNameAndType(String name, String type) throws SQLException {
-        ResultSet rs = null;
         try (Connection connection = ConnectionPool.getConnection();
              PreparedStatement stmt = connection.prepareStatement(FIND_BY_NAME_AND_TYPE)) {
             stmt.setString(1,"%" + name + "%");
             stmt.setString(2,"%" + type + "%");
-            rs = stmt.executeQuery();
-            return getTeachersFromResultSet(rs);
+            return getTeachersFromResultSet(stmt.executeQuery());
+        }
+    }
+
+    private List<Teacher> getTeachersFromResultSet(ResultSet rs) throws SQLException {
+        try {
+            List<Teacher> list = new ArrayList<>();
+            while (rs.next()) {
+                list.add(
+                        new Teacher()
+                                .setId(rs.getInt("id"))
+                                .setFullName(rs.getString(TABLE_NAME_COLUMN))
+                                .setType(Teacher.Type.valueOf(rs.getString("type")))
+                );
+            }
+            return list;
         } finally {
             if (rs != null){
                 rs.close();
             }
         }
-    }
-
-    private List<Teacher> getTeachersFromResultSet(ResultSet rs) throws SQLException {
-        List<Teacher> list = new ArrayList<>();
-        while (rs.next()) {
-            list.add(
-                    new Teacher()
-                            .setId(rs.getInt("id"))
-                            .setFullName(rs.getString(TABLE_NAME_COLUMN))
-                            .setType(Teacher.Type.valueOf(rs.getString("type")))
-            );
-        }
-        return list;
     }
 
     @Override

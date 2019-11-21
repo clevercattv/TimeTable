@@ -17,6 +17,7 @@ import java.util.Optional;
 public class LessonDao extends DaoImpl<Lesson> {
 
     private static final LessonDao DAO = new LessonDao();
+
     private static final String TABLE_NAME = "lessons";
     private static final String FIND_QUERY = "SELECT l.id, l.name, l.number, " +
             "t.id, t.fullname, t.type, " +
@@ -25,11 +26,12 @@ public class LessonDao extends DaoImpl<Lesson> {
             "LEFT JOIN teachers t ON t.id = l.teacherId " +
             "LEFT JOIN groups g ON g.id = l.groupId " +
             "LEFT JOIN rooms r ON r.id = l.roomId ";
-    private static final String FIND_ALL = FIND_QUERY + "ORDER BY l.day ASC, l.number ASC, g.name ASC ";
+    private static final String ORDER_BY = "ORDER BY l.day, l.number, g.name ";
+    private static final String FIND_ALL = FIND_QUERY + ORDER_BY;
     private static final String FIND_FILTERED = FIND_QUERY +
             "WHERE l.name ILIKE ? AND l.number LIKE ? AND t.fullname LIKE ? " +
             "AND r.name LIKE ? AND g.name LIKE ? AND l.day LIKE ? " +
-            "ORDER BY l.day ASC, l.number ASC, g.name ASC ";
+            ORDER_BY;
     private static final String FIND_BY_ID = FIND_QUERY + "WHERE l.id = ? ";
     private static final String SAVE = "INSERT INTO " + TABLE_NAME + "" +
             "(name,number,teacherid,roomid,groupid,day) VALUES (?,?,?,?,?,?)";
@@ -66,27 +68,26 @@ public class LessonDao extends DaoImpl<Lesson> {
     @Override
     public List<Lesson> findAll() throws SQLException {
         try (Connection connection = ConnectionPool.getConnection();
-             Statement stmt = connection.createStatement();
-             ResultSet rs = stmt.executeQuery(FIND_ALL)) {
-            List<Lesson> list = new ArrayList<>();
-            while (rs.next()) {
-                list.add(buildLesson(rs));
-            }
-            return list;
+             Statement stmt = connection.createStatement()) {
+            return getLessonsByResultSet(stmt.executeQuery(FIND_ALL));
         }
     }
 
     public List<Lesson> findFilteredByRequest(HttpServletRequest req) throws SQLException {
-        ResultSet rs = null;
         try (Connection connection = ConnectionPool.getConnection();
              PreparedStatement stmt = connection.prepareStatement(FIND_FILTERED)) {
-            stmt.setString(1,"%" + req.getParameter("fName") + "%");
-            stmt.setString(2,"%" + req.getParameter("fNumber") + "%");
-            stmt.setString(3,"%" + req.getParameter("fTeacher") + "%");
-            stmt.setString(4,"%" + req.getParameter("fGroup") + "%");
-            stmt.setString(5,"%" + req.getParameter("fRoom") + "%");
-            stmt.setString(6,"%" + req.getParameter("fDay") + "%");
-            rs = stmt.executeQuery();
+            stmt.setString(1, "%" + req.getParameter("fName") + "%");
+            stmt.setString(2, "%" + req.getParameter("fNumber") + "%");
+            stmt.setString(3, "%" + req.getParameter("fTeacher") + "%");
+            stmt.setString(4, "%" + req.getParameter("fGroup") + "%");
+            stmt.setString(5, "%" + req.getParameter("fRoom") + "%");
+            stmt.setString(6, "%" + req.getParameter("fDay") + "%");
+            return getLessonsByResultSet(stmt.executeQuery());
+        }
+    }
+
+    private List<Lesson> getLessonsByResultSet(ResultSet rs) throws SQLException {
+        try {
             List<Lesson> list = new ArrayList<>();
             while (rs.next()) {
                 list.add(buildLesson(rs));

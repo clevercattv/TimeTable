@@ -4,7 +4,10 @@ import com.clevercattv.table.database.ConnectionPool;
 import com.clevercattv.table.model.Room;
 
 import java.sql.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Optional;
 
 public class RoomDao extends DaoImpl<Room> {
 
@@ -33,7 +36,7 @@ public class RoomDao extends DaoImpl<Room> {
              PreparedStatement stmt = connection.prepareStatement(FIND_BY_ID)) {
             stmt.setLong(1, id);
             rs = stmt.executeQuery();
-            if (rs.next()){
+            if (rs.next()) {
                 return Optional.of(new Room()
                         .setId(id)
                         .setName(rs.getString("name"))
@@ -51,28 +54,22 @@ public class RoomDao extends DaoImpl<Room> {
     @Override
     public List<Room> findAll() throws SQLException {
         try (Connection connection = ConnectionPool.getConnection();
-             Statement stmt = connection.createStatement();
-             ResultSet rs = stmt.executeQuery(FIND_ALL)) {
-            List<Room> list = new ArrayList<>();
-            while (rs.next()) {
-                list.add(
-                        new Room()
-                                .setId(rs.getInt("id"))
-                                .setName(rs.getString("name"))
-                                .setType(Room.Type.valueOf(rs.getString("type")))
-                );
-            }
-            return list;
+             Statement stmt = connection.createStatement()) {
+            return getRoomsByResultSet(stmt.executeQuery(FIND_ALL));
         }
     }
 
     public List<Room> findByNameAndType(String name, String type) throws SQLException {
-        ResultSet rs = null;
         try (Connection connection = ConnectionPool.getConnection();
              PreparedStatement stmt = connection.prepareStatement(FIND_BY_NAME_AND_TYPE)) {
-            stmt.setString(1,"%" + name + "%");
-            stmt.setString(2,"%" + type + "%");
-            rs = stmt.executeQuery();
+            stmt.setString(1, "%" + name + "%");
+            stmt.setString(2, "%" + type + "%");
+            return getRoomsByResultSet(stmt.executeQuery());
+        }
+    }
+
+    private List<Room> getRoomsByResultSet(ResultSet rs) throws SQLException {
+        try {
             List<Room> list = new ArrayList<>();
             while (rs.next()) {
                 list.add(
@@ -84,7 +81,7 @@ public class RoomDao extends DaoImpl<Room> {
             }
             return list;
         } finally {
-            if (rs != null){
+            if (rs != null) {
                 rs.close();
             }
         }
@@ -97,7 +94,7 @@ public class RoomDao extends DaoImpl<Room> {
             stmt.setString(1, room.getName());
             stmt.setString(2, room.getType().name());
             stmt.executeUpdate();
-            return fillById(room,stmt);
+            return fillById(room, stmt);
         }
     }
 
@@ -111,7 +108,7 @@ public class RoomDao extends DaoImpl<Room> {
                 stmt.addBatch();
             }
             stmt.executeBatch();
-            return fillAllByIds(rooms,stmt);
+            return fillAllByIds(rooms, stmt);
         }
     }
 

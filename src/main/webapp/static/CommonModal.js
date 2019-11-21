@@ -10,7 +10,7 @@ const modalAction = (create, update, filter) => {
     } else {
         filter();
     }
-}
+};
 
 const fillDeleteModalData = (id, name) => {
     document.getElementById('deleteModalTitle').textContent = 'Delete ' + name + ' : ' + document.getElementById(name + "_" + id).children[0].textContent;
@@ -18,13 +18,11 @@ const fillDeleteModalData = (id, name) => {
     $('#deleteItemError').css('display', 'none');
 };
 
-
-const ajaxRequest = (method, url, data, success, errorId = "#fucModalError") => {
-    data.method = method;
+const ajaxRequest = (type, url, data, success, errorId = "#fucModalError") => {
     $.ajax({
-        type: 'POST',
+        type: type,
         url: url,
-        data: data,
+        data: JSON.stringify(data),
         dataType: "text",
         success: success,
         error: function (xhr, ajaxOptions, thrownError) {
@@ -47,10 +45,10 @@ const updateLesson = () => {
     let teacher = document.getElementById("itemFucTeacher");
     let group = document.getElementById("itemFucGroup");
     let room = document.getElementById("itemFucRoom");
-    ajaxRequest("PUT", "/timetable/lesson",
+    ajaxRequest("PUT", "lesson",
         {
             id: fucId, name: name, number: number, day: day,
-            teacher: teacher.value, group: group.value, room: room.value
+            teacher: {id: teacher.value}, group: {id: group.value}, room: {id: room.value}
         },
         () => {
             let lesson = document.getElementById("lesson_" + fucId).children;
@@ -65,21 +63,21 @@ const updateLesson = () => {
 };
 
 const createLesson = () => {
-    ajaxRequest("POST", "/timetable/lesson",
+    ajaxRequest("POST", "lesson",
         {
             name: document.getElementById("itemFucName").value,
             number: document.getElementById("itemFucNumber").value,
             day: document.getElementById("itemFucDayOfWeek").value,
-            teacher: document.getElementById("itemFucTeacher").value,
-            group: document.getElementById("itemFucGroup").value,
-            room: document.getElementById("itemFucRoom").value
+            teacher: {id: document.getElementById("itemFucTeacher").value},
+            group: {id: document.getElementById("itemFucGroup").value},
+            room: {id: document.getElementById("itemFucRoom").value}
         }, () => location.reload())
 };
 
 const updateTeacher = () => {
     let name = document.getElementById("itemFucName").value;
     let type = document.getElementById("itemFucType").value;
-    ajaxRequest("PUT", "/timetable/teacher", {id: fucId, name: name, type: type}, () => {
+    ajaxRequest("PUT", "teacher", {id: fucId, fullName: name, type: type}, () => {
         let room = document.getElementById("teacher_" + fucId).children;
         room[0].children[0].textContent = name;
         room[1].children[0].textContent = type;
@@ -88,16 +86,16 @@ const updateTeacher = () => {
 };
 
 const createTeacher = () => {
-    ajaxRequest("POST", "/timetable/teacher",
+    ajaxRequest("POST", "teacher",
         {
-            name: document.getElementById("itemFucName").value,
+            fullName: document.getElementById("itemFucName").value,
             type: document.getElementById("itemFucType").value
         }, () => location.reload())
 };
 
 const updateGroup = () => {
     let name = document.getElementById("itemFucName").value;
-    ajaxRequest("PUT", "/timetable/group", {id: fucId, name: name}, () => {
+    ajaxRequest("PUT", "group", {id: fucId, name: name}, () => {
         document.getElementById("group_" + fucId).children[0].children[0].textContent = name;
         $('#itemFucModal').modal('hide'); // Hide modal dialog
     })
@@ -105,7 +103,7 @@ const updateGroup = () => {
 
 const createGroup = () => {
     let name = document.getElementById("itemFucName").value;
-    ajaxRequest("POST", "/timetable/group", {name: name}, () => {
+    ajaxRequest("POST", "group", {name: name}, () => {
         location.reload()
     })
 };
@@ -114,7 +112,7 @@ const createGroup = () => {
 const updateRoom = () => {
     let name = document.getElementById("itemFucName").value;
     let type = document.getElementById("itemFucType").value;
-    ajaxRequest("PUT", "/timetable/room", {id: fucId, name: name, type: type}, () => {
+    ajaxRequest("PUT", "room", {id: fucId, name: name, type: type}, () => {
         let room = document.getElementById("room_" + fucId).children;
         room[0].children[0].textContent = name;
         room[1].children[0].textContent = type;
@@ -123,7 +121,7 @@ const updateRoom = () => {
 };
 
 const createRoom = () => {
-    ajaxRequest("POST", "/timetable/room",
+    ajaxRequest("POST", "room",
         {
             name: document.getElementById("itemFucName").value,
             type: document.getElementById("itemFucType").value
@@ -133,7 +131,7 @@ const createRoom = () => {
 
 const removeItem = (name, url) => {
     ajaxRequest("DELETE", url, {id: tempDeleteItem}, () => {
-        $('#deleteItemModal').modal('hide')
+        $('#deleteItemModal').modal('hide');
         document.getElementById(name + tempDeleteItem).remove();
     }, "#deleteItemError")
 };

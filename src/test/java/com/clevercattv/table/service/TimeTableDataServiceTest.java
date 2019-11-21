@@ -72,7 +72,7 @@ public class TimeTableDataServiceTest extends TestData {
 
     @Test
     public void testGetDaysByGroup() {
-        assertEquals(2, TIME_TABLE_SERVICE.getLessonsByDaysAndGroups(
+        assertEquals(1, TIME_TABLE_SERVICE.getLessonsByDaysAndGroups(
                 Collections.singletonList(FIRST_LESSON.getGroup()),
                 Collections.singletonList(DayOfWeek.MONDAY)).size()
         );
@@ -80,7 +80,7 @@ public class TimeTableDataServiceTest extends TestData {
 
     @Test
     public void testGetLessonsByGroup(){
-        assertEquals(2, TIME_TABLE_SERVICE.getLessonsByGroup(FIRST_LESSON.getGroup()).size());
+        assertEquals(1, TIME_TABLE_SERVICE.getLessonsByGroup(FIRST_LESSON.getGroup()).size());
     }
 
     @Test

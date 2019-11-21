@@ -54,25 +54,21 @@ public class GroupDao extends DaoImpl<Group> {
     @Override
     public List<Group> findAll() throws SQLException {
         try (Connection connection = ConnectionPool.getConnection();
-             Statement stmt = connection.createStatement();
-             ResultSet rs = stmt.executeQuery(FIND_ALL)) {
-            List<Group> list = new ArrayList<>();
-            while (rs.next()) {
-                list.add(new Group()
-                        .setId(rs.getInt("id"))
-                        .setName(rs.getString("name"))
-                );
-            }
-            return list;
+             Statement stmt = connection.createStatement()) {
+            return getGroupsByResultSet(stmt.executeQuery(FIND_ALL));
         }
     }
 
     public List<Group> findByName(String name) throws SQLException {
-        ResultSet rs = null;
         try (Connection connection = ConnectionPool.getConnection();
              PreparedStatement stmt = connection.prepareStatement(FIND_BY_NAME)) {
-            stmt.setString(1,"%" + name + "%");
-            rs = stmt.executeQuery();
+            stmt.setString(1, "%" + name + "%");
+            return getGroupsByResultSet(stmt.executeQuery());
+        }
+    }
+
+    private List<Group> getGroupsByResultSet(ResultSet rs) throws SQLException {
+        try{
             List<Group> list = new ArrayList<>();
             while (rs.next()) {
                 list.add(
@@ -95,7 +91,7 @@ public class GroupDao extends DaoImpl<Group> {
              PreparedStatement stmt = connection.prepareStatement(SAVE, Statement.RETURN_GENERATED_KEYS)) {
             stmt.setString(1, group.getName());
             stmt.executeUpdate();
-            return fillById(group,stmt);
+            return fillById(group, stmt);
         }
     }
 
@@ -108,7 +104,7 @@ public class GroupDao extends DaoImpl<Group> {
                 stmt.addBatch();
             }
             stmt.executeBatch();
-            return fillAllByIds(groups,stmt);
+            return fillAllByIds(groups, stmt);
         }
     }
 

@@ -7,7 +7,10 @@ public class TimeTable {
 
     private List<Lesson> lessons;
 
-    private TimeTable() {
+    private TimeTable(){}
+
+    public TimeTable(List<Lesson> lessons) {
+        this.lessons = lessons;
     }
 
     @Override
@@ -23,16 +26,8 @@ public class TimeTable {
         return Objects.hash(lessons);
     }
 
-    public TimeTable(List<Lesson> lessons) {
-        this.lessons = lessons;
-    }
-
     public List<Lesson> getLessons() {
         return lessons;
-    }
-
-    public void setLessons(List<Lesson> lessons) {
-        this.lessons = lessons;
     }
 
 }

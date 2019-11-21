@@ -1,6 +1,5 @@
 package com.clevercattv.table;
 
-import com.clevercattv.table.database.TableService;
 import com.clevercattv.table.model.Group;
 import com.clevercattv.table.model.Lesson;
 import com.clevercattv.table.model.Room;
@@ -21,9 +20,7 @@ public class TestSpeed {
             "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ".toCharArray();
 
     @Test
-    public void createRandom() throws SQLException {
-        TableService.dropTables();
-        TableService.createTables();
+    public void testSpeed() {
         long startTime = System.currentTimeMillis();
         for (int dayI = 0; dayI < 5; dayI++) { // DayOfWeek.values().length - 2
             DayOfWeek dayOfWeek = DayOfWeek.values()[dayI];

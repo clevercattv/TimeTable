@@ -23,7 +23,7 @@ public class IOExecutor {
     }
 
     public static Future<TimeTable> load(URL path) {
-        return load(path.getPath());
+        return EXECUTOR.submit(() -> TimeTableJsonSerializer.deserialize(path));
     }
 
     public static Future<TimeTable> load(String path) {

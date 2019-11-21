@@ -8,7 +8,7 @@ import java.util.Arrays;
 import java.util.Objects;
 
 
-public class Teacher implements EntityId<Teacher>{
+public class Teacher implements EntityId<Teacher> {
 
     public static final int MIN_NAME_LENGTH = 10;
     public static final int MAX_NAME_LENGTH = 48;
@@ -87,21 +87,23 @@ public class Teacher implements EntityId<Teacher>{
     }
 
     public Teacher setType(String type) {
-        if (type == null || type.isEmpty()){
+        if (type == null || type.isEmpty()) {
             throw new NamingException("Teacher type wrong!");
         }
         this.type = Type.valueOf(type);
         return this;
     }
 
-    public enum Type{
+    public enum Type {
         POST_GRADUATE("P-G"),
         DOCENT("DOC"),
         PROFESSOR("PROF");
 
         final String abbreviation;
 
-        Type(String abbreviation){ this.abbreviation = abbreviation; }
+        Type(String abbreviation) {
+            this.abbreviation = abbreviation;
+        }
 
         public String getAbbreviation() {
             return abbreviation;

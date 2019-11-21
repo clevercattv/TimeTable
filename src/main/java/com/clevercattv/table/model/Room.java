@@ -7,7 +7,7 @@ import com.clevercattv.table.validation.Validator;
 import java.util.Arrays;
 import java.util.Objects;
 
-public class Room implements EntityId<Room>{
+public class Room implements EntityId<Room> {
 
     private int id;
     private String name;
@@ -71,7 +71,7 @@ public class Room implements EntityId<Room>{
     }
 
     public Room setType(String type) {
-        if (type == null || type.isEmpty()){
+        if (type == null || type.isEmpty()) {
             throw new NamingException("Room type wrong!");
         }
         this.type = Type.valueOf(type);
@@ -89,27 +89,25 @@ public class Room implements EntityId<Room>{
         return this;
     }
 
-    public enum Type{
+    public enum Type {
         AUDITORY("A", 0),
-        LABORATORY("L",1);
+        LABORATORY("L", 1);
 
         final String name;
         final int id;
 
-        Type(String name, int id){
+        Type(String name, int id) {
             this.name = name;
             this.id = id;
         }
 
-        public String getName(){
+        public String getName() {
             return name;
         }
 
-        public int getId(){
+        public int getId() {
             return id;
         }
-
-
 
     }
 

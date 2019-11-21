@@ -22,9 +22,6 @@ public class Lesson implements EntityId<Lesson> {
     private Room room;//
     private DayOfWeek day;
 
-    public Lesson() {
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -133,20 +130,18 @@ public class Lesson implements EntityId<Lesson> {
 
     public enum Number {
 
-        FIRST(1, LocalTime.parse("08:20:00"), LocalTime.parse("09:40:00")),
-        SECOND(2, LocalTime.parse("09:50:00"), LocalTime.parse("11:10:00")),
-        THIRD(3, LocalTime.parse("11:30:00"), LocalTime.parse("12:50:00")),
-        FOURTH(4, LocalTime.parse("13:00:00"), LocalTime.parse("14:20:00")),
-        FIFTH(5, LocalTime.parse("14:40:00"), LocalTime.parse("16:00:00"));
+        FIRST(1, LocalTime.parse("08:20:00")),
+        SECOND(2, LocalTime.parse("09:50:00")),
+        THIRD(3, LocalTime.parse("11:30:00")),
+        FOURTH(4, LocalTime.parse("13:00:00")),
+        FIFTH(5, LocalTime.parse("14:40:00"));
 
         private final int id;
         private final LocalTime start;
-        private final LocalTime end;
 
-        Number(int id, LocalTime start, LocalTime end) {
+        Number(int id, LocalTime start) {
             this.id = id;
             this.start = start;
-            this.end = end;
         }
 
         public int getId() {
@@ -155,10 +150,6 @@ public class Lesson implements EntityId<Lesson> {
 
         public LocalTime getStart() {
             return start;
-        }
-
-        public LocalTime getEnd() {
-            return end;
         }
 
     }

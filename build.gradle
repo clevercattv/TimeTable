@@ -19,6 +19,7 @@ dependencies {
     testCompile group: 'com.tngtech.java', name: 'junit-dataprovider', version: '1.10.0'
     testCompile group: 'org.mockito', name: 'mockito-core', version: '3.1.0'
 
+
     compile group: 'org.postgresql', name: 'postgresql', version: '42.2.8'
 
     providedCompile group: 'javax.servlet', name: 'javax.servlet-api', version: '4.0.1'

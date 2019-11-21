@@ -16,15 +16,11 @@ public class TestData {
             .getResource("TestBase.json");
 
     protected static Lesson FIRST_LESSON;
-    protected static Lesson SECOND_LESSON;
-    protected static Lesson THIRD_LESSON;
 
     @BeforeClass
     public static void beforeClass() throws IOException {
         TIME_TABLE_SERVICE = new TimeTableService(TimeTableJsonSerializer.deserialize(TEST_JSON_URL));
         FIRST_LESSON = TIME_TABLE_SERVICE.getLessons().get(0);
-        SECOND_LESSON = TIME_TABLE_SERVICE.getLessons().get(1);
-        THIRD_LESSON = TIME_TABLE_SERVICE.getLessons().get(2);
     }
 
 }
