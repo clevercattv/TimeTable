@@ -1,0 +1,79 @@
+{
+  "lessons" : [ {
+    "id" : 0,
+    "name" : "Math",
+    "number" : "FIRST",
+    "teacher" : {
+      "id" : 0,
+      "fullName" : "Docent name",
+      "type" : "DOCENT"
+    },
+    "group" : {
+      "id" : 0,
+      "name" : "509"
+    },
+    "room" : {
+      "id" : 0,
+      "name" : "10",
+      "type" : "AUDITORY"
+    },
+    "day" : "MONDAY"
+  }, {
+    "id" : 0,
+    "name" : "Physic",
+    "number" : "FIRST",
+    "teacher" : {
+      "id" : 0,
+      "fullName" : "Professor name",
+      "type" : "PROFESSOR"
+    },
+    "group" : {
+      "id" : 0,
+      "name" : "508"
+    },
+    "room" : {
+      "id" : 0,
+      "name" : "11",
+      "type" : "LABORATORY"
+    },
+    "day" : "MONDAY"
+  }, {
+    "id" : 0,
+    "name" : "Physic",
+    "number" : "THIRD",
+    "teacher" : {
+      "id" : 0,
+      "fullName" : "Post Graduate Name",
+      "type" : "POST_GRADUATE"
+    },
+    "group" : {
+      "id" : 0,
+      "name" : "507"
+    },
+    "room" : {
+      "id" : 0,
+      "name" : "11",
+      "type" : "LABORATORY"
+    },
+    "day" : "MONDAY"
+  }, {
+    "id" : 0,
+    "name" : "Physic",
+    "number" : "FOURTH",
+    "teacher" : {
+      "id" : 0,
+      "fullName" : "Post Graduate Name second",
+      "type" : "POST_GRADUATE"
+    },
+    "group" : {
+      "id" : 0,
+      "name" : "506"
+    },
+    "room" : {
+      "id" : 0,
+      "name" : "11",
+      "type" : "LABORATORY"
+    },
+    "day" : "MONDAY"
+  } ]
+}

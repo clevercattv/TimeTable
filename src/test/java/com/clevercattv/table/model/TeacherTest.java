@@ -1,9 +1,9 @@
 package com.clevercattv.table.model;
 
-import com.clevercattv.table.MainTest;
+import com.clevercattv.table.TestData;
 import com.clevercattv.table.exception.BusyException;
 import com.clevercattv.table.exception.NamingException;
-import com.clevercattv.table.service.LessonService;
+import com.clevercattv.table.service.TimeTableService;
 import com.tngtech.java.junit.dataprovider.DataProvider;
 import com.tngtech.java.junit.dataprovider.DataProviderRunner;
 import org.junit.BeforeClass;
@@ -13,15 +13,7 @@ import org.junit.runner.RunWith;
 import java.time.DayOfWeek;
 
 @RunWith(DataProviderRunner.class)
-public class TeacherTest extends MainTest {
-
-    private static final LessonService TIME_TABLE_SERVICE = new LessonService();
-
-    @BeforeClass
-    public static void beforeClass() {
-        TIME_TABLE_SERVICE.addLesson(FIRST_LESSON);
-        TIME_TABLE_SERVICE.addLesson(SECOND_LESSON);
-    }
+public class TeacherTest extends TestData {
 
     @Test(expected = NamingException.class)
     @DataProvider({
@@ -30,7 +22,7 @@ public class TeacherTest extends MainTest {
             "Docent namesssssssssssssssssssssssssssssssssssssssssssssssssss"
     })
     public void testValidation(String str) {
-        new Teacher().setFullName(str).setType(Teacher.Type.DOCENT);
+        new Teacher(1).setFullName(str).setType(Teacher.Type.DOCENT);
     }
 
     @Test(expected = BusyException.class)

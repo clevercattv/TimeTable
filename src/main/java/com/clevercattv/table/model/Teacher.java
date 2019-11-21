@@ -1,5 +1,6 @@
 package com.clevercattv.table.model;
 
+import com.clevercattv.table.exception.NamingException;
 import com.clevercattv.table.validation.PerformedMessage;
 import com.clevercattv.table.validation.Validator;
 
@@ -7,7 +8,7 @@ import java.util.Arrays;
 import java.util.Objects;
 
 
-public class Teacher implements EntityId<Teacher>{
+public class Teacher implements EntityId<Teacher> {
 
     public static final int MIN_NAME_LENGTH = 10;
     public static final int MAX_NAME_LENGTH = 48;
@@ -15,6 +16,13 @@ public class Teacher implements EntityId<Teacher>{
     private int id;
     private String fullName;
     private Type type;
+
+    public Teacher() {
+    }
+
+    public Teacher(int id) {
+        this.id = id;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -54,12 +62,12 @@ public class Teacher implements EntityId<Teacher>{
     }
 
     public Teacher setFullName(String fullName) {
-        Validator.getMessagesByPerformedTrue(Arrays.asList(
-                new PerformedMessage("Teacher name length less than minimum.",
+        Validator.throwExceptionIfPerformedTrue(Arrays.asList(
+                new PerformedMessage("Teacher name length less than minimum",
                         fullName.length() < MIN_NAME_LENGTH),
-                new PerformedMessage("Teacher name length more than maximum.",
+                new PerformedMessage("Teacher name length more than maximum",
                         fullName.length() > MAX_NAME_LENGTH),
-                new PerformedMessage("Teacher name have have forbidden symbols.",
+                new PerformedMessage("Teacher name have have forbidden symbols",
                         !fullName.matches("^[a-z A-Z]+$"))
         ));
         this.fullName = fullName;
@@ -78,14 +86,24 @@ public class Teacher implements EntityId<Teacher>{
         return this;
     }
 
-    public enum Type{
+    public Teacher setType(String type) {
+        if (type == null || type.isEmpty()) {
+            throw new NamingException("Teacher type wrong!");
+        }
+        this.type = Type.valueOf(type);
+        return this;
+    }
+
+    public enum Type {
         POST_GRADUATE("P-G"),
         DOCENT("DOC"),
         PROFESSOR("PROF");
 
         final String abbreviation;
 
-        Type(String abbreviation){ this.abbreviation = abbreviation; }
+        Type(String abbreviation) {
+            this.abbreviation = abbreviation;
+        }
 
         public String getAbbreviation() {
             return abbreviation;

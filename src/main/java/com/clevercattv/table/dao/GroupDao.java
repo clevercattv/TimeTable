@@ -11,14 +11,23 @@ import java.util.Optional;
 
 public class GroupDao extends DaoImpl<Group> {
 
-    private static final String TABLE_NAME = "groups";
-    private static final String FIND_ALL = "SELECT id, name, combined FROM " + TABLE_NAME;
-    private static final String FIND_BY_ID = FIND_ALL + " WHERE id = ?";
-    private static final String SAVE = "INSERT INTO " + TABLE_NAME + "(name,combined) VALUES (?,?)";
-    private static final String UPDATE = "UPDATE " + TABLE_NAME + " SET name = ?, combined = ? WHERE id = ?";
+    private static final GroupDao DAO = new GroupDao();
 
-    public GroupDao() {
-        super(TABLE_NAME);
+    private static final String TABLE_NAME = "groups";
+    private static final String FIND = "SELECT id, name FROM " + TABLE_NAME;
+    private static final String ORDER_BY_NAME_ASC = " ORDER BY name ASC ";
+    private static final String FIND_ALL = FIND + ORDER_BY_NAME_ASC;
+    private static final String FIND_BY_NAME = FIND + " WHERE name ILIKE ? " + ORDER_BY_NAME_ASC;
+    private static final String FIND_BY_ID = FIND + " WHERE id = ?";
+    private static final String SAVE = "INSERT INTO " + TABLE_NAME + "(name) VALUES (?)";
+    private static final String UPDATE = "UPDATE " + TABLE_NAME + " SET name = ? WHERE id = ?";
+
+    private GroupDao() {
+        super(TABLE_NAME, "name");
+    }
+
+    public static GroupDao getInstance() {
+        return DAO;
     }
 
     @Override
@@ -31,8 +40,7 @@ public class GroupDao extends DaoImpl<Group> {
             if (rs.next()) {
                 return Optional.of(new Group()
                         .setId(id)
-                        .setName(rs.getString("name"))
-                        .setCombined(rs.getBoolean("combined")));
+                        .setName(rs.getString("name")));
             } else {
                 return Optional.empty();
             }
@@ -46,17 +54,34 @@ public class GroupDao extends DaoImpl<Group> {
     @Override
     public List<Group> findAll() throws SQLException {
         try (Connection connection = ConnectionPool.getConnection();
-             Statement stmt = connection.createStatement();
-             ResultSet rs = stmt.executeQuery(FIND_ALL)) {
+             Statement stmt = connection.createStatement()) {
+            return getGroupsByResultSet(stmt.executeQuery(FIND_ALL));
+        }
+    }
+
+    public List<Group> findByName(String name) throws SQLException {
+        try (Connection connection = ConnectionPool.getConnection();
+             PreparedStatement stmt = connection.prepareStatement(FIND_BY_NAME)) {
+            stmt.setString(1, "%" + name + "%");
+            return getGroupsByResultSet(stmt.executeQuery());
+        }
+    }
+
+    private List<Group> getGroupsByResultSet(ResultSet rs) throws SQLException {
+        try{
             List<Group> list = new ArrayList<>();
             while (rs.next()) {
-                list.add(new Group()
-                        .setId(rs.getInt("id"))
-                        .setName(rs.getString("name"))
-                        .setCombined(rs.getBoolean("combined"))
+                list.add(
+                        new Group()
+                                .setId(rs.getInt("id"))
+                                .setName(rs.getString("name"))
                 );
             }
             return list;
+        } finally {
+            if (rs != null){
+                rs.close();
+            }
         }
     }
 
@@ -65,9 +90,8 @@ public class GroupDao extends DaoImpl<Group> {
         try (Connection connection = ConnectionPool.getConnection();
              PreparedStatement stmt = connection.prepareStatement(SAVE, Statement.RETURN_GENERATED_KEYS)) {
             stmt.setString(1, group.getName());
-            stmt.setBoolean(2, group.isCombined());
             stmt.executeUpdate();
-            return fillById(group,stmt);
+            return fillById(group, stmt);
         }
     }
 
@@ -77,11 +101,10 @@ public class GroupDao extends DaoImpl<Group> {
              PreparedStatement stmt = connection.prepareStatement(SAVE, Statement.RETURN_GENERATED_KEYS)) {
             for (Group group : groups) {
                 stmt.setString(1, group.getName());
-                stmt.setBoolean(2, group.isCombined());
                 stmt.addBatch();
             }
             stmt.executeBatch();
-            return fillAllByIds(groups,stmt);
+            return fillAllByIds(groups, stmt);
         }
     }
 
@@ -90,8 +113,7 @@ public class GroupDao extends DaoImpl<Group> {
         try (Connection connection = ConnectionPool.getConnection();
              PreparedStatement stmt = connection.prepareStatement(UPDATE)) {
             stmt.setString(1, group.getName());
-            stmt.setBoolean(2, group.isCombined());
-            stmt.setInt(3, group.getId());
+            stmt.setInt(2, group.getId());
             stmt.executeUpdate();
         }
     }

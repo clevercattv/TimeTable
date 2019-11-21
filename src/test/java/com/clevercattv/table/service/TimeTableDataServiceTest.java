@@ -1,34 +1,27 @@
 package com.clevercattv.table.service;
 
-import com.clevercattv.table.MainTest;
+import com.clevercattv.table.TestData;
 import com.clevercattv.table.exception.BusyException;
-import com.clevercattv.table.model.*;
+import com.clevercattv.table.model.Group;
+import com.clevercattv.table.model.Lesson;
+import com.clevercattv.table.model.Room;
+import com.clevercattv.table.model.Teacher;
 import com.tngtech.java.junit.dataprovider.DataProvider;
 import com.tngtech.java.junit.dataprovider.DataProviderRunner;
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.time.DayOfWeek;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(DataProviderRunner.class)
-public class TimeTableDataServiceTest extends MainTest {
-
-    private static final LessonService TIME_TABLE_SERVICE = new LessonService();
-
-    @BeforeClass
-    public static void beforeClass() {
-        TIME_TABLE_SERVICE.addLesson(FIRST_LESSON);
-        TIME_TABLE_SERVICE.addLesson(SECOND_LESSON);
-        TIME_TABLE_SERVICE.addLesson(THIRD_LESSON);
-        TIME_TABLE_SERVICE.addLesson(COMBINED);
-    }
+public class TimeTableDataServiceTest extends TestData {
 
     @DataProvider
     public static Object[][] lessonDataProvider() {
@@ -44,14 +37,6 @@ public class TimeTableDataServiceTest extends MainTest {
                 {FIRST_LESSON.getTeacher(), new Group().setName("577"), FIRST_LESSON.getRoom()},
                 {FIRST_LESSON.getTeacher(), FIRST_LESSON.getGroup(), new Room().setName("5").setType(Room.Type.AUDITORY)},
                 {FIRST_LESSON.getTeacher(), FIRST_LESSON.getGroup(), FIRST_LESSON.getRoom()},
-                {new Teacher().setFullName("Test teacher").setType(Teacher.Type.DOCENT),
-                        new Group().setCombinedGroups(new Group[]{
-                                new Group().setName("577"),
-                                FIRST_LESSON.getGroup(),
-                                SECOND_LESSON.getGroup()
-                        }),
-                        new Room().setName("5").setType(Room.Type.AUDITORY)},
-                {FIRST_LESSON.getTeacher(), COMBINED.getGroup(), FIRST_LESSON.getRoom()},
         };
     }
 
@@ -87,13 +72,20 @@ public class TimeTableDataServiceTest extends MainTest {
 
     @Test
     public void testGetDaysByGroup() {
-        assertTrue(TIME_TABLE_SERVICE.getDaysByGroup(FIRST_LESSON.getGroup(), Arrays.asList(DayOfWeek.MONDAY)).size() == 1);
+        assertEquals(1, TIME_TABLE_SERVICE.getLessonsByDaysAndGroups(
+                Collections.singletonList(FIRST_LESSON.getGroup()),
+                Collections.singletonList(DayOfWeek.MONDAY)).size()
+        );
     }
 
     @Test
-    public void testGetLessonsByDayAndGroup() {
-        assertTrue(TIME_TABLE_SERVICE.getLessonsByDayAndGroup(DayOfWeek.MONDAY,
-                FIRST_LESSON.getGroup()).size() == 1);
+    public void testGetLessonsByGroup(){
+        assertEquals(1, TIME_TABLE_SERVICE.getLessonsByGroup(FIRST_LESSON.getGroup()).size());
+    }
+
+    @Test
+    public void testGetLessonsByDay(){
+        assertEquals(4, TIME_TABLE_SERVICE.getLessonsByDay(DayOfWeek.MONDAY).size());
     }
 
 }

@@ -1,20 +1,34 @@
 package com.clevercattv.table.dao;
 
 import com.clevercattv.table.database.ConnectionPool;
+import com.clevercattv.table.dto.NameIdDTO;
 import com.clevercattv.table.model.EntityId;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 public abstract class DaoImpl<T extends EntityId> implements Dao<T> {
 
-    private final String delete;
+    private final String deleteQuery;
+    private final String findAllIdAndNamesQuery;
 
-    DaoImpl(String tableName) {
-        this.delete = "DELETE FROM " + tableName + " WHERE id = ?";
+    DaoImpl(String tableName, String findAllIdAndNamesQuery) {
+        this.deleteQuery = "DELETE FROM " + tableName + " WHERE id = ?";
+        this.findAllIdAndNamesQuery = "SELECT id, " + findAllIdAndNamesQuery + " FROM " + tableName;
+    }
+
+    public List<NameIdDTO> findAllIdAndName() throws SQLException {
+        try (Connection connection = ConnectionPool.getConnection();
+             Statement stmt = connection.createStatement();
+             ResultSet rs = stmt.executeQuery(findAllIdAndNamesQuery)) {
+            List<NameIdDTO> list = new ArrayList<>();
+            while (rs.next()) {
+                list.add(new NameIdDTO(rs.getInt(1),rs.getString(2)));
+            }
+            return list;
+        }
     }
 
     T fillById(T t, PreparedStatement stmt) throws SQLException {
@@ -39,9 +53,13 @@ public abstract class DaoImpl<T extends EntityId> implements Dao<T> {
     }
 
     public void delete(T t) throws SQLException{
+        delete(t.getId());
+    }
+
+    public void delete(int id) throws SQLException{
         try (Connection connection = ConnectionPool.getConnection();
-             PreparedStatement stmt = connection.prepareStatement(delete)) {
-            stmt.setInt(1, t.getId());
+             PreparedStatement stmt = connection.prepareStatement(deleteQuery)) {
+            stmt.setInt(1, id);
             stmt.execute();
         }
     }

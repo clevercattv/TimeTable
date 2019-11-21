@@ -1,0 +1,56 @@
+<style>
+    .animated_list div {
+        width: 200px;
+        margin: 30px;
+    }
+
+    .animated_list h2 {
+        font: 400 2.5em Helvetica, Verdana, sans-serif;
+        margin: 0;
+        padding: 0;
+    }
+
+    .animated_list ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    .animated_list ul li {
+        font: 200 1.5em Helvetica, Verdana, sans-serif;
+        border-bottom: 1px solid #ccc;
+    }
+
+    .animated_list ul li:last-child {
+        border: none;
+    }
+
+    .animated_list ul li a {
+        text-decoration: none;
+        color: #000;
+        -webkit-transition: font-size 0.3s ease, background-color 0.3s ease;
+        -moz-transition: font-size 0.3s ease, background-color 0.3s ease;
+        -o-transition: font-size 0.3s ease, background-color 0.3s ease;
+        -ms-transition: font-size 0.3s ease, background-color 0.3s ease;
+        transition: font-size 0.3s ease, background-color 0.3s ease;
+        display: block;
+        width: 200px;
+    }
+
+    .animated_list ul li a:hover {
+        cursor: default;
+        font-size: 2em;
+        background: #f6f6f6;
+    }
+
+</style>
+<div class="animated_list">
+    <h2>HelvetiList</h2>
+    <ul>
+        <li><a>Zurich</a></li>
+        <li><a>Geneva</a></li>
+        <li><a>Winterthur</a></li>
+        <li><a>Lausanne</a></li>
+        <li><a>Lucerne</a></li>
+    </ul>
+</div>

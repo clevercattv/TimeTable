@@ -1,21 +1,25 @@
 package com.clevercattv.table.database;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.postgresql.ds.PGConnectionPoolDataSource;
 
 import javax.sql.ConnectionPoolDataSource;
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.DatabaseMetaData;
 import java.sql.SQLException;
 import java.util.Objects;
 import java.util.Properties;
 
 public class ConnectionPool {
 
+    private static final Logger LOGGER = LogManager.getLogger(ConnectionPool.class);
+
     private static final String PROPERTIES = "application.properties";
     private static ConnectionPoolDataSource poolDataSource;
 
-    private ConnectionPool() { }
+    private ConnectionPool() {
+    }
 
     static {
         try {
@@ -31,7 +35,7 @@ public class ConnectionPool {
             source.setApplicationName(properties.getProperty("application.name"));
             poolDataSource = source;
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.error(e);
         }
     }
 
